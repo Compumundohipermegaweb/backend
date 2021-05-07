@@ -36,7 +36,7 @@ class DefaultTemplateServiceShould {
     }
 
     private fun whenCalculationgTheResult() {
-        resultado = templateService.calculateResultado(INPUT)
+        resultado = templateService.calculateResult(INPUT)
     }
 
     private fun thenResultIsTheExpectedOne() {
@@ -45,6 +45,6 @@ class DefaultTemplateServiceShould {
 
     private companion object {
         const val INPUT = "Espero el resultado"
-        val RESULTADO_ESPERADO = TemplateDomainObject("resultado")
+        val RESULTADO_ESPERADO = TemplateDomainObject("resultado", "")
     }
 }

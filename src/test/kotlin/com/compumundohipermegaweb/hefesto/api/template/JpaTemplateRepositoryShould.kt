@@ -6,8 +6,8 @@ import com.compumundohipermegaweb.hefesto.api.template.infra.repository.SpringDa
 import com.compumundohipermegaweb.hefesto.api.template.infra.representation.TemplateDao
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
+import org.mockito.Mockito.*
 
 class JpaTemplateRepositoryShould {
 
@@ -25,6 +25,16 @@ class JpaTemplateRepositoryShould {
         thenOutputFound()
     }
 
+    @Test
+    fun `save the input`() {
+        givenTemplateCrudRepository()
+        givenTemplateRepository()
+
+        whenSavingTheInput()
+
+        thenInputSaved()
+    }
+
     private fun givenTemplateCrudRepository() {
         springDataTemplateClient = mock(SpringDataTemplateClient::class.java)
         `when`(springDataTemplateClient.findByInput("Input")).thenReturn(RESULT_DAO)
@@ -38,11 +48,21 @@ class JpaTemplateRepositoryShould {
         found = templateRepository.find("Input")
     }
 
+    private fun whenSavingTheInput() {
+        templateRepository.save((TemplateDomainObject(INPUT, OUTPUT)))
+    }
+
     private fun thenOutputFound() {
         then(found).isNotNull
     }
 
+    private fun thenInputSaved() {
+        verify(springDataTemplateClient).save(any())
+    }
+
     private companion object {
+        const val INPUT = "input"
+        const val OUTPUT = "out"
         val RESULT_DAO = TemplateDao(1L, "Input", "Result")
     }
 }

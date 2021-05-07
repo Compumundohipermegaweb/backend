@@ -47,8 +47,8 @@ class TemplateActionShould {
 
     private fun givenTemplateService() {
         templateService = mock(TemplateService::class.java)
-        `when`(templateService.calculateResultado(INPUT)).thenReturn(RESULTADO_ESEPRADO)
-        `when`(templateService.calculateResultado(INPUT_DESCONOCIDO)).thenReturn(VACIO)
+        `when`(templateService.calculateResult(INPUT)).thenReturn(RESULTADO_ESEPRADO)
+        `when`(templateService.calculateResult(INPUT_DESCONOCIDO)).thenReturn(VACIO)
     }
 
     private fun givenTemplateAction() {
@@ -67,8 +67,8 @@ class TemplateActionShould {
         const val INPUT = "Espero el resultado"
         const val INPUT_2 = "casa"
         const val INPUT_DESCONOCIDO = "Input desconocido"
-        val RESULTADO_ESEPRADO = TemplateDomainObject("El resultado")
-        val RESULTADO_AL_REVES = TemplateDomainObject("asac")
-        val VACIO = TemplateDomainObject("")
+        val RESULTADO_ESEPRADO = TemplateDomainObject("El resultado", "")
+        val RESULTADO_AL_REVES = TemplateDomainObject("asac","")
+        val VACIO = TemplateDomainObject("", "")
     }
 }
