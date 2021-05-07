@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 class ClientConfig {
 
     @Bean
-    fun registerClient(jpaClientRepository: ClientRepository): RegisterClient {
+    fun registerClient(jpaClientRepository: JpaClientRepository): RegisterClient {
         return RegisterClient(jpaClientRepository)
     }
 
