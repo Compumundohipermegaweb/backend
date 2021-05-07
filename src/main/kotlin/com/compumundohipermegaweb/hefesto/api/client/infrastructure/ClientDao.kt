@@ -4,8 +4,10 @@ import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
+@Table(name = "CLIENT")
 data class ClientDao(@Id @Column(name = "ID") val id: Long,
                      @Column(name = "DOCUMENT_NUMBER") val documentNumber: String,
                      @Column(name = "FIST_NAME") val firstName: String,

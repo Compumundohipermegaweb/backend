@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.client.config
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
+import com.compumundohipermegaweb.hefesto.api.client.domain.model.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.infrastructure.JpaClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.infrastructure.SpringDataClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.rest.ClientController
@@ -11,17 +12,12 @@ import org.springframework.context.annotation.Configuration
 class ClientConfig {
 
     @Bean
-    fun clientController(registerClient: RegisterClient): ClientController {
-        return ClientController(registerClient)
-    }
-
-    @Bean
-    fun registerClient(jpaClientRepository: JpaClientRepository): RegisterClient {
+    fun registerClient(jpaClientRepository: ClientRepository): RegisterClient {
         return RegisterClient(jpaClientRepository)
     }
 
     @Bean
-    fun jpaClientRepository(springDataClientRepository: SpringDataClientRepository): JpaClientRepository {
+    fun jpaClientRepository(springDataClientRepository: SpringDataClientRepository): ClientRepository {
         return JpaClientRepository(springDataClientRepository)
     }
 }

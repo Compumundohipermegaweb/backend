@@ -5,7 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.ClientReposito
 import org.springframework.data.repository.CrudRepository
 import java.time.LocalDateTime
 
-class JpaClientRepository(private val repository: SpringDataClientRepository): ClientRepository{
+class JpaClientRepository(private val repository: SpringDataClientRepository): ClientRepository {
 
     override fun save(client: Client): Client {
         return repository.save(client.toDao()).toClient()
@@ -19,5 +19,3 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         return ClientDao(id, documentNumber, firstName, lastName, surName, category, email, contactNumber, LocalDateTime.now(), "JONATAN", LocalDateTime.now(), "JONATAN")
     }
 }
-
-interface SpringDataClientRepository: CrudRepository<ClientDao, Long>
