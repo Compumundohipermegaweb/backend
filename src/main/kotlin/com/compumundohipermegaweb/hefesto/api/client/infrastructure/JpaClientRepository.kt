@@ -2,7 +2,6 @@ package com.compumundohipermegaweb.hefesto.api.client.infrastructure
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.ClientRepository
-import org.springframework.data.repository.CrudRepository
 import java.time.LocalDateTime
 
 class JpaClientRepository(private val repository: SpringDataClientRepository): ClientRepository {
