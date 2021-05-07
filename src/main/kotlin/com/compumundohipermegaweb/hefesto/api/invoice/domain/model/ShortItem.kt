@@ -1,5 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.invoice.domain.model
 
-data class ShortItem(val id: Long,
-                     val quantity: Int,
-                     val unitPrice: Double)
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class ShortItem(@JsonProperty("id") val id: Long,
+                     @JsonProperty("quantity") val quantity: Int,
+                     @JsonProperty("unit_price") val unitPrice: Double)

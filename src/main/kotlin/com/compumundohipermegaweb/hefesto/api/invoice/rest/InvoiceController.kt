@@ -7,15 +7,16 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.action.RegisterInvo
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/invoices")
+@RequestMapping("/api/sales")
 class InvoiceController(private val registerInvoice: RegisterInvoice) {
 
     @PostMapping
-    fun postClient(invoiceRequest: InvoiceRequest): ResponseEntity<InvoiceResponse> {
+    fun postClient(@RequestBody invoiceRequest: InvoiceRequest): ResponseEntity<InvoiceResponse> {
         val invoice = invoiceRequest.toInvoice()
         return ResponseEntity.ok(registerInvoice(invoice).toInvoiceResponse())
     }
@@ -58,36 +59,39 @@ class InvoiceController(private val registerInvoice: RegisterInvoice) {
         return ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
     }
 
-    private fun ShortItem.toItemResponse(): ItemResponse {
-        val totalPrice: Double = unitPrice*quantity.toDouble()
-        return ItemResponse(id, quantity, unitPrice, totalPrice)
-    }
-
-    private fun ShortPaymentsDetails.toPaymentsDetailsResponse(): PaymentsDetailsResponse {
-        return PaymentsDetailsResponse(id, subTotal)
-    }
-
-    private fun ItemRequest.toShortItem(): ShortItem {
-        return ShortItem(id, quantity, unitPrice)
-    }
-
-    private fun PaymentDetailsRequest.toShortPaymentsDetails(): ShortPaymentsDetails {
-        return ShortPaymentsDetails(id, subTotal)
-    }
-
     private fun ShortPayments.toPaymentsResponse(): ShortPaymentsResponse {
-        return ShortPaymentsResponse(payments)
+        var shortPaymentsList: List<PaymentsDetailsResponse> = ArrayList()
+        for(payment in payments){
+            shortPaymentsList+=PaymentsDetailsResponse(payment.id, payment.subTotal)
+        }
+        return ShortPaymentsResponse(shortPaymentsList)
     }
 
     private fun ShortItems.toShortItemsResponse(): ShortItemsResponse {
-        return ShortItemsResponse(items)
+        var shortItemsList: List<ItemResponse> = ArrayList()
+        for(item in items){
+            val subTotal = item.quantity*item.unitPrice
+                shortItemsList+=ItemResponse(item.id, item.quantity, item.unitPrice, subTotal)
+        }
+        return ShortItemsResponse(shortItemsList)
     }
 
     private fun ShortItemsRequest.toShortItems(): ShortItems {
-        return ShortItems(items)
+
+        var shortItemsList: List<ShortItem> = ArrayList()
+        for(item in items){
+            shortItemsList+=ShortItem(item.id, item.quantity, item.unitPrice)
+        }
+        return ShortItems(shortItemsList)
     }
 
     private fun ShortPaymentsRequest.toShortPayments(): ShortPayments {
-        return ShortPayments(payments)
+        var shortPaymentsList: List<ShortPaymentsDetails> = ArrayList()
+        for(payment in payments){
+            shortPaymentsList+=ShortPaymentsDetails(payment.id, payment.subTotal)
+        }
+        return ShortPayments(shortPaymentsList)
     }
 }
+
+
