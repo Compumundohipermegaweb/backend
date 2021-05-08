@@ -1,14 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.client.infrastructure
 
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "CLIENT")
-data class ClientDao(@Id @Column(name = "ID") val id: Long,
+data class ClientDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                      @Column(name = "DOCUMENT_NUMBER") val documentNumber: String,
                      @Column(name = "FIST_NAME") val firstName: String,
                      @Column(name = "LAST_NAME") val lastName: String,

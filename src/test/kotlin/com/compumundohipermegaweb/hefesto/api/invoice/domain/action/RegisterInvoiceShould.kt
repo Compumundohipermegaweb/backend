@@ -43,5 +43,4 @@ class RegisterInvoiceShould {
         val client = Client(0L, "", "", "", "", "", "", "")
         private val INVOICE = Invoice(0L, "", client, 0L, 0L, ShortItems(ArrayList()), 00.00, ShortPayments(ArrayList()))
     }
-
 }

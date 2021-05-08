@@ -1,13 +1,10 @@
 package com.compumundohipermegaweb.hefesto.api.invoice.infrastructure
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "INVOICE")
-data class InvoiceDao(@Id @Column(name = "ID") val id: Long,
+data class InvoiceDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                       @Column(name = "TYPE") val type: String,
                       @Column(name = "ID_CLIENT") val idClient: Long,
                       @Column(name = "SALESMAN_ID") val idSalesman: Long,

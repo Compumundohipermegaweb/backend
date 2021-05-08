@@ -4,5 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PaymentDetailsRequest(@JsonProperty("id") val id: Long,
-                                 @JsonProperty("sub_total") val subTotal: Double)
+data class ShortItemRequest(@JsonProperty("id") val id: Long,
+                            @JsonProperty("quantity") val quantity: Int,
+                            @JsonProperty("unit_price") val unitPrice: Double)

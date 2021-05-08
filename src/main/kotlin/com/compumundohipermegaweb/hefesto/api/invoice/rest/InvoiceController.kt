@@ -60,18 +60,18 @@ class InvoiceController(private val registerInvoice: RegisterInvoice) {
     }
 
     private fun ShortPayments.toPaymentsResponse(): ShortPaymentsResponse {
-        var shortPaymentsList: List<PaymentsDetailsResponse> = ArrayList()
+        var shortPaymentsList: List<ShortPaymentDetailsResponse> = ArrayList()
         for(payment in payments){
-            shortPaymentsList+=PaymentsDetailsResponse(payment.id, payment.subTotal)
+            shortPaymentsList+=ShortPaymentDetailsResponse(payment.id, payment.subTotal)
         }
         return ShortPaymentsResponse(shortPaymentsList)
     }
 
     private fun ShortItems.toShortItemsResponse(): ShortItemsResponse {
-        var shortItemsList: List<ItemResponse> = ArrayList()
+        var shortItemsList: List<ShortItemResponse> = ArrayList()
         for(item in items){
             val subTotal = item.quantity*item.unitPrice
-                shortItemsList+=ItemResponse(item.id, item.quantity, item.unitPrice, subTotal)
+                shortItemsList+=ShortItemResponse(item.id, item.quantity, item.unitPrice, subTotal)
         }
         return ShortItemsResponse(shortItemsList)
     }
