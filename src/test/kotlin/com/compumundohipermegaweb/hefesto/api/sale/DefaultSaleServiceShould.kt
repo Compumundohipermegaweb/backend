@@ -5,17 +5,17 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleDetailsRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
-import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
+import com.compumundohipermegaweb.hefesto.api.sale.domain.service.DefaultSaleService
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
-class SaleServiceShould {
+class DefaultSaleServiceShould {
 
     private lateinit var saleRepository: SaleRepository
     private lateinit var saleDetailsRepository: SaleDetailsRepository
-    private lateinit var saleService: SaleService
+    private lateinit var saleService: DefaultSaleService
     private lateinit var resultado: Sale
 
     @Test
@@ -40,7 +40,7 @@ class SaleServiceShould {
     }
 
     private fun givenSaleService() {
-        saleService = SaleService(saleRepository, saleDetailsRepository)
+        saleService = DefaultSaleService(saleRepository, saleDetailsRepository)
     }
 
     private fun whenSavingTheResult() {
