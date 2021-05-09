@@ -16,6 +16,6 @@ class JpaSaleRepository(private val springDataSale: SpringDataSale): SaleReposit
     }
 
     private fun SaleDao.toSale(): Sale {
-        return Sale(id, type, clientId, salesmanId, branchId,  SaleDetails(ArrayList()), total)
+        return Sale(id, type, clientId, salesmanId, branchId,  SaleDetails(ArrayList(), ArrayList()), total)
     }
 }

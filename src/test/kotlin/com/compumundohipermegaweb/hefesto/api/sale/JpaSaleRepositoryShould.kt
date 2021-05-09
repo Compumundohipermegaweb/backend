@@ -46,7 +46,7 @@ class JpaSaleRepositoryShould {
 
     private companion object {
         val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0.0)
-        val SALE = Sale(0L, "B", 0L, 0L, 0L, SaleDetails(ArrayList()), 0.0)
+        val SALE = Sale(0L, "B", 0L, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0)
 
     }
 }

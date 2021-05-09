@@ -3,10 +3,8 @@ package com.compumundohipermegaweb.hefesto.api.item.rest
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindAllItemByShortDescription
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import kotlin.streams.toList
 
 @RestController
 @RequestMapping("/api/items")

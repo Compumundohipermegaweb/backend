@@ -2,13 +2,11 @@ package com.compumundohipermegaweb.hefesto.api.sale.config
 
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.DefaultInvoiceService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
-import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleDetailsRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleItemDetailRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentDetailRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.DefaultSaleService
-import com.compumundohipermegaweb.hefesto.api.sale.infra.repository.JpaSaleDetailRepository
-import com.compumundohipermegaweb.hefesto.api.sale.infra.repository.JpaSaleRepository
-import com.compumundohipermegaweb.hefesto.api.sale.infra.repository.SpringDataSale
-import com.compumundohipermegaweb.hefesto.api.sale.infra.repository.SpringDataSaleDetail
+import com.compumundohipermegaweb.hefesto.api.sale.infra.repository.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -21,8 +19,8 @@ class SaleConfig {
     }
 
     @Bean
-    fun saleService(saleRepository: SaleRepository, saleDetailsRepository: SaleDetailsRepository): DefaultSaleService {
-        return DefaultSaleService(saleRepository, saleDetailsRepository)
+    fun saleService(saleRepository: SaleRepository, saleItemDetailRepository: SaleItemDetailRepository, salePaymentDetailRepository: SalePaymentDetailRepository): DefaultSaleService {
+        return DefaultSaleService(saleRepository, saleItemDetailRepository, salePaymentDetailRepository)
     }
 
     @Bean
@@ -31,7 +29,12 @@ class SaleConfig {
     }
 
     @Bean
-    fun saleDetailRepository(springDataSaleDetail: SpringDataSaleDetail): SaleDetailsRepository {
-        return JpaSaleDetailRepository(springDataSaleDetail)
+    fun saleItemDetailRepository(springDataSaleItemDetail: SpringDataSaleItemDetail): SaleItemDetailRepository {
+        return JpaSaleItemDetailRepository(springDataSaleItemDetail)
+    }
+
+    @Bean
+    fun salePaymentDetailRepository(springDataSalePaymentDetail: SpringDataSalePaymentDetail): SalePaymentDetailRepository {
+        return JpaSalePaymentDetailRepository(springDataSalePaymentDetail)
     }
 }

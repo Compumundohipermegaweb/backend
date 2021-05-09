@@ -2,8 +2,8 @@ package com.compumundohipermegaweb.hefesto.api.template.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.template.domain.action.TemplateAction
 import com.compumundohipermegaweb.hefesto.api.template.domain.model.TemplateDomainObject
-import com.compumundohipermegaweb.hefesto.api.template.rest.representation.PostTemplateRequest
 import com.compumundohipermegaweb.hefesto.api.template.rest.representation.GetTemplateResponse
+import com.compumundohipermegaweb.hefesto.api.template.rest.representation.PostTemplateRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

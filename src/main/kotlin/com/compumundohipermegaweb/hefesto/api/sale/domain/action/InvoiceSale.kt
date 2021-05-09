@@ -3,8 +3,9 @@ package com.compumundohipermegaweb.hefesto.api.sale.domain.action
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.ItemDetail
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.PaymentDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
-import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsRequest
@@ -48,7 +49,7 @@ class InvoiceSale(private val saleService: SaleService,
 
     private fun SaleRequest.toSale() = Sale(0L, type,0L, idSalesman, idBranch, saleDetailsRequest.toSaleDetails(), total)
 
-    private fun SaleDetailsRequest.toSaleDetails() = SaleDetails(saleDetailsRequest.map { SaleDetail(it.id, it.quantity, it.unitPrice) })
+    private fun SaleDetailsRequest.toSaleDetails() = SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
 
 }
 
