@@ -11,6 +11,8 @@ class DefaultSaleService(private val saleRepository: SaleRepository,
 
         sale.saleDetails.itemsDetails.forEach{saleDetailsRepository.save(it, sale.id)}
 
+        saveSale.saleDetails = sale.saleDetails
+
         return saveSale
     }
 

@@ -37,9 +37,14 @@ class InvoiceSale(private val saleService: SaleService,
         }
     }
 
-    private fun createInvoice(sale: Sale, subTotal: Double, iva: Double) = Invoice(0L, sale.id, sale.type, defaultClient(), sale.branchId, "Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", sale.saleDetails, subTotal, iva, sale.total)
+    private fun createInvoice(sale: Sale, subTotal: Double, iva: Double) = Invoice(0L, sale.id, sale.type, defaultClient(sale.type), sale.branchId, "Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", sale.saleDetails, subTotal, iva, sale.total)
 
-    private fun defaultClient() = Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
+    private fun defaultClient(invoiceType: String): Client {
+        return when(invoiceType) {
+            "B" -> Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
+            else -> Client(0L, "", "", "", "", "", "", "")
+        }
+    }
 
     private fun SaleRequest.toSale() = Sale(0L, type,0L, idSalesman, idBranch, saleDetailsRequest.toSaleDetails(), total)
 

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class InvoiceResponse(@JsonProperty("") val id: Long,
                            @JsonProperty("") val type: String,
                            @JsonProperty("") val client: ClientResponse,
-                           @JsonProperty("") val branchId: Long,
                            @JsonProperty("") val branchAddress: String,
                            @JsonProperty("") val branchContact: String,
                            @JsonProperty("") val cuit: String,

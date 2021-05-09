@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import kotlin.streams.toList
 
 
 @RestController
@@ -26,21 +27,11 @@ class SaleController(private val invoiceSale: InvoiceSale) {
         return ResponseEntity.ok(invoiceSale.invoke(sale).toInvoiceResponse())
     }
 
-    private fun Invoice.toInvoiceResponse(): InvoiceResponse {
-        return InvoiceResponse(id, type, client.toClientResponse(), branchId, branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
-    }
+    private fun Invoice.toInvoiceResponse() = InvoiceResponse(id, type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
 
-    private fun Client.toClientResponse(): ClientResponse {
-        return ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
-    }
+    private fun Client.toClientResponse() = ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
 
-    private fun SaleDetails.toSaleDetailsResponse(): SaleDetailsResponse {
-        return SaleDetailsResponse(itemsDetails.map { it.toSaleDetailResponse() })
-    }
-
-    private fun SaleDetail.toSaleDetailResponse(): SaleDetailResponse {
-        return SaleDetailResponse(id, quantity, unitPrice)
-    }
+    private fun SaleDetails.toSaleDetailsResponse() = SaleDetailsResponse(itemsDetails.map { SaleDetailResponse(it.id, it.quantity, it.unitPrice) }.toList())
 }
 
 
