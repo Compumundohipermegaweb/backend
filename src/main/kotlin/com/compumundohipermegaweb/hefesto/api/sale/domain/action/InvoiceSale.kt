@@ -1,6 +1,5 @@
 package com.compumundohipermegaweb.hefesto.api.sale.domain.action
 
-import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.ItemDetail
@@ -17,39 +16,21 @@ class InvoiceSale(private val saleService: SaleService,
     operator fun invoke(saleRequest: SaleRequest): Invoice {
 
         val savedSale = saleService.save(saleRequest.toSale())
-        val iva = calculateIva(savedSale)
-        val subTotal = calculateSubTotal(savedSale, iva)
-        val invoice = createInvoice(savedSale, subTotal, iva)
 
-        return invoiceService.save(invoice)
+        return invoiceService.invoiceSale(savedSale)
     }
 
-    private fun calculateSubTotal(savedSale: Sale, iva: Double): Double {
-        return when(savedSale.type){
-            "A" -> savedSale.total - iva
-            else -> savedSale.total
-        }
-    }
+    private fun SaleRequest.toSale() =
+            Sale(id = 0L,
+                type = type,
+                clientId = 0L,
+                salesmanId = idSalesman,
+                branchId = idBranch,
+                saleDetails = saleDetailsRequest.toSaleDetails(),
+                total = total)
 
-    private fun calculateIva(savedSale: Sale): Double {
-        return when(savedSale.type){
-            "A" -> (21 * savedSale.total) / 100
-            else -> 0.0
-        }
-    }
-
-    private fun createInvoice(sale: Sale, subTotal: Double, iva: Double) = Invoice(0L, sale.id, sale.type, defaultClient(sale.type), sale.branchId, "Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", sale.saleDetails, subTotal, iva, sale.total)
-
-    private fun defaultClient(invoiceType: String): Client {
-        return when(invoiceType) {
-            "B" -> Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
-            else -> Client(0L, "", "", "", "", "", "", "")
-        }
-    }
-
-    private fun SaleRequest.toSale() = Sale(0L, type,0L, idSalesman, idBranch, saleDetailsRequest.toSaleDetails(), total)
-
-    private fun SaleDetailsRequest.toSaleDetails() = SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
+    private fun SaleDetailsRequest.toSaleDetails() =
+            SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
 
 }
 

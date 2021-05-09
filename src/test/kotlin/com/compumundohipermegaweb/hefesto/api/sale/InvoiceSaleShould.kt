@@ -16,6 +16,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsReque
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -41,14 +42,14 @@ class InvoiceSaleShould {
     }
 
     @Test
-    fun `calculate the iva for A type sales`() {
+    fun `save the sale`() {
         givenSaleService()
         givenInvoiceService()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
 
-        then(generatedInvoice.ivaSubTotal).isEqualTo(EXPECTED_IVA)
+        verify(saleService).save(any())
     }
 
     private fun givenSaleService() {
@@ -58,7 +59,7 @@ class InvoiceSaleShould {
 
     private fun givenInvoiceService() {
         invoiceService = mock()
-        `when`(invoiceService.save(any())).thenReturn(SAVED_INVOICE_TYPE_A)
+        `when`(invoiceService.invoiceSale(any())).thenReturn(SAVED_INVOICE_TYPE_A)
     }
 
     private fun givenInvoiceSale() {
@@ -81,7 +82,6 @@ class InvoiceSaleShould {
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentDetailRequest("EFECTIVO",  200.50))
         val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)
         val TYPE_A_SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, 200.50)
-        const val EXPECTED_IVA = 42.105
         val SALE_ITEM_DETAIL = listOf(ItemDetail(0L, 1, 200.50))
         val SALE_PAYMENT_DETAIL = listOf(PaymentDetail(0L, "EFECTIVO",200.50))
         val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL)
