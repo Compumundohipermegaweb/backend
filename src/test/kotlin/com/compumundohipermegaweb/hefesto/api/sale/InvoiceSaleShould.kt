@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale
 
+import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
@@ -32,7 +33,7 @@ class InvoiceSaleShould {
         givenInvoiceService()
         givenInvoiceSale()
 
-        whenInvoiceSale(TYPE_B_SALE_REQUEST)
+        whenInvoiceSale(TYPE_A_SALE_REQUEST)
 
         thenTheInvoiceIsGenerated()
     }
@@ -50,12 +51,12 @@ class InvoiceSaleShould {
 
     private fun givenSaleService() {
         saleService = mock()
-        `when`(saleService.save(any())).thenReturn(SAVED_SALE)
+        `when`(saleService.save(any())).thenReturn(SAVED_SALE_TYPE_A)
     }
 
     private fun givenInvoiceService() {
         invoiceService = mock()
-        `when`(invoiceService.save(any())).thenReturn(SAVED_INVOICE)
+        `when`(invoiceService.save(any())).thenReturn(SAVED_INVOICE_TYPE_A)
     }
 
     private fun givenInvoiceSale() {
@@ -72,15 +73,15 @@ class InvoiceSaleShould {
 
 
     private companion object {
+        val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
         val CLIENT_REQUEST = ClientRequest("", "", "", "", "", "", "")
         val SALE_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, 1, 200.50))
         val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_DETAIL_REQUEST)
-        val TYPE_B_SALE_REQUEST = SaleRequest("B", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, 200.50)
         val TYPE_A_SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, 200.50)
         const val EXPECTED_IVA = 42.105
         val SALE_DETAIL = listOf(SaleDetail(0L, 1, 200.50))
         val SALE_DETAILS = SaleDetails(SALE_DETAIL)
-        val SAVED_SALE = Sale(0L, TYPE_B_SALE_REQUEST.type, 0L, TYPE_B_SALE_REQUEST.idSalesman, TYPE_B_SALE_REQUEST.idBranch, SALE_DETAILS, TYPE_B_SALE_REQUEST.total)
-        val SAVED_INVOICE = Invoice(0L, SAVED_SALE.id, TYPE_B_SALE_REQUEST.type, TYPE_B_SALE_REQUEST.idBranch, 200.50, 42.105, 200.50)
+        val SAVED_SALE_TYPE_A = Sale(0L, TYPE_A_SALE_REQUEST.type, 0L, TYPE_A_SALE_REQUEST.idSalesman, TYPE_A_SALE_REQUEST.idBranch, SALE_DETAILS, TYPE_A_SALE_REQUEST.total)
+        val SAVED_INVOICE_TYPE_A = Invoice(0L, SAVED_SALE_TYPE_A.id, SAVED_SALE_TYPE_A.type, DEFAULT_CLIENT, SAVED_SALE_TYPE_A.branchId,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SALE_DETAILS, 200.50, 42.105, 200.50)
     }
 }

@@ -6,11 +6,11 @@ import com.compumundohipermegaweb.hefesto.api.invoice.infra.representation.Invoi
 
 class JpaInvoiceRepository(private val springDataInvoiceRepository: SpringDataInvoiceRepository): InvoiceRepository  {
     override fun save(invoice: Invoice): Invoice {
-        return springDataInvoiceRepository.save(invoice.toInvoiceDao()).toInvoice()
+        return springDataInvoiceRepository.save(invoice.toInvoiceDao()).toInvoice(invoice)
     }
 
-    private fun InvoiceDao.toInvoice(): Invoice {
-        return Invoice(id, saleId, type, branchId, subTotal, ivaSubTotal, total)
+    private fun InvoiceDao.toInvoice(invoice: Invoice): Invoice {
+        return Invoice(id, saleId, type, invoice.client, branchId, invoice.branchAddress, invoice.branchContact, invoice.cuit, invoice.activitySince, invoice.saleDetails, subTotal, ivaSubTotal, total)
     }
 
     private fun Invoice.toInvoiceDao(): InvoiceDao {
