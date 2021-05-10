@@ -1,7 +1,9 @@
 package com.compumundohipermegaweb.hefesto.api.supplier.rest.representation
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class PostSupplierRequest(
     @JsonProperty("organization") val organization: String,
     @JsonProperty("contact_name") val contactName: String,
