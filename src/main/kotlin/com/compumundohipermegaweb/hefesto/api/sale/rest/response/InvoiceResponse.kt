@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class InvoiceResponse(@JsonProperty("") val id: Long,
+                           @JsonProperty("") val billingDate: String,
                            @JsonProperty("") val type: String,
                            @JsonProperty("") val client: ClientResponse,
                            @JsonProperty("") val branchAddress: String,

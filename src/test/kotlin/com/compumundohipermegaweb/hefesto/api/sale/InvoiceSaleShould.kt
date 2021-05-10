@@ -5,9 +5,9 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
-import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.ItemDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.PaymentDetail
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.ItemDetailRequest
@@ -20,6 +20,7 @@ import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import java.util.*
 
 class InvoiceSaleShould {
 
@@ -86,6 +87,6 @@ class InvoiceSaleShould {
         val SALE_PAYMENT_DETAIL = listOf(PaymentDetail(0L, "EFECTIVO",200.50))
         val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL)
         val SAVED_SALE_TYPE_A = Sale(0L, TYPE_A_SALE_REQUEST.type, 0L, TYPE_A_SALE_REQUEST.idSalesman, TYPE_A_SALE_REQUEST.idBranch, SALE_DETAILS, TYPE_A_SALE_REQUEST.total)
-        val SAVED_INVOICE_TYPE_A = Invoice(0L, SAVED_SALE_TYPE_A.id, SAVED_SALE_TYPE_A.type, DEFAULT_CLIENT, SAVED_SALE_TYPE_A.branchId,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SALE_DETAILS, 200.50, 42.105, 200.50)
+        val SAVED_INVOICE_TYPE_A = Invoice(0L, Date(), SAVED_SALE_TYPE_A.id, SAVED_SALE_TYPE_A.type, DEFAULT_CLIENT, SAVED_SALE_TYPE_A.branchId,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SALE_DETAILS, 200.50, 42.105, 200.50)
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.text.SimpleDateFormat
 
 
 @RestController
@@ -25,7 +26,7 @@ class SaleController(private val invoiceSale: InvoiceSale) {
         return ResponseEntity.ok(invoiceSale.invoke(sale).toInvoiceResponse())
     }
 
-    private fun Invoice.toInvoiceResponse() = InvoiceResponse(id, type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
+    private fun Invoice.toInvoiceResponse() = InvoiceResponse(id, SimpleDateFormat("dd/MM/yyyy").format(billingDate), type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
 
     private fun Client.toClientResponse() = ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
 

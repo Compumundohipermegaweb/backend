@@ -4,6 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.repository.InvoiceRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
+import java.util.*
 
 class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): InvoiceService {
 
@@ -32,6 +33,7 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
 
     private fun createInvoice(sale: Sale, subTotal: Double, iva: Double) =
             Invoice(id =0L,
+                    billingDate = Date(),
                     saleId = sale.id,
                     type = sale.type,
                     client = defaultClient(sale.type),
