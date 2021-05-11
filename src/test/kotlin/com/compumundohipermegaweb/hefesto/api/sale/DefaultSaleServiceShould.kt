@@ -1,72 +1,120 @@
 package com.compumundohipermegaweb.hefesto.api.sale
 
-import com.compumundohipermegaweb.hefesto.api.sale.domain.model.ItemDetail
-import com.compumundohipermegaweb.hefesto.api.sale.domain.model.PaymentDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
-import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleItemDetailRepository
-import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentDetailRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleDetailRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.DefaultSaleService
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 class DefaultSaleServiceShould {
 
     private lateinit var saleRepository: SaleRepository
-    private lateinit var saleItemDetailRepository: SaleItemDetailRepository
-    private lateinit var salePaymentDetailRepository: SalePaymentDetailRepository
+    private lateinit var saleDetailRepository: SaleDetailRepository
+    private lateinit var salePaymentRepository: SalePaymentRepository
     private lateinit var saleService: DefaultSaleService
-    private lateinit var resultado: Sale
+    private lateinit var savedSale: Sale
 
     @Test
-    fun `return a sale object`() {
+    fun `return the saved sale`() {
         givenSaleItemDetailRepository()
         givenSalePaymentDetailRepository()
         givenSaleRepository()
         givenSaleService()
 
-        whenSavingTheResult()
+        whenSavingTheSale()
 
-        thenResultIsTheExpectedOne()
+        thenSaleIsReturned()
+    }
+
+    @Test
+    fun `save the sale`() {
+        givenSaleItemDetailRepository()
+        givenSalePaymentDetailRepository()
+        givenSaleRepository()
+        givenSaleService()
+
+        whenSavingTheSale()
+
+        thenSaleIsSaved()
+    }
+
+    @Test
+    fun `save the sale details`() {
+        givenSaleItemDetailRepository()
+        givenSalePaymentDetailRepository()
+        givenSaleRepository()
+        givenSaleService()
+
+        whenSavingTheSale()
+
+        thenSaleDetailsAreSaved()
+    }
+
+    @Test
+    fun `save the sale payments`() {
+        givenSaleItemDetailRepository()
+        givenSalePaymentDetailRepository()
+        givenSaleRepository()
+        givenSaleService()
+
+        whenSavingTheSale()
+
+        thenSalePaymentsAreSaved()
     }
 
     private fun givenSaleItemDetailRepository() {
-        saleItemDetailRepository = mock(SaleItemDetailRepository::class.java)
-        `when`(saleItemDetailRepository.save(SALE_ITEM_DETAIL[0], 0L)).thenReturn(SALE_ITEM_DETAIL[0])
+        saleDetailRepository = mock()
+        `when`(saleDetailRepository.save(SALE_ITEM_DETAIL[0], 0L)).thenReturn(SALE_ITEM_DETAIL[0])
     }
 
     private fun givenSalePaymentDetailRepository() {
-        salePaymentDetailRepository = mock(SalePaymentDetailRepository::class.java)
-        `when`(salePaymentDetailRepository.save(SALE_PAYMENT_DETAIL[0], 0L)).thenReturn(SALE_PAYMENT_DETAIL[0])
+        salePaymentRepository = mock()
+        `when`(salePaymentRepository.save(SALE_PAYMENT_DETAIL[0], 0L)).thenReturn(SALE_PAYMENT_DETAIL[0])
     }
 
     private fun givenSaleRepository() {
-        saleRepository = mock(SaleRepository::class.java)
-        `when`(saleRepository.save(SALE)).thenReturn(SALE)
+        saleRepository = mock()
+        `when`(saleRepository.save(SALE, INVOICE_ID)).thenReturn(SALE)
     }
 
     private fun givenSaleService() {
-        saleService = DefaultSaleService(saleRepository, saleItemDetailRepository, salePaymentDetailRepository)
+        saleService = DefaultSaleService(saleRepository, saleDetailRepository, salePaymentRepository)
     }
 
-    private fun whenSavingTheResult() {
-        resultado = saleService.save(SALE)
+    private fun whenSavingTheSale() {
+        savedSale = saleService.save(SALE, INVOICE_ID)
     }
 
-    private fun thenResultIsTheExpectedOne() {
-        verify(saleItemDetailRepository).save(SALE_ITEM_DETAIL[0], 0L)
-        verify(salePaymentDetailRepository).save(SALE_PAYMENT_DETAIL[0], 0L)
-        verify(saleRepository).save(SALE)
-        then(resultado).isEqualTo(SALE)
+    private fun thenSaleIsReturned() {
+        then(savedSale).isEqualTo(SALE)
+    }
+
+    private fun thenSaleIsSaved() {
+        verify(saleRepository).save(SALE, INVOICE_ID)
+    }
+
+    private fun thenSaleDetailsAreSaved() {
+        verify(saleDetailRepository).saveAll(any(), any())
+    }
+
+    private fun thenSalePaymentsAreSaved() {
+        verify(salePaymentRepository).saveAll(any(), any())
     }
 
     private companion object {
-        val SALE_ITEM_DETAIL = listOf(ItemDetail(0L, "",0, 0.0))
-        val SALE_PAYMENT_DETAIL = listOf(PaymentDetail(0L, "EFECTIVO", 0.0))
-        val SALE = Sale(0L, "B", 0L, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0)
+        const val INVOICE_ID = 0L
+        const val SALE_ID = 0L
+        val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "",0, 0.0))
+        val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L, "EFECTIVO", 0.0))
+        val SALE = Sale(SALE_ID, "B", 0L, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0)
     }
 }

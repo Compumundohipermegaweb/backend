@@ -1,23 +1,20 @@
 package com.compumundohipermegaweb.hefesto.api.sale.domain.service
 
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
-import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleItemDetailRepository
-import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentDetailRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleDetailRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 
 class DefaultSaleService(private val saleRepository: SaleRepository,
-                         private val saleItemDetailRepository: SaleItemDetailRepository,
-                         private val salePaymentDetailRepository: SalePaymentDetailRepository): SaleService {
-    override fun save(sale: Sale): Sale {
-        val saveSale = saleRepository.save(sale)
+                         private val saleDetailRepository: SaleDetailRepository,
+                         private val salePaymentRepository: SalePaymentRepository): SaleService {
+    override fun save(sale: Sale, invoiceId: Long): Sale {
+        val savedSale = saleRepository.save(sale, invoiceId)
 
-        sale.saleDetails.itemsDetails.forEach{saleItemDetailRepository.save(it, sale.id)}
-        sale.saleDetails.paymentDetails.forEach{salePaymentDetailRepository.save(it, sale.id)}
+        savedSale.saleDetails.details = saleDetailRepository.saveAll(sale.saleDetails.details, savedSale.id)
+        savedSale.saleDetails.payments = salePaymentRepository.saveAll(sale.saleDetails.payments, savedSale.id)
 
-        saveSale.saleDetails.itemsDetails = sale.saleDetails.itemsDetails
-        saveSale.saleDetails.paymentDetails = sale.saleDetails.paymentDetails
-
-        return saveSale
+        return savedSale
     }
 
 

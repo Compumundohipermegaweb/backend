@@ -7,7 +7,6 @@ import javax.persistence.*
 @Table(name = "INVOICE")
 data class InvoiceDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                       @Column(name = "BILLING_DATE") val billingDate: Date,
-                      @Column(name = "SALE_ID") val saleId: Long,
                       @Column(name = "TYPE") val type: String,
                       @Column(name = "BRANCH_ID") val branchId: Long,
                       @Column(name = "SUB_TOTAL") val subTotal: Double,

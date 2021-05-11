@@ -6,7 +6,6 @@ import java.util.*
 
 data class Invoice(val id: Long,
                    val billingDate: Date,
-                   val saleId: Long,
                    val type: String,
                    val client: Client,
                    val branchId: Long,

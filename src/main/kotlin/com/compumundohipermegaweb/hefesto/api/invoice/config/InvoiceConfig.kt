@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.invoice.config
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.repository.InvoiceRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.DefaultInvoiceService
 import com.compumundohipermegaweb.hefesto.api.invoice.infra.repository.JpaInvoiceRepository
-import com.compumundohipermegaweb.hefesto.api.invoice.infra.repository.SpringDataInvoiceRepository
+import com.compumundohipermegaweb.hefesto.api.invoice.infra.repository.SpringDataInvoiceClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -16,7 +16,7 @@ class InvoiceConfig {
     }
 
     @Bean
-    fun invoiceRepository(springDataInvoiceRepository: SpringDataInvoiceRepository): InvoiceRepository {
-        return JpaInvoiceRepository(springDataInvoiceRepository)
+    fun invoiceRepository(springDataInvoiceClient: SpringDataInvoiceClient): InvoiceRepository {
+        return JpaInvoiceRepository(springDataInvoiceClient)
     }
 }

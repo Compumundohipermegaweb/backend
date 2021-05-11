@@ -34,7 +34,6 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
     private fun createInvoice(sale: Sale, subTotal: Double, iva: Double) =
             Invoice(id =0L,
                     billingDate = Date(),
-                    saleId = sale.id,
                     type = sale.type,
                     client = defaultClient(sale.type),
                     branchId = sale.branchId,

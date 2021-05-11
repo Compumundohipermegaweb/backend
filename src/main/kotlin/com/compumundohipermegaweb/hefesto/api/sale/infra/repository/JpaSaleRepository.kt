@@ -5,14 +5,11 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 import com.compumundohipermegaweb.hefesto.api.sale.infra.representation.SaleDao
 
-class JpaSaleRepository(private val springDataSale: SpringDataSale): SaleRepository {
+class JpaSaleRepository(private val springDataSaleClient: SpringDataSaleClient): SaleRepository {
 
-    override fun save(sale: Sale): Sale {
-        return springDataSale.save(sale.toSaleDao()).toSale()
-    }
-
-    private fun Sale.toSaleDao(): SaleDao {
-        return SaleDao(id, type, clientId, salesmanId, branchId, total)
+    override fun save(sale: Sale, invoiceId: Long): Sale {
+        val saleDao = SaleDao(sale.id, sale.type, sale.clientId, sale.salesmanId, sale.branchId, invoiceId, sale.total)
+        return springDataSaleClient.save(saleDao).toSale()
     }
 
     private fun SaleDao.toSale(): Sale {

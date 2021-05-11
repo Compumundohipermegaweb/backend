@@ -27,7 +27,7 @@ class SaleController(private val invoiceSale: InvoiceSale) {
 
     private fun Client.toClientResponse() = ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
 
-    private fun SaleDetails.toSaleDetailsResponse() = SaleDetailsResponse(itemsDetails.map { SaleItemDetailResponse(it.id, it.description, it.quantity, it.unitPrice) }.toList())
+    private fun SaleDetails.toSaleDetailsResponse() = SaleDetailsResponse(details.map { SaleItemDetailResponse(it.id, it.description, it.quantity, it.unitPrice) }.toList())
 }
 
 
