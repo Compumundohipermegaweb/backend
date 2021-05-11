@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*
  * Los Controlles son el punto de acceso a nuestra aplicación desde el exterior.
  *
  * Requisitos para crear un Controller
+ * @CrossOrigin Esta annotation es necesaria para especificarle a nuestra API desde donsde PUEDE acpetar pedidos. Si no
+ * se setea queda vacio y para pruebas en local funciona bien pero cuando se lo sube a una red publica (como DEV), los
+ * pedidos son rechazados por CORS
  * @RestController necesario para que Spring se entere de que tiene que dirigir a loos metodos definidos a esta clase cuando
  * le llega un request que concuerda con nuestro path (@RequestMapping) definido
  * @RequestMapping path base de nuestro recurso/controller, este se aplica a todos los Mappings que se definan dentro de la clase
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*
  * @RequestParam define un parametro de la query de nuestra URL: http://localhost:8080/api/coleccion?RequestParam=value
  * @RequestBody define el body de un request
  */
+@CrossOrigin(origins = ["https://hefesto-dev.web.app", "http://localhost:4200"])
 @RestController
 @RequestMapping("/api/templates")
 class TemplateController(private val templateAction: TemplateAction) {
