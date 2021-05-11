@@ -45,7 +45,7 @@ class JpaItemDetailRepositoryShould {
     }
 
     private companion object {
-        val SALE_DETAIL_DAO = SaleItemDetailDao(0L, 0L, 0, 0.0)
-        val SALE_DETAIL = ItemDetail(0L, 0, 0.0)
+        val SALE_DETAIL_DAO = SaleItemDetailDao(0L, "",0L, 0, 0.0)
+        val SALE_DETAIL = ItemDetail(0L, "",0, 0.0)
     }
 }

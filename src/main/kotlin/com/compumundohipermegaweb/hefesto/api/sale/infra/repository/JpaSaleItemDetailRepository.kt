@@ -11,11 +11,11 @@ class JpaSaleItemDetailRepository(private val springDataSaleItemDetail: SpringDa
     }
 
     private fun ItemDetail.toSaleDetailDao(saleId: Long): SaleItemDetailDao {
-        return SaleItemDetailDao(id, saleId, quantity, unitPrice)
+        return SaleItemDetailDao(id, description, saleId, quantity, unitPrice)
     }
 
     private fun SaleItemDetailDao.toSaleDetail(): ItemDetail {
-        return ItemDetail(id, quantity, unitPrice)
+        return ItemDetail(id, description, quantity, unitPrice)
     }
 }
 

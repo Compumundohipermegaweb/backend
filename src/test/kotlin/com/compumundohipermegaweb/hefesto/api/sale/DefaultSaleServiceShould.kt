@@ -65,7 +65,7 @@ class DefaultSaleServiceShould {
     }
 
     private companion object {
-        val SALE_ITEM_DETAIL = listOf(ItemDetail(0L, 0, 0.0))
+        val SALE_ITEM_DETAIL = listOf(ItemDetail(0L, "",0, 0.0))
         val SALE_PAYMENT_DETAIL = listOf(PaymentDetail(0L, "EFECTIVO", 0.0))
         val SALE = Sale(0L, "B", 0L, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0)
     }

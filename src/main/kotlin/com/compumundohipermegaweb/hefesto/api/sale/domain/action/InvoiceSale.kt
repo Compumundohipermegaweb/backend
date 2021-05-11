@@ -30,7 +30,7 @@ class InvoiceSale(private val saleService: SaleService,
                 total = total)
 
     private fun SaleDetailsRequest.toSaleDetails() =
-            SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
+            SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.description, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
 
 }
 
