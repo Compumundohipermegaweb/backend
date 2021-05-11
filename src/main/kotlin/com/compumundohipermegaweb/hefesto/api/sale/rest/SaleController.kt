@@ -10,13 +10,10 @@ import com.compumundohipermegaweb.hefesto.api.sale.rest.response.InvoiceResponse
 import com.compumundohipermegaweb.hefesto.api.sale.rest.response.SaleDetailsResponse
 import com.compumundohipermegaweb.hefesto.api.sale.rest.response.SaleItemDetailResponse
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
 
-
+@CrossOrigin(origins = ["https://hefesto-dev.web.app", "http://localhost:4200"])
 @RestController
 @RequestMapping("/api/sales")
 class SaleController(private val invoiceSale: InvoiceSale) {
