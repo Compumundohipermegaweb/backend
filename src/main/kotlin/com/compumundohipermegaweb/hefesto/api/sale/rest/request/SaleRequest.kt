@@ -9,5 +9,4 @@ data class SaleRequest(@JsonProperty("type") val type: String,
                        @JsonProperty("client_request") val clientRequest: ClientRequest,
                        @JsonProperty("id_salesman") val idSalesman: Long,
                        @JsonProperty("id_branch") val idBranch: Long,
-                       @JsonProperty("sale_details") val saleDetailsRequest: SaleDetailsRequest,
-                       @JsonProperty("total") val total: Double)
+                       @JsonProperty("sale_details") val saleDetailsRequest: SaleDetailsRequest)

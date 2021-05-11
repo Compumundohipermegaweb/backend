@@ -14,20 +14,22 @@ class InvoiceSale(private val saleService: SaleService,
                   private val invoiceService: InvoiceService
 ) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
-
         val savedSale = saleService.save(saleRequest.toSale())
 
         return invoiceService.invoiceSale(savedSale)
     }
 
-    private fun SaleRequest.toSale() =
-            Sale(id = 0L,
+    private fun SaleRequest.toSale(): Sale {
+        val saleDetails = saleDetailsRequest.toSaleDetails()
+        val total = saleDetails.itemsDetails.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
+        return Sale(id = 0L,
                 type = type,
                 clientId = 0L,
                 salesmanId = idSalesman,
                 branchId = idBranch,
-                saleDetails = saleDetailsRequest.toSaleDetails(),
+                saleDetails = saleDetails,
                 total = total)
+    }
 
     private fun SaleDetailsRequest.toSaleDetails() =
             SaleDetails(itemDetailsRequest.map { ItemDetail(it.id, it.description, it.quantity, it.unitPrice) }, paymentDetailsRequest.map { PaymentDetail(0L, it.type, it.subTotal) })
