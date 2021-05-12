@@ -1,4 +1,4 @@
-package com.compumundohipermegaweb.hefesto.api.client.domain.action
+package com.compumundohipermegaweb.hefesto.api.client
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
@@ -9,6 +9,7 @@ import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
 class JpaClientRepositoryShould {
@@ -28,7 +29,7 @@ class JpaClientRepositoryShould {
     }
 
     private fun givenClientCrudRepository() {
-        springDataClientRepository = Mockito.mock(SpringDataClientRepository::class.java)
+        springDataClientRepository = mock(SpringDataClientRepository::class.java)
         `when`(springDataClientRepository.save(CLIENT_DAO)).thenReturn(CLIENT_DAO)
     }
 

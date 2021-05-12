@@ -1,6 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.client.config
 
-import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
+import com.compumundohipermegaweb.hefesto.api.client.RegisterClient
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.DefaultClientService

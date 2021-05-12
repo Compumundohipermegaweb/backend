@@ -1,4 +1,4 @@
-package com.compumundohipermegaweb.hefesto.api.client.domain.action
+package com.compumundohipermegaweb.hefesto.api.client
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository

@@ -1,4 +1,4 @@
-package com.compumundohipermegaweb.hefesto.api.item.domain.action
+package com.compumundohipermegaweb.hefesto.api.item
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemRepository

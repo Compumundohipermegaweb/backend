@@ -1,7 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.item.config
 
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindAllItemByShortDescription
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
+import com.compumundohipermegaweb.hefesto.api.item.FindAllItemByShortDescription
+import com.compumundohipermegaweb.hefesto.api.item.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.infrastructure.JpaItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infrastructure.SpringDataItemRepository
 import org.springframework.context.annotation.Bean

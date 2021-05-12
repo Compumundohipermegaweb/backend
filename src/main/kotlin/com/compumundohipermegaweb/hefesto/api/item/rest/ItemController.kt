@@ -1,7 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.item.rest
 
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindAllItemByShortDescription
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
+import com.compumundohipermegaweb.hefesto.api.item.FindAllItemByShortDescription
+import com.compumundohipermegaweb.hefesto.api.item.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/items")
 class ItemController(private val registerItem: RegisterItem,
-                     private val findAllItemByShortDescription: FindAllItemByShortDescription) {
+                     private val findAllItemByShortDescription: FindAllItemByShortDescription
+) {
 
     @PostMapping
     fun postItem(@RequestBody itemRequest: ItemRequest): ResponseEntity<ItemResponse> {

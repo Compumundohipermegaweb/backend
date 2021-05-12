@@ -1,6 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.client.rest
 
-import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
+import com.compumundohipermegaweb.hefesto.api.client.RegisterClient
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
