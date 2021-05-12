@@ -48,8 +48,8 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
 
     private fun defaultClient(invoiceType: String): Client {
         return when(invoiceType) {
-            "B" -> Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
-            else -> Client(0L, "", "", "", "", "", "", "")
+            "B" -> Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "")
+            else -> Client(0L, "", "", "", "", 0.0, "", "")
         }
     }
 }

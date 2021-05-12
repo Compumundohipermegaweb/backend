@@ -1,6 +1,5 @@
 package com.compumundohipermegaweb.hefesto.api.client.infrastructure
 
-import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -9,11 +8,7 @@ data class ClientDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Co
                      @Column(name = "DOCUMENT_NUMBER") val documentNumber: String,
                      @Column(name = "FIST_NAME") val firstName: String,
                      @Column(name = "LAST_NAME") val lastName: String,
-                     @Column(name = "SUR_NAME") val surName: String,
-                     @Column(name = "CATEGORY") var category: String,
-                     @Column(name = "EMAIL") var email: String,
-                     @Column(name = "CONTACT_NUMBER") var contactNumber: String,
-                     @Column(name = "CREATE_DATE") val createDate: LocalDateTime,
-                     @Column(name = "CREATE_USER") val createUser: String,
-                     @Column(name = "UPDATE_DATE") var updateDate: LocalDateTime,
-                     @Column(name = "UPDATE_USER") var updateUser: String)
+                     @Column(name = "STATE") val state: String,
+                     @Column(name = "CREDIT_LIMIT")  val creditLimit: Double,
+                     @Column(name = "EMAIL") val email: String,
+                     @Column(name = "CONTACT_NUMBER") val contactNumber: String)

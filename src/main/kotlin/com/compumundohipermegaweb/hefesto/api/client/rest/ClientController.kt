@@ -13,15 +13,10 @@ class ClientController(private val registerClient: RegisterClient) {
 
     @PostMapping
     fun postClient(clientRequest: ClientRequest) : ResponseEntity<ClientResponse> {
-        val client = clientRequest.toClient()
-        return ResponseEntity.ok(registerClient(client).toClientResponse())
+        return ResponseEntity.ok(registerClient(clientRequest).toClientResponse())
     }
 
     private fun Client.toClientResponse(): ClientResponse {
-        return ClientResponse(documentNumber, firstName, lastName, surName, category, email, contactNumber)
-    }
-
-    private fun ClientRequest.toClient(): Client {
-        return Client(0L, documentNumber, firstName, lastName, surName, category, email, contactNumber)
+        return ClientResponse(documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }
 }

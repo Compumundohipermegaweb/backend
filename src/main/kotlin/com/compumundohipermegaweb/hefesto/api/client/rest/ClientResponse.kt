@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ClientResponse(@JsonProperty("document_number") val documentNumber: String,
-                          @JsonProperty("fist_name")val firstName: String,
-                          @JsonProperty("last_name")val lastName: String,
-                          @JsonProperty("sur_name")val surName: String,
-                          @JsonProperty("category")var category: String,
-                          @JsonProperty("email")var email: String,
-                          @JsonProperty("contact_number")var contactNumber: String)
+                          @JsonProperty("first_name") val firstName: String,
+                          @JsonProperty("last_name") val lastName: String,
+                          @JsonProperty("state") val state: String,
+                          @JsonProperty("credit_limit") val creditLimit: Double,
+                          @JsonProperty("email") val email: String,
+                          @JsonProperty("contact_number") val contactNumber: String)

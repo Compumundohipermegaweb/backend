@@ -1,8 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.client.infrastructure
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
-import com.compumundohipermegaweb.hefesto.api.client.domain.model.ClientRepository
-import java.time.LocalDateTime
+import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 
 class JpaClientRepository(private val repository: SpringDataClientRepository): ClientRepository {
 
@@ -11,10 +10,10 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
     }
 
     private fun ClientDao.toClient(): Client {
-        return Client(id, documentNumber, firstName, lastName, surName, category, email, contactNumber)
+        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }
 
     private fun Client.toDao(): ClientDao {
-        return ClientDao(id, documentNumber, firstName, lastName, surName, category, email, contactNumber, LocalDateTime.now(), "JONATAN", LocalDateTime.now(), "JONATAN")
+        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }
 }

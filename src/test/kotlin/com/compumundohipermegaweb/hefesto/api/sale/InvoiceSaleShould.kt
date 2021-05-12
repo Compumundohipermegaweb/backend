@@ -77,8 +77,8 @@ class InvoiceSaleShould {
 
 
     private companion object {
-        val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", "", "", "")
-        val CLIENT_REQUEST = ClientRequest("", "", "", "", "", "", "")
+        val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "")
+        val CLIENT_REQUEST = ClientRequest("", "", "", "", 0.0, "", "")
         val SALE_ITEM_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, "",1, 200.50))
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentRequest("EFECTIVO",  200.50))
         val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)
