@@ -9,6 +9,14 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         return repository.save(client.toDao()).toClient()
     }
 
+    override fun findByFirstNameOrLastNameIn(names: List<String>): List<Client> {
+        TODO("Not yet implemented")
+    }
+
+    override fun findByDocument(document: String): List<Client> {
+        TODO("Not yet implemented")
+    }
+
     private fun ClientDao.toClient(): Client {
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }
