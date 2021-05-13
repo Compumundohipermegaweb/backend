@@ -1,8 +1,9 @@
 package com.compumundohipermegaweb.hefesto.api.client
 
+import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
-import com.compumundohipermegaweb.hefesto.api.client.rest.ClientRequest
+import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientRequest
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test

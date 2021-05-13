@@ -16,11 +16,14 @@ class JpaClientRepositoryShould {
 
     private lateinit var springDataClientRepository: SpringDataClientRepository
     private lateinit var clientRepository: ClientRepository
+
     private lateinit var clientSaved: Client
+    private var clientFound: Client? = null
+    private lateinit var clientsFound: List<Client>
 
     @Test
     fun `save the client`() {
-        givenClientCrudRepository()
+        givenSpringDataClientRepository()
         givenClientRepository()
 
         whenSavingTheClient()
@@ -28,9 +31,31 @@ class JpaClientRepositoryShould {
         thenInputSaved()
     }
 
-    private fun givenClientCrudRepository() {
+    @Test
+    fun `find client by name`() {
+        givenSpringDataClientRepository()
+        givenClientRepository()
+
+        whenFindingClientsByName()
+
+        thenClientsWhereFound()
+    }
+
+    @Test
+    fun `find client by document`() {
+        givenSpringDataClientRepository()
+        givenClientRepository()
+
+        whenFindingClientByDocumentNumber()
+
+        thenClientHasBeenFound()
+    }
+
+    private fun givenSpringDataClientRepository() {
         springDataClientRepository = mock(SpringDataClientRepository::class.java)
         `when`(springDataClientRepository.save(CLIENT_DAO)).thenReturn(CLIENT_DAO)
+        `when`(springDataClientRepository.findAllByFirstOrLastName(listOf(CLIENT.firstName, CLIENT.lastName))).thenReturn(listOf(CLIENT_DAO))
+        `when`(springDataClientRepository.findByDocumentNumber(CLIENT.documentNumber)).thenReturn(CLIENT_DAO)
     }
 
     private fun givenClientRepository() {
@@ -41,14 +66,29 @@ class JpaClientRepositoryShould {
         clientSaved = clientRepository.save(CLIENT)
     }
 
+    private fun whenFindingClientsByName() {
+        clientsFound = clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT.firstName, CLIENT.lastName))
+    }
+
+    private fun whenFindingClientByDocumentNumber() {
+        clientFound = clientRepository.findByDocument(CLIENT.documentNumber)
+    }
 
     private fun thenInputSaved() {
         verify(springDataClientRepository).save(Mockito.any())
         then(clientSaved).isNotNull
     }
 
+    private fun thenClientsWhereFound() {
+        then(clientsFound).contains(CLIENT)
+    }
+
+    private fun thenClientHasBeenFound() {
+        then(clientFound).isEqualTo(CLIENT)
+    }
+
     private companion object {
-        val CLIENT_DAO = ClientDao(0L, "", "", "", "", 0.0, "", "")
-        val CLIENT = Client(0L, "", "", "", "", 0.0, "", "")
+        val CLIENT_DAO = ClientDao(0L, "00000000", "First", "Last", "", 0.0, "", "")
+        val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "")
     }
 }

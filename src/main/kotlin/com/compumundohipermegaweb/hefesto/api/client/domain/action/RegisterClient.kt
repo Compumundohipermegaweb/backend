@@ -1,8 +1,8 @@
-package com.compumundohipermegaweb.hefesto.api.client
+package com.compumundohipermegaweb.hefesto.api.client.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
-import com.compumundohipermegaweb.hefesto.api.client.rest.ClientRequest
+import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientRequest
 
 class RegisterClient(private val clientService: ClientService) {
     operator fun invoke(client: ClientRequest) = clientService.save(client.toClient())

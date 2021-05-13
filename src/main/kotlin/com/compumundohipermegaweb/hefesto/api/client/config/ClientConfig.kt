@@ -1,6 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.client.config
 
-import com.compumundohipermegaweb.hefesto.api.client.RegisterClient
+import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.DefaultClientService
@@ -18,8 +18,8 @@ class ClientConfig {
     }
 
     @Bean
-    fun clientService(clientRepository: ClientRepository): ClientService {
-        return DefaultClientService(clientRepository);
+    fun clientService(jpaClientRepository: ClientRepository): ClientService {
+        return DefaultClientService(jpaClientRepository)
     }
 
     @Bean

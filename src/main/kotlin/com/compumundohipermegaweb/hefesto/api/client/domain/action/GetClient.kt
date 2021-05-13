@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.client.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.rest.ActionData
+import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionData
 
 class GetClient(private val clientRepository: ClientRepository) {
 
@@ -13,7 +13,10 @@ class GetClient(private val clientRepository: ClientRepository) {
             document != null && names.isNotEmpty() -> {
                 clientRepository.findByFirstNameOrLastNameIn(names).filter { it.documentNumber == document }
             }
-            document != null -> clientRepository.findByDocument(document)
+            document != null -> {
+                val client = clientRepository.findByDocument(document)
+                if (client == null) { emptyList() } else listOf(client)
+            }
             else-> clientRepository.findByFirstNameOrLastNameIn(names)
         }
 

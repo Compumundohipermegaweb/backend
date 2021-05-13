@@ -2,11 +2,11 @@ package com.compumundohipermegaweb.hefesto.api.client.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.rest.ActionData
+import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionData
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.`when`
 
 class GetClientShould {
 
@@ -23,7 +23,7 @@ class GetClientShould {
 
         whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = null))
 
-        then(foundClients).contains(CLIENT_1, CLIENT_2)
+        thenClientsWhereFound(CLIENT_1, CLIENT_2)
     }
 
     @Test
@@ -33,7 +33,7 @@ class GetClientShould {
 
         whenGettingClient(with = ActionData(name = "${CLIENT_3.firstName} ${CLIENT_3.lastName}", document = null))
 
-        then(foundClients).contains(CLIENT_2, CLIENT_3)
+        thenClientsWhereFound(CLIENT_2, CLIENT_3)
     }
 
     @Test
@@ -43,7 +43,7 @@ class GetClientShould {
 
         whenGettingClient(with = ActionData(document = CLIENT_1.documentNumber, name = null))
 
-        then(foundClients).containsOnly(CLIENT_1)
+        thenOnlyFoundClient(CLIENT_1)
     }
 
     @Test
@@ -53,7 +53,7 @@ class GetClientShould {
 
         whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = CLIENT_1.documentNumber ))
 
-        then(foundClients).containsOnly(CLIENT_1)
+        thenOnlyFoundClient(CLIENT_1)
     }
 
     @Test
@@ -63,15 +63,37 @@ class GetClientShould {
 
         whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = CLIENT_3.documentNumber))
 
-        then(foundClients).isEmpty()
+        thenNoClientsWhereFound()
+    }
+
+    @Test
+    fun `return empty if no document matches`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = null, document = UNKNOWN_DOCUMENT))
+
+        thenNoClientsWhereFound()
+    }
+
+    @Test
+    fun `return empty if no names matches`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = UNKNOWN_NAME, document = null))
+
+        thenNoClientsWhereFound()
     }
 
     private fun givenClientRepository() {
         clientRepository = mock()
-        whenever(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_1.firstName))).thenReturn(listOf(CLIENT_1, CLIENT_2))
-        whenever(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_3.firstName, CLIENT_3.lastName))).thenReturn(listOf(CLIENT_2, CLIENT_3))
-        whenever(clientRepository.findByDocument(CLIENT_1.documentNumber)).thenReturn(listOf(CLIENT_1))
-        whenever(clientRepository.findByDocument(CLIENT_3.documentNumber)).thenReturn(listOf(CLIENT_3))
+        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_1.firstName))).thenReturn(listOf(CLIENT_1, CLIENT_2))
+        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_3.firstName, CLIENT_3.lastName))).thenReturn(listOf(CLIENT_2, CLIENT_3))
+        `when`(clientRepository.findByDocument(CLIENT_1.documentNumber)).thenReturn(CLIENT_1)
+        `when`(clientRepository.findByDocument(CLIENT_3.documentNumber)).thenReturn(CLIENT_3)
+        `when`(clientRepository.findByDocument(UNKNOWN_DOCUMENT)).thenReturn(null)
+        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(UNKNOWN_NAME))).thenReturn(emptyList())
     }
 
     private fun givenGetClient() {
@@ -82,7 +104,21 @@ class GetClientShould {
         foundClients = getClient(with)
     }
 
+    private fun thenClientsWhereFound(vararg clients: Client) {
+        then(foundClients).contains(*clients)
+    }
+
+    private fun thenOnlyFoundClient(client: Client) {
+        then(foundClients).containsOnly(client)
+    }
+
+    private fun thenNoClientsWhereFound() {
+        then(foundClients).isEmpty()
+    }
+
     private companion object {
+        const val UNKNOWN_DOCUMENT = "40060441"
+        const val UNKNOWN_NAME = "Unknown Name"
         val CLIENT_1 = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "")
         val CLIENT_2 = Client(1L, "11111111","Name", "Lastname", "", 0.0, "", "")
         val CLIENT_3 = Client(2L, "22222222","Mister", "Lastname", "", 0.0, "", "")
