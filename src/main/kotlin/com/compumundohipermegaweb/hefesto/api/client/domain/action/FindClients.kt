@@ -7,13 +7,13 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionD
 class FindClients(private val clientRepository: ClientRepository) {
 
     operator fun invoke(actionData: ActionData): List<Client> {
-        val names = parseName(actionData)
+        val names = parseName(actionData).filterNot { it.isBlank() }
         val document = actionData.document
         return when {
-            document != null && names.isNotEmpty() -> {
+            !document.isNullOrBlank() && names.isNotEmpty() -> {
                 clientRepository.findByFirstNameOrLastNameIn(names).filter { it.documentNumber == document }
             }
-            document != null -> {
+            !document.isNullOrBlank() -> {
                 val client = clientRepository.findByDocument(document)
                 if (client == null) { emptyList() } else listOf(client)
             }

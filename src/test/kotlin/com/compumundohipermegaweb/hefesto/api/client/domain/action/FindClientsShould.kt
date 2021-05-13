@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.client.domain.action
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionData
+import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
@@ -84,6 +85,26 @@ class FindClientsShould {
         whenGettingClient(with = ActionData(name = UNKNOWN_NAME, document = null))
 
         thenNoClientsWhereFound()
+    }
+
+    @Test
+    fun `ignore null or blank names`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = "  ", document = CLIENT_1.documentNumber))
+
+        thenClientsWhereFound(CLIENT_1)
+    }
+
+    @Test
+    fun `ignore null or blank documents`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = "    "))
+
+        thenClientsWhereFound(CLIENT_1)
     }
 
     private fun givenClientRepository() {
