@@ -4,7 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionData
 
-class GetClient(private val clientRepository: ClientRepository) {
+class FindClients(private val clientRepository: ClientRepository) {
 
     operator fun invoke(actionData: ActionData): List<Client> {
         val names = parseName(actionData)

@@ -8,5 +8,5 @@ interface SpringDataClientRepository: CrudRepository<ClientDao, Long> {
     @Query("select c from ClientDao c where c.firstName in :names or c.lastName in :names")
     fun findAllByFirstOrLastName(names: List<String>): List<ClientDao>
 
-    fun findByDocumentNumber(documentNumber: String): ClientDao
+    fun findByDocumentNumber(documentNumber: String): ClientDao?
 }

@@ -8,10 +8,10 @@ import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 
-class GetClientShould {
+class FindClientsShould {
 
     private lateinit var clientRepository: ClientRepository
-    private lateinit var getClient: GetClient
+    private lateinit var findClients: FindClients
 
     private lateinit var foundClients: List<Client>
 
@@ -97,11 +97,11 @@ class GetClientShould {
     }
 
     private fun givenGetClient() {
-        getClient = GetClient(clientRepository)
+        findClients = FindClients(clientRepository)
     }
 
     private fun whenGettingClient(with: ActionData) {
-        foundClients = getClient(with)
+        foundClients = findClients(with)
     }
 
     private fun thenClientsWhereFound(vararg clients: Client) {
