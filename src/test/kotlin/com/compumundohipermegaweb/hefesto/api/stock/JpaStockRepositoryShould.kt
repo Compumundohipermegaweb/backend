@@ -85,6 +85,6 @@ class JpaStockRepositoryShould {
     }
 
     private companion object {
-        val STOCK_DAO = StockDao(0L, 1L, 0, 0, 0,"","",0.0)
+        val STOCK_DAO = StockDao(0L, 1L, 0, 0, 0,0)
     }
 }

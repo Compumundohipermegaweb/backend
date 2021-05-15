@@ -16,10 +16,10 @@ class DefaultStockService(private val stockRepository: StockRepository): StockSe
     }
 
     private fun Stock.toDao(): StockDao {
-        return StockDao(id, sku, stockTotal, minimumStock, securityStock, supplier, currency, cost)
+        return StockDao(id, sku, branchId, stockTotal, minimumStock, securityStock)
     }
 
     private fun StockDao.toStock(): Stock {
-        return Stock(id, sku, stockTotal, minimumStock, securityStock, supplier, currency, cost)
+        return Stock(id, sku, branchId, stockTotal, minimumStock, securityStock)
     }
 }

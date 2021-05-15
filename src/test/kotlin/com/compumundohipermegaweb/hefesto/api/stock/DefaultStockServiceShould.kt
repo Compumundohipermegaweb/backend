@@ -83,7 +83,7 @@ class DefaultStockServiceShould {
     }
 
     private companion object {
-        val STOCK = Stock(0L, 1L, 0, 0, 0,"","",0.0)
-        val STOCK_DAO = StockDao(0L, 1L, 0, 0, 0,"","",0.0)
+        val STOCK = Stock(0L, 1L, 0, 0, 0,0)
+        val STOCK_DAO = StockDao(0L, 1L, 0, 0,0, 0)
     }
 }
