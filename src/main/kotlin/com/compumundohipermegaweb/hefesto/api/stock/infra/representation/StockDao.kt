@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "STOCK")
 data class StockDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
-                    @Column(name = "SKU") val sku: Long,
+                    @Column(name = "SKU") val sku: String,
                     @Column(name = "BRANCH_ID") val branchId: Long,
                     @Column(name = "STOCK_TOTAL") val stockTotal: Int,
                     @Column(name = "MINIMUM_STOCK") val minimumStock: Int,

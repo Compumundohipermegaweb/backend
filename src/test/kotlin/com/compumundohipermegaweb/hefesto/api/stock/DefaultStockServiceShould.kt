@@ -4,9 +4,11 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import java.util.*
 
 class DefaultStockServiceShould {
@@ -47,10 +49,10 @@ class DefaultStockServiceShould {
     }
 
     private fun givenStockCrudRepository() {
-        stockRepository = Mockito.mock(StockRepository::class.java)
-        Mockito.`when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
-        Mockito.`when`(stockRepository.findBySku(0L)).thenReturn(Optional.empty())
-        Mockito.`when`(stockRepository.findBySku(1L)).thenReturn(Optional.of(STOCK_DAO))
+        stockRepository = mock()
+        `when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
+        `when`(stockRepository.findBySku("")).thenReturn(Optional.empty())
+        `when`(stockRepository.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
     }
 
     private fun givenStockRepository() {
@@ -58,11 +60,11 @@ class DefaultStockServiceShould {
     }
 
     private fun whenFindingTheStock() {
-        stockFound = stockService.findBySku(1L)
+        stockFound = stockService.findBySku("1")
     }
 
     private fun whenFindingTheStockWhitNonExistsSku() {
-        stockFound = stockService.findBySku(0L)
+        stockFound = stockService.findBySku("")
     }
 
     private fun whenSavingTheStock() {
@@ -78,12 +80,12 @@ class DefaultStockServiceShould {
     }
 
     private fun thenStockSaved() {
-        Mockito.verify(stockRepository).save(STOCK_DAO)
+        verify(stockRepository).save(STOCK_DAO)
         then(stockSaved).isNotNull
     }
 
     private companion object {
-        val STOCK = Stock(0L, 1L, 0, 0, 0,0)
-        val STOCK_DAO = StockDao(0L, 1L, 0, 0,0, 0)
+        val STOCK = Stock(0L, "1", 0, 0, 0,0)
+        val STOCK_DAO = StockDao(0L, "1", 0, 0,0, 0)
     }
 }

@@ -1,6 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.item.rest
 
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByShortDescription
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByDescription
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.rest.request.ItemRequest
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/items")
 class ItemController(private val registerItem: RegisterItem,
-                     private val getItemsByShortDescription: GetItemsByShortDescription) {
+                     private val getItemsByDescription: GetItemsByDescription) {
 
     @PostMapping
     fun registerItem(@RequestBody itemRequest: ItemRequest): ResponseEntity<ItemResponse> {
@@ -21,7 +21,7 @@ class ItemController(private val registerItem: RegisterItem,
 
     @GetMapping
     fun getAllItemsByShortDescription(@RequestParam shortDescription: String): ResponseEntity<ItemsResponse> {
-        var list: List<Item> = getItemsByShortDescription.invoke(shortDescription)
+        var list: List<Item> = getItemsByDescription.invoke(shortDescription)
         var listResponse: List<ItemResponse> = ArrayList()
 
         for(item in list) {
@@ -32,6 +32,6 @@ class ItemController(private val registerItem: RegisterItem,
     }
 
     private fun Item.toItemResponse(): ItemResponse {
-        return ItemResponse(sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state)
+        return ItemResponse(sku, shortDescription, description, categoryId, uomSale, price, imported, state, availableStock)
     }
 }

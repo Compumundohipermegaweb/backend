@@ -9,4 +9,5 @@ data class Item(val id: Long,
                 val uomSale: String,
                 val price: Double,
                 val imported: Boolean,
-                val state: String)
+                val state: String,
+                var availableStock: Int)

@@ -5,5 +5,5 @@ import java.util.*
 
 interface StockRepository {
     fun save(stock: StockDao): StockDao
-    fun findBySku(sku: Long): Optional<StockDao>
+    fun findBySku(sku: String): Optional<StockDao>
 }

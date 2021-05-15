@@ -93,7 +93,7 @@ class DefaultItemServiceShould {
 
     private companion object {
         const val SHORT_DESCRIPTION = "short description"
-        private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
+        private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
         private val ITEM_DAO = ItemDao(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
 
     }

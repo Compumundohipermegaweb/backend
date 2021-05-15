@@ -10,8 +10,8 @@ class JpaStockRepository(private val springDataStock: SpringDataStock): StockRep
         return springDataStock.save(stock)
     }
 
-    override fun findBySku(sku: Long): Optional<StockDao> {
-        return springDataStock.findById(sku)
+    override fun findBySku(sku: String): Optional<StockDao> {
+        return springDataStock.findBySku(sku)
     }
 }
 

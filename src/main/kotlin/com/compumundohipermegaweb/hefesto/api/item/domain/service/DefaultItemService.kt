@@ -20,7 +20,7 @@ class DefaultItemService(private val itemRepository: ItemRepository): ItemServic
     }
 
     private fun ItemDao.toItem(): Item {
-        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state)
+        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
     }
 }
 

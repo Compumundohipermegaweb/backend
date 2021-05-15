@@ -51,8 +51,8 @@ class JpaStockRepositoryShould {
     private fun givenStockCrudRepository() {
         springDataStock = mock(SpringDataStock::class.java)
         `when`(springDataStock.save(STOCK_DAO)).thenReturn(STOCK_DAO)
-        `when`(springDataStock.findById(0L)).thenReturn(Optional.empty())
-        `when`(springDataStock.findById(1L)).thenReturn(Optional.of(STOCK_DAO))
+        `when`(springDataStock.findBySku("")).thenReturn(Optional.empty())
+        `when`(springDataStock.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
     }
 
     private fun givenStockRepository() {
@@ -60,11 +60,11 @@ class JpaStockRepositoryShould {
     }
 
     private fun whenFindingTheStock() {
-        stockFound = stockRepository.findBySku(1L)
+        stockFound = stockRepository.findBySku("1")
     }
 
     private fun whenFindingTheStockWhitNonExistsSku() {
-        stockFound = stockRepository.findBySku(0L)
+        stockFound = stockRepository.findBySku("")
     }
 
     private fun whenSavingTheStock() {
@@ -85,6 +85,6 @@ class JpaStockRepositoryShould {
     }
 
     private companion object {
-        val STOCK_DAO = StockDao(0L, 1L, 0, 0, 0,0)
+        val STOCK_DAO = StockDao(0L, "1", 0, 0, 0,0)
     }
 }

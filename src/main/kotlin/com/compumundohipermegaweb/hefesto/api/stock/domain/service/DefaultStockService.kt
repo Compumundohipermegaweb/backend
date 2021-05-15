@@ -9,7 +9,7 @@ class DefaultStockService(private val stockRepository: StockRepository): StockSe
         return stockRepository.save(stock.toDao()).toStock()
     }
 
-    override fun findBySku(sku: Long): Stock? {
+    override fun findBySku(sku: String): Stock? {
         val stock = stockRepository.findBySku(sku)
         if(stock.isPresent) return stock.get().toStock()
         return null
