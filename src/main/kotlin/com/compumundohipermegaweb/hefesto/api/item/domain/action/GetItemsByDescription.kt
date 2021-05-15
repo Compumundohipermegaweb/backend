@@ -9,11 +9,18 @@ class GetItemsByDescription (private val itemService: ItemService,
 
     operator fun invoke(shortDescription: String): List<Item> {
         val items = itemService.findAllItemByShortDescription(shortDescription)
-        items.stream().map { it.availableStock = findAvailableStock(it.sku) }
+        findAvailableStock(items)
         return items
     }
 
-    private fun findAvailableStock(sku: String): Int {
-        return stockService.findBySku(sku)?.stockTotal ?: 0
+    private fun findAvailableStock(items: List<Item>) {
+        for(item in items){
+            val stock = stockService.findBySku(item.sku)
+            if (stock != null) {
+                item.availableStock = stock.stockTotal
+            } else {
+                item.availableStock = 0
+            }
+        }
     }
 }

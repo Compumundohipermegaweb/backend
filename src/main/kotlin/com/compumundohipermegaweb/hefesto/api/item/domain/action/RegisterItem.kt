@@ -17,14 +17,14 @@ class RegisterItem(private val itemService: ItemService,
     operator fun invoke(item: ItemRequest): Item {
 
         val savedItem = itemService.save(item.toItem())
-        val stockId = saveStock(item.stock, savedItem.sku)
+        val stock = saveStock(item.stock, savedItem.sku)
         val supplierId = saveSupplier(item.supplier)
+        savedItem.availableStock = stock.stockTotal
         return savedItem
     }
 
-    private fun saveStock(stockRequest: StockRequest, sku: String): Long{
-        val stock = stockService.findBySku(sku)
-        return stockService.save(stockRequest.toStock(sku)).id
+    private fun saveStock(stockRequest: StockRequest, sku: String): Stock {
+        return stockService.findBySku(sku) ?: return stockService.save(stockRequest.toStock(sku))
     }
 
     private fun saveSupplier(supplierRequest: PostSupplierRequest): Long {
@@ -32,7 +32,7 @@ class RegisterItem(private val itemService: ItemService,
     }
 
     private fun ItemRequest.toItem(): Item {
-        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
+        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, stock.stockTotal)
     }
 
     private fun StockRequest.toStock(sku: String): Stock {

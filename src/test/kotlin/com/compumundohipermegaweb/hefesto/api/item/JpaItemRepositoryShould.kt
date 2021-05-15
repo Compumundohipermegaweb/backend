@@ -14,7 +14,7 @@ class JpaItemRepositoryShould {
     private lateinit var springDataItemRepository: SpringDataItemRepository
     private lateinit var itemRepository: ItemRepository
     private lateinit var savedItem: ItemDao
-    private lateinit var itemFound: ItemDao
+    private lateinit var itemsFound: List<ItemDao>
 
     @Test
     fun `save the item`() {
@@ -43,7 +43,7 @@ class JpaItemRepositoryShould {
 
         whenSearchingTheItem()
 
-        thenItemFound()
+        thenItemsFound()
     }
 
     @Test
@@ -53,14 +53,14 @@ class JpaItemRepositoryShould {
 
         whenSearchingTheItem()
 
-        thenTheItemFoundIsReturned()
+        thenTheItemsFoundIsReturned()
     }
 
 
     private fun givenItemCrudRepository() {
         springDataItemRepository = mock(SpringDataItemRepository::class.java)
         `when`(springDataItemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
-        `when`(springDataItemRepository.findAllByShortDescription(SHORT_DESCRIPTION)).thenReturn(listOf(ITEM_DAO))
+        `when`(springDataItemRepository.findAllItemByDescription("%$DESCRIPTION%")).thenReturn(listOf(ITEM_DAO, ANOTHER_ITEM_DAO))
     }
 
     private fun givenItemRepository() {
@@ -72,7 +72,7 @@ class JpaItemRepositoryShould {
     }
 
     private fun whenSearchingTheItem() {
-        itemFound = itemRepository.findAllItemByShortDescription(SHORT_DESCRIPTION)[0]
+        itemsFound = itemRepository.findAllItemByShortDescription(DESCRIPTION)
     }
 
     private fun thenItemSaved() {
@@ -83,16 +83,20 @@ class JpaItemRepositoryShould {
         then(savedItem).isEqualTo(ITEM_DAO)
     }
 
-    private fun thenItemFound() {
-        verify(springDataItemRepository).findAllByShortDescription(SHORT_DESCRIPTION)
+    private fun thenItemsFound() {
+        verify(springDataItemRepository).findAllItemByDescription("%$DESCRIPTION%")
     }
 
-    private fun thenTheItemFoundIsReturned() {
-        then(itemFound).isEqualTo(ITEM_DAO)
+    private fun thenTheItemsFoundIsReturned() {
+        then(itemsFound[0]).isEqualTo(ITEM_DAO)
+        then(itemsFound[1]).isEqualTo(ANOTHER_ITEM_DAO)
     }
 
     private companion object {
-        const val SHORT_DESCRIPTION = "short description"
+        const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
+        const val DESCRIPTION = "DESCRIPTION"
         private val ITEM_DAO = ItemDao(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
+        private val ANOTHER_ITEM_DAO = ItemDao(0L, "", DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
+
     }
 }

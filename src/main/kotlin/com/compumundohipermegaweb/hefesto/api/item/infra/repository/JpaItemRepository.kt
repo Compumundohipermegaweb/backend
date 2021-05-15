@@ -9,7 +9,7 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
         return repository.save(item)
     }
 
-    override fun findAllItemByShortDescription(shortDescription: String): List<ItemDao> {
-        return repository.findAllByShortDescription(shortDescription)
+    override fun findAllItemByShortDescription(description: String): List<ItemDao> {
+        return repository.findAllItemByDescription("%${description.toUpperCase()}%")
     }
 }

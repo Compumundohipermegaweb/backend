@@ -4,11 +4,11 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
 import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 
 class DefaultItemServiceShould {
     private lateinit var itemRepository: ItemRepository
@@ -58,7 +58,7 @@ class DefaultItemServiceShould {
     }
 
     private fun givenItemRepository() {
-        itemRepository = mock()
+        itemRepository = mock(ItemRepository::class.java)
         `when`(itemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
         `when`(itemRepository.findAllItemByShortDescription(SHORT_DESCRIPTION)).thenReturn(listOf(ITEM_DAO))
     }
@@ -92,7 +92,7 @@ class DefaultItemServiceShould {
     }
 
     private companion object {
-        const val SHORT_DESCRIPTION = "short description"
+        const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
         private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
         private val ITEM_DAO = ItemDao(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
 

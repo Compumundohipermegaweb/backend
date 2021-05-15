@@ -20,8 +20,8 @@ class ItemController(private val registerItem: RegisterItem,
     }
 
     @GetMapping
-    fun getAllItemsByShortDescription(@RequestParam shortDescription: String): ResponseEntity<ItemsResponse> {
-        var list: List<Item> = getItemsByDescription.invoke(shortDescription)
+    fun getAllItemsByShortDescription(@RequestParam description: String): ResponseEntity<ItemsResponse> {
+        var list: List<Item> = getItemsByDescription.invoke(description)
         var listResponse: List<ItemResponse> = ArrayList()
 
         for(item in list) {

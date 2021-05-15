@@ -8,7 +8,7 @@ import kotlin.streams.toList
 class DefaultItemService(private val itemRepository: ItemRepository): ItemService {
 
     override fun save(item: Item): Item {
-        return itemRepository.save(item.toItemDao()).toItem();
+        return itemRepository.save(item.toItemDao()).toItem()
     }
 
     override fun findAllItemByShortDescription(shortDescription: String): List<Item> {
@@ -16,7 +16,7 @@ class DefaultItemService(private val itemRepository: ItemRepository): ItemServic
     }
 
     private fun Item.toItemDao(): ItemDao {
-        return ItemDao(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state)
+        return ItemDao(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, imported, state.toUpperCase())
     }
 
     private fun ItemDao.toItem(): Item {
