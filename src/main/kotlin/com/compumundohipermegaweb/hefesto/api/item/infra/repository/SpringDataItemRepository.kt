@@ -1,5 +1,6 @@
-package com.compumundohipermegaweb.hefesto.api.item.infrastructure
+package com.compumundohipermegaweb.hefesto.api.item.infra.repository
 
+import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
 import org.springframework.data.repository.CrudRepository
 
 interface SpringDataItemRepository: CrudRepository<ItemDao, Long> {
