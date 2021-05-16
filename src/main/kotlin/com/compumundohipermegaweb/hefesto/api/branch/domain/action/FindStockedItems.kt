@@ -1,7 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.branch.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.SearchCriteria
-import com.compumundohipermegaweb.hefesto.api.brand.BrandRepository
+import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
@@ -29,7 +29,11 @@ class FindStockedItems(private val itemService: ItemService, private val brandRe
         return items.map {
             val brand = brandRepository.findById(it.brandId)
 
-            ItemStock(it.id, it.sku, it.shortDescription, it.description, brand.name, it.price, it.availableStock, it.imported)
+            ItemStock(it.id, it.sku, it.shortDescription, it.description, brand?.name ?: DEFAULT_BRAND_NAME, it.price, it.availableStock, it.imported)
         }
+    }
+
+    private companion object {
+        const val DEFAULT_BRAND_NAME = "Generico"
     }
 }
