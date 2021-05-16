@@ -1,4 +1,4 @@
-package com.compumundohipermegaweb.hefesto.api.item.domain.model
+package com.compumundohipermegaweb.hefesto.api.branch.domain.model
 
 data class SearchCriteria(
         val branch: Long,

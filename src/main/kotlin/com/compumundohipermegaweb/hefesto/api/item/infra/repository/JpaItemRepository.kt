@@ -15,6 +15,12 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
     }
 
     override fun findBySku(sku: String): Item? {
-        TODO("Not yet implemented")
+        val itemDao = repository.findBySku(sku)
+
+        return itemDao?.toItem()
+    }
+
+    private fun ItemDao.toItem(): Item {
+        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
     }
 }
