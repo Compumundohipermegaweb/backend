@@ -1,18 +1,19 @@
 package com.compumundohipermegaweb.hefesto.api.item
 
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindItems
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindStockedItems
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 
-class FindItemsShould {
+class FindStockedItemsShould {
 
     private lateinit var itemRepository: ItemRepository
-    private lateinit var findItems: FindItems
+    private lateinit var findStockedItems: FindStockedItems
 
     private lateinit var itemsFound: List<Item>
 
@@ -66,17 +67,27 @@ class FindItemsShould {
         then(itemsFound).containsOnly(ITEMS[2], ITEMS[3])
     }
 
+    @Test
+    fun `filter items without stock`() {
+        givenItemRepository()
+        givenFindItems()
+
+        whenFindingItems(SEARCH_BY_BRAND_AND_IMPORTED)
+
+        verify(itemRepository).findAllWithStock()
+    }
+
     private fun givenItemRepository() {
         itemRepository = mock()
-        `when`(itemRepository.findAll()).thenReturn(ITEMS)
+        `when`(itemRepository.findAllWithStock()).thenReturn(ITEMS)
     }
 
     private fun givenFindItems() {
-        findItems = FindItems(itemRepository)
+        findStockedItems = FindStockedItems(itemRepository)
     }
 
     private fun whenFindingItems(with: SearchCriteria) {
-        itemsFound = findItems(with)
+        itemsFound = findStockedItems(with)
     }
 
     private companion object {
@@ -86,10 +97,10 @@ class FindItemsShould {
         val SEARCH_BY_IMPORTED_ONLY = SearchCriteria(null, null, null, true)
         val SEARCH_BY_BRAND_AND_IMPORTED = SearchCriteria(20L, null, null, true)
         val ITEMS = listOf(
-                Item(1L, "1", "", "a", 1L, 10L, "", 0.0, false, "", 0),
-                Item(2L, "2", "", "b", 30L, 20L, "", 0.0, false, "", 0),
-                Item(3L, "3", "", "c", 30L, 20L, "", 0.0, true, "", 0),
-                Item(4L, "4", "", "asd", 60L, 20L, "", 0.0, true, "", 0)
+                Item(1L, "1", "", "a", 1L, 10L, "", 0.0, false, "", 22),
+                Item(2L, "2", "", "b", 30L, 20L, "", 0.0, false, "", 1),
+                Item(3L, "3", "", "c", 30L, 20L, "", 0.0, true, "", 999),
+                Item(4L, "4", "", "asd", 60L, 20L, "", 0.0, true, "", 14)
         )
     }
 }

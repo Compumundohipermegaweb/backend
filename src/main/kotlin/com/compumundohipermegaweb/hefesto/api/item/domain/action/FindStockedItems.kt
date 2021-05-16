@@ -4,9 +4,9 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 
-class FindItems(private val itemRepository: ItemRepository) {
+class FindStockedItems(private val itemRepository: ItemRepository) {
     operator fun invoke(searchCriteria: SearchCriteria): List<Item> {
-        var items = itemRepository.findAll()
+        var items = itemRepository.findAllWithStock()
 
         if(searchCriteria.category != null) {
             items = items.filter { it.categoryId == searchCriteria.category }

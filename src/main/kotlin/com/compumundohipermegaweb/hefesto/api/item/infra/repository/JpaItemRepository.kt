@@ -14,7 +14,7 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
         return repository.findAllItemByDescription("%${description.toUpperCase()}%")
     }
 
-    override fun findAll(): List<Item> {
+    override fun findAllWithStock(): List<Item> {
         TODO("Not yet implemented")
     }
 }
