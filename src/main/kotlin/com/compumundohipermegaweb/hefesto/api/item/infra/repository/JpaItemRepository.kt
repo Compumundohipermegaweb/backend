@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.item.infra.repository
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
 
@@ -11,5 +12,9 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
 
     override fun findAllItemByShortDescription(description: String): List<ItemDao> {
         return repository.findAllItemByDescription("%${description.toUpperCase()}%")
+    }
+
+    override fun findBySku(sku: String): Item? {
+        TODO("Not yet implemented")
     }
 }

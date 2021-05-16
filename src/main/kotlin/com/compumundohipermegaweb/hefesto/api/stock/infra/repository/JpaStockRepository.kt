@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.stock.infra.repository
 
+import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
 import java.util.*
@@ -12,6 +13,10 @@ class JpaStockRepository(private val springDataStock: SpringDataStock): StockRep
 
     override fun findBySku(sku: String): Optional<StockDao> {
         return springDataStock.findBySku(sku)
+    }
+
+    override fun findAllInStock(branchId: Long): List<Stock> {
+        TODO("Not yet implemented")
     }
 }
 
