@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.item
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.FindStockedItems
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.SearchCriteria
-import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
+import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
@@ -12,14 +12,15 @@ import org.mockito.Mockito.`when`
 
 class FindStockedItemsShould {
 
-    private lateinit var itemRepository: ItemRepository
+    private lateinit var itemService: ItemService
     private lateinit var findStockedItems: FindStockedItems
 
     private lateinit var itemsFound: List<Item>
 
     @Test
     fun `filter items by category`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_CATEGORY_ONLY)
@@ -29,7 +30,8 @@ class FindStockedItemsShould {
 
     @Test
     fun `filter by description`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_DESCRIPTION_ONLY)
@@ -39,7 +41,8 @@ class FindStockedItemsShould {
 
     @Test
     fun `filter by brand`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_BRAND_ONLY)
@@ -49,7 +52,8 @@ class FindStockedItemsShould {
 
     @Test
     fun `filter by imported`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_IMPORTED_ONLY)
@@ -59,7 +63,8 @@ class FindStockedItemsShould {
 
     @Test
     fun `filter by multiple fields`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_BRAND_AND_IMPORTED)
@@ -69,21 +74,36 @@ class FindStockedItemsShould {
 
     @Test
     fun `filter items without stock`() {
-        givenItemRepository()
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
         givenFindItems()
 
         whenFindingItems(SEARCH_BY_BRAND_AND_IMPORTED)
 
-        verify(itemRepository).findAllWithStock()
+        verify(itemService).findAllWithStock(BRANCH_ID)
     }
 
-    private fun givenItemRepository() {
-        itemRepository = mock()
-        `when`(itemRepository.findAllWithStock()).thenReturn(ITEMS)
+    @Test
+    fun `search items of a given branch`() {
+        givenItemService()
+        givenBranchHasItems(branch = BRANCH_ID, items = ITEMS)
+        givenFindItems()
+
+        whenFindingItems(SEARCH_BY_BRAND_ONLY)
+
+        then(itemsFound).isNotNull
+    }
+
+    private fun givenItemService() {
+        itemService = mock()
+    }
+
+    private fun givenBranchHasItems(branch: Long, items: List<Item>) {
+        `when`(itemService.findAllWithStock(branch)).thenReturn(items)
     }
 
     private fun givenFindItems() {
-        findStockedItems = FindStockedItems(itemRepository)
+        findStockedItems = FindStockedItems(itemService)
     }
 
     private fun whenFindingItems(with: SearchCriteria) {
@@ -91,11 +111,12 @@ class FindStockedItemsShould {
     }
 
     private companion object {
-        val SEARCH_BY_CATEGORY_ONLY = SearchCriteria(10L, null, null, null)
-        val SEARCH_BY_DESCRIPTION_ONLY = SearchCriteria(null, "b", null, null)
-        val SEARCH_BY_BRAND_ONLY = SearchCriteria(null, null, 30L, null)
-        val SEARCH_BY_IMPORTED_ONLY = SearchCriteria(null, null, null, true)
-        val SEARCH_BY_BRAND_AND_IMPORTED = SearchCriteria(20L, null, null, true)
+        const val BRANCH_ID = 14L
+        val SEARCH_BY_CATEGORY_ONLY = SearchCriteria(BRANCH_ID, 10L, null, null, null)
+        val SEARCH_BY_DESCRIPTION_ONLY = SearchCriteria(BRANCH_ID, null, "b", null, null)
+        val SEARCH_BY_BRAND_ONLY = SearchCriteria(BRANCH_ID, null, null, 30L, null)
+        val SEARCH_BY_IMPORTED_ONLY = SearchCriteria(BRANCH_ID, null, null, null, true)
+        val SEARCH_BY_BRAND_AND_IMPORTED = SearchCriteria(BRANCH_ID, 20L, null, null, true)
         val ITEMS = listOf(
                 Item(1L, "1", "", "a", 1L, 10L, "", 0.0, false, "", 22),
                 Item(2L, "2", "", "b", 30L, 20L, "", 0.0, false, "", 1),

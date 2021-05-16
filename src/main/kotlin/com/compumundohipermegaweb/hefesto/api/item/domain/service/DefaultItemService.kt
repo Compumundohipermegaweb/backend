@@ -15,6 +15,10 @@ class DefaultItemService(private val itemRepository: ItemRepository): ItemServic
         return itemRepository.findAllItemByShortDescription(shortDescription).stream().map { it.toItem() }.toList()
     }
 
+    override fun findAllWithStock(branchId: Long): List<Item> {
+        TODO("Not yet implemented")
+    }
+
     private fun Item.toItemDao(): ItemDao {
         return ItemDao(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, imported, state.toUpperCase())
     }
