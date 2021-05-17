@@ -5,15 +5,12 @@ import com.compumundohipermegaweb.hefesto.api.branch.domain.action.RegisterBranc
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.Branch
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.GetStockRequest
+import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.ItemStockResponse
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.PostBranchRequest
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.StockResponse
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 
@@ -34,6 +31,15 @@ class BranchController (private val registerBranch: RegisterBranch,
                  @RequestBody body: GetStockRequest): ResponseEntity<StockResponse> {
         val searchCriteria = SearchCriteria(branchId, body.categoryId, body.description, body.brandId, body.imported)
         val items = findStockedItems(searchCriteria)
-        return ResponseEntity.ok(null)
+        val itemResponse = items.map { it.toItemStockResponse() }
+        return ResponseEntity.ok(StockResponse(itemResponse))
+    }
+
+    private fun ItemStock.toItemStockResponse(): ItemStockResponse {
+        return ItemStockResponse(sku, shortDescription, longDescription, brandName, price, availableStock, imported)
     }
 }
+
+
+
+
