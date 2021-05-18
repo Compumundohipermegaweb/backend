@@ -9,12 +9,16 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
+import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 
 class InvoiceSale(private val saleService: SaleService,
-                  private val invoiceService: InvoiceService
+                  private val invoiceService: InvoiceService,
+                  private val stockService: StockService
 ) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
         val sale = saleRequest.toSale()
+
+        sale.saleDetails.details.forEach { stockService.reduceStock(it.id, sale.branchId, it.quantity) }
 
         val invoice = invoiceService.invoiceSale(sale)
         saleService.save(sale, invoice.id)

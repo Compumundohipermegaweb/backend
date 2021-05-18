@@ -17,6 +17,7 @@ class DefaultStockServiceShould {
 
     private lateinit var stockSaved: Stock
     private  var stockFound: Stock? = null
+    private lateinit var stockReduced: Stock
 
     @Test
     fun `save the stock`() {
@@ -48,11 +49,24 @@ class DefaultStockServiceShould {
         thenStockFoundIsNull()
     }
 
+    @Test
+    fun `reduce the stock`() {
+        givenStockCrudRepository()
+        givenStockRepository()
+
+        whenReducingTheStock()
+
+        thenStockReduced()
+    }
+
     private fun givenStockCrudRepository() {
         stockRepository = mock()
         `when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
+        `when`(stockRepository.save(STOCK_DAO_SAVED)).thenReturn(STOCK_DAO_SAVED)
+        `when`(stockRepository.save(REDUCED_STOCK_DAO)).thenReturn(REDUCED_STOCK_DAO)
         `when`(stockRepository.findBySku("")).thenReturn(Optional.empty())
-        `when`(stockRepository.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
+        `when`(stockRepository.findBySku(STOCK.sku)).thenReturn(Optional.of(STOCK_DAO))
+        `when`(stockRepository.findByIdAndBranchId(STOCK.id, STOCK.branchId)).thenReturn(STOCK)
     }
 
     private fun givenStockRepository() {
@@ -68,7 +82,11 @@ class DefaultStockServiceShould {
     }
 
     private fun whenSavingTheStock() {
-        stockSaved = stockService.save(STOCK)
+        stockSaved = stockService.save(STOCK_TO_SAVE)
+    }
+
+    private fun whenReducingTheStock() {
+        stockReduced = stockService.reduceStock(0L, 0, 50)
     }
 
     private fun thenStockFound() {
@@ -80,12 +98,20 @@ class DefaultStockServiceShould {
     }
 
     private fun thenStockSaved() {
-        verify(stockRepository).save(STOCK_DAO)
+        verify(stockRepository).save(STOCK_DAO_SAVED)
         then(stockSaved).isNotNull
     }
 
+    private fun thenStockReduced(){
+        verify(stockRepository).save(REDUCED_STOCK_DAO)
+        then(STOCK.stockTotal).isEqualTo(50)
+    }
+
     private companion object {
-        val STOCK = Stock(0L, "1", 0, 0, 0,0)
-        val STOCK_DAO = StockDao(0L, "1", 0, 0,0, 0)
+        val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0)
+        val STOCK_DAO_SAVED = StockDao(2L, "2", 0, 0,0, 0)
+        val STOCK = Stock(0L, "1", 0, 100, 0,0)
+        val STOCK_DAO = StockDao(0L, "1", 0, 100,0, 0)
+        val REDUCED_STOCK_DAO = StockDao(0L, "1", 0, 50,0, 0)
     }
 }

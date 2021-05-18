@@ -18,6 +18,7 @@ class JpaStockRepositoryShould {
 
     private lateinit var stockSaved: StockDao
     private lateinit var stockFound: Optional<StockDao>
+    private lateinit var stockFoundForIdItem: Stock
     private lateinit var stocked: List<Stock>
 
     @Test
@@ -60,12 +61,23 @@ class JpaStockRepositoryShould {
         thenStockWasFound(EXPECTED_STOCK[0], EXPECTED_STOCK[1], EXPECTED_STOCK[2], EXPECTED_STOCK[3])
     }
 
+    @Test
+    fun `find the result for a id item`() {
+        givenStockCrudRepository()
+        givenStockRepository()
+
+        whenFindingTheStockForIdItem()
+
+        thenStockFoundForId()
+    }
+
     private fun givenStockCrudRepository() {
         springDataStock = mock()
         `when`(springDataStock.save(STOCK_DAO)).thenReturn(STOCK_DAO)
         `when`(springDataStock.findBySku("")).thenReturn(Optional.empty())
         `when`(springDataStock.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
         `when`(springDataStock.findAllByBranchId(BRANCH_ID)).thenReturn(SAVED_STOCK)
+        `when`(springDataStock.findByIdAndBranchId(0L, 0)).thenReturn(STOCK_DAO)
     }
 
     private fun givenStockRepository() {
@@ -74,6 +86,10 @@ class JpaStockRepositoryShould {
 
     private fun whenFindingTheStock() {
         stockFound = stockRepository.findBySku("1")
+    }
+
+    private fun whenFindingTheStockForIdItem() {
+        stockFoundForIdItem = stockRepository.findByIdAndBranchId(0L, 0)
     }
 
     private fun whenFindingTheStockWhitNonExistsSku() {
@@ -92,6 +108,11 @@ class JpaStockRepositoryShould {
         then(stockFound.get()).isNotNull
     }
 
+    private fun thenStockFoundForId() {
+        then(stockFoundForIdItem).isNotNull
+        then(stockFoundForIdItem).isEqualTo(STOCK)
+    }
+
     private fun thenStockFoundIsEmpty() {
         then(stockFound).isNotPresent
     }
@@ -108,6 +129,7 @@ class JpaStockRepositoryShould {
     private companion object {
         const val BRANCH_ID = 100L
         val STOCK_DAO = StockDao(0L, "1", 0, 0, 0,0)
+        val STOCK = Stock(0L, "1", 0, 0, 0,0)
 
         val SAVED_STOCK = listOf(
                 StockDao(1L, "1", BRANCH_ID, 10, 5, 1),
