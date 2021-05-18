@@ -9,5 +9,5 @@ interface StockRepository {
     fun findBySku(sku: String): Optional<StockDao>
     fun findByIdAndBranchId(idItem: Long, branchId: Long): Stock?
     fun findAllInStock(branchId: Long): List<Stock>
-    fun findBySkuAndBranchId(sku: String, branchId: Long) :StockDao
+    fun findBySkuAndBranchId(sku: String, branchId: Long): StockDao?
 }

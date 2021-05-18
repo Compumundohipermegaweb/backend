@@ -25,9 +25,9 @@ class DefaultStockService(private val stockRepository: StockRepository): StockSe
         }
     }
 
-    override fun findBySkuAndBranchId(sku: String, branchId: Long): Stock {
+    override fun findBySkuAndBranchId(sku: String, branchId: Long): Stock? {
         val stock = stockRepository.findBySkuAndBranchId(sku,branchId)
-        return stock.toStock()
+        return stock?.toStock()
     }
 
     private fun Stock.toDao(): StockDao {
