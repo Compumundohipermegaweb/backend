@@ -1,12 +1,14 @@
 package com.compumundohipermegaweb.hefesto.api.branch.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.FindStockedItems
+import com.compumundohipermegaweb.hefesto.api.branch.domain.action.GetStockAvailable
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.RegisterBranch
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.Branch
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.ItemStockResponse
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.PostBranchRequest
 import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.StockResponse
+import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.*
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,7 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 @RestController
 @RequestMapping("/api/branches")
 class BranchController (private val registerBranch: RegisterBranch,
-                        private val findStockedItems: FindStockedItems) {
+                        private val findStockedItems: FindStockedItems,
+                        private val getStockAvailable: GetStockAvailable) {
     @PostMapping
     fun postBranch (@RequestBody body: PostBranchRequest) : ResponseEntity <Branch> {
         val branch = registerBranch((Branch(0L,body.branch, body.address, body.postalCode,body.email,body.contactNumber,body.attentionSchedule)))
@@ -41,6 +44,18 @@ class BranchController (private val registerBranch: RegisterBranch,
     private fun ItemStock.toItemStockResponse(): ItemStockResponse {
         return ItemStockResponse(id, sku, shortDescription, longDescription, brandName, price, availableStock, imported)
     }
+
+    @GetMapping("/{BRANCH_ID}/stock/{SKU}")
+    fun getStockAvailable (@PathVariable("BRANCH_ID") branchId: Long,
+                           @PathVariable("SKU") sku: String): ResponseEntity<StockAvailableResponse> {
+        val stock = getStockAvailable(sku,branchId)
+        if (stock != null) {
+            return ResponseEntity.ok(StockAvailableResponse(stock.sku, stock.stockTotal))
+        }
+        return  ResponseEntity.ok(StockAvailableResponse(sku,0))
+    }
+
+
 }
 
 

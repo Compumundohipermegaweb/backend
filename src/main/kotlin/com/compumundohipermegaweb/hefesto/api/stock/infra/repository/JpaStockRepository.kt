@@ -19,6 +19,11 @@ class JpaStockRepository(private val springDataStock: SpringDataStock): StockRep
         return springDataStock.findByIdAndBranchId(idItem, branchId)?.toStock()
     }
 
+    override fun findBySkuAndBranchId(sku: String, branchId: Long):  StockDao {
+        return springDataStock.findBySkuAndBranchId(sku,branchId)
+
+    }
+
     override fun findAllInStock(branchId: Long): List<Stock> {
         val stockDao = springDataStock.findAllByBranchId(branchId)
 

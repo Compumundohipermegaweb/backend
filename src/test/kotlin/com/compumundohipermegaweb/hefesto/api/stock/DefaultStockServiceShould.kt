@@ -17,7 +17,6 @@ class DefaultStockServiceShould {
 
     private lateinit var stockSaved: Stock
     private  var stockFound: Stock? = null
-    private lateinit var stockReduced: Stock
 
     @Test
     fun `save the stock`() {
@@ -48,6 +47,13 @@ class DefaultStockServiceShould {
 
         thenStockFoundIsNull()
     }
+    @Test
+    fun `find the result for a sku and branch`() {
+        givenStockCrudRepository()
+        givenStockRepository()
+        whenFindingTheStockAvailableBySkuAndBranch()
+        thenStockAvailableFound()
+    }
 
     @Test
     fun `reduce the stock`() {
@@ -67,6 +73,8 @@ class DefaultStockServiceShould {
         `when`(stockRepository.findBySku("")).thenReturn(Optional.empty())
         `when`(stockRepository.findBySku(STOCK.sku)).thenReturn(Optional.of(STOCK_DAO))
         `when`(stockRepository.findByIdAndBranchId(STOCK.id, STOCK.branchId)).thenReturn(STOCK)
+        `when`(stockRepository.findBySkuAndBranchId("1",1L)).thenReturn(STOCK_DAO_1)
+
     }
 
     private fun givenStockRepository() {
@@ -80,6 +88,10 @@ class DefaultStockServiceShould {
     private fun whenFindingTheStockWhitNonExistsSku() {
         stockFound = stockService.findBySku("")
     }
+    private fun whenFindingTheStockAvailableBySkuAndBranch() {
+        stockFound = stockService.findBySkuAndBranchId("1",1L)
+    }
+
 
     private fun whenSavingTheStock() {
         stockSaved = stockService.save(STOCK_TO_SAVE)
@@ -91,6 +103,9 @@ class DefaultStockServiceShould {
 
     private fun thenStockFound() {
         then(stockFound).isNotNull
+    }
+    private fun thenStockAvailableFound() {
+        then(stockFound!!.stockTotal).isGreaterThan(0)
     }
 
     private fun thenStockFoundIsNull() {
@@ -108,10 +123,13 @@ class DefaultStockServiceShould {
     }
 
     private companion object {
+
         val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0)
         val STOCK_DAO_SAVED = StockDao(2L, "2", 0, 0,0, 0)
         val STOCK = Stock(0L, "1", 0, 100, 0,0)
         val STOCK_DAO = StockDao(0L, "1", 0, 100,0, 0)
         val REDUCED_STOCK_DAO = StockDao(0L, "1", 0, 50,0, 0)
+        val STOCK_DAO_1 = StockDao(0L, "1", 1L, 3,0, 0)
+
     }
 }
