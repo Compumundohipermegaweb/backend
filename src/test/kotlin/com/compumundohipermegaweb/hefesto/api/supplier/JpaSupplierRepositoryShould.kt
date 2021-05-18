@@ -2,12 +2,14 @@ package com.compumundohipermegaweb.hefesto.api.supplier
 
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.model.Supplier
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.SupplierRepository
-import com.compumundohipermegaweb.hefesto.api.supplier.infra.repository.SpringDataSupplierClient
 import com.compumundohipermegaweb.hefesto.api.supplier.infra.repository.JpaSupplierRepository
+import com.compumundohipermegaweb.hefesto.api.supplier.infra.repository.SpringDataSupplierClient
 import com.compumundohipermegaweb.hefesto.api.supplier.infra.representation.SupplierDao
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 
 class JpaSupplierRepositoryShould {

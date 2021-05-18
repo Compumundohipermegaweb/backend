@@ -2,7 +2,6 @@ package com.compumundohipermegaweb.hefesto.api.branch.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
-import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 

@@ -1,10 +1,10 @@
 package com.compumundohipermegaweb.hefesto.api.branch
 
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.FindStockedItems
-import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.SearchCriteria
 import com.compumundohipermegaweb.hefesto.api.brand.domain.model.Brand
 import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.nhaarman.mockito_kotlin.mock

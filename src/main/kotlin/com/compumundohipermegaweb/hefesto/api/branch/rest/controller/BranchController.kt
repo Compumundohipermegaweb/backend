@@ -27,10 +27,10 @@ class BranchController (private val registerBranch: RegisterBranch,
 
     @GetMapping("/{BRANCH_ID}/stock")
     fun getStock(@PathVariable("BRANCH_ID") branchId: Long,
-                 @PathVariable("CATEGORY_ID") categoryId: Long?,
-                 @PathVariable("DESCRIPTION") description: String?,
-                 @PathVariable("BRAND_ID") brandId: Long?,
-                 @PathVariable("IMPORTED") imported: Boolean?,): ResponseEntity<StockResponse> {
+                 @RequestParam("category_id") categoryId: Long?,
+                 @RequestParam("description") description: String?,
+                 @RequestParam("brand_id") brandId: Long?,
+                 @RequestParam("imported") imported: Boolean?,): ResponseEntity<StockResponse> {
         val searchCriteria = SearchCriteria(branchId, categoryId, description, brandId, imported)
         val items = findStockedItems(searchCriteria)
         val itemResponse = items.map { it.toItemStockResponse() }
@@ -38,7 +38,7 @@ class BranchController (private val registerBranch: RegisterBranch,
     }
 
     private fun ItemStock.toItemStockResponse(): ItemStockResponse {
-        return ItemStockResponse(sku, shortDescription, longDescription, brandName, price, availableStock, imported, category)
+        return ItemStockResponse(sku, shortDescription, longDescription, brandName, price, availableStock, imported)
     }
 }
 

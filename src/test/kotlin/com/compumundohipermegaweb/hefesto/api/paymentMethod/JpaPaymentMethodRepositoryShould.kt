@@ -8,7 +8,8 @@ import com.compumundohipermegaweb.hefesto.api.paymentMethod.infra.representation
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class JpaPaymentMethodRepositoryShould {
     private lateinit var springDataPaymentMethodClient: SpringDataPaymentMethodClient

@@ -6,7 +6,6 @@ import com.compumundohipermegaweb.hefesto.api.template.infra.repository.SpringDa
 import com.compumundohipermegaweb.hefesto.api.template.infra.representation.TemplateDao
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class JpaTemplateRepositoryShould {
