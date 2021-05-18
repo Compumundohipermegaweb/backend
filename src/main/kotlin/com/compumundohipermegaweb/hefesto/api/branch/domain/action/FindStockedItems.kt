@@ -29,7 +29,7 @@ class FindStockedItems(private val itemService: ItemService, private val brandRe
         return items.map {
             val brand = brandRepository.findById(it.brandId)
 
-            ItemStock(it.id, it.sku, it.shortDescription, it.description, brand?.name ?: DEFAULT_BRAND_NAME, it.price, it.availableStock, it.imported)
+            ItemStock(it.id, it.sku, it.shortDescription, it.description, brand?.name ?: DEFAULT_BRAND_NAME, it.price, it.availableStock, it.imported, it.categoryId)
         }
     }
 

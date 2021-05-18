@@ -8,4 +8,5 @@ data class ItemStock(
         val brandName: String,
         val price: Double,
         val availableStock: Int,
-        val imported: Boolean)
+        val imported: Boolean,
+        val category: Long)

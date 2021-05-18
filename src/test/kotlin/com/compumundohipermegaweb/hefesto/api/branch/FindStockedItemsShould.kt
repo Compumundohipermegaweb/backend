@@ -146,10 +146,10 @@ class FindStockedItemsShould {
         )
 
         val EXPECTED_ITEMS = listOf(
-                ItemStock(1L, "1", "", "a", BRAND_1.name, 10.0, 20,false),
-                ItemStock(2L, "2", "", "b", BRAND_1.name, 20.0, 100,false),
-                ItemStock(3L, "3", "", "c", BRAND_2.name, 20.0, 69,true),
-                ItemStock(4L, "4", "", "asd", BRAND_2.name, 20.0, 14,true,)
+                ItemStock(1L, "1", "", "a", BRAND_1.name, 10.0, 20,false, 10L),
+                ItemStock(2L, "2", "", "b", BRAND_1.name, 20.0, 100,false, 1L),
+                ItemStock(3L, "3", "", "c", BRAND_2.name, 20.0, 69,true, 20L),
+                ItemStock(4L, "4", "", "asd", BRAND_2.name, 20.0, 14,true, 20L)
         )
     }
 }
