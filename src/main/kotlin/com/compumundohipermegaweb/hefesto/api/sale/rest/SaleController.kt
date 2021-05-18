@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
 
-@CrossOrigin(origins = ["https://hefesto-dev.web.app", "http://localhost:4200"])
 @RestController
 @RequestMapping("/api/sales")
 class SaleController(private val invoiceSale: InvoiceSale) {

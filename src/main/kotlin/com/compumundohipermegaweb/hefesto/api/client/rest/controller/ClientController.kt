@@ -9,7 +9,6 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientR
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["https://hefesto-dev.web.app", "http://localhost:4200"])
 @RestController
 @RequestMapping("/api/clients")
 class ClientController(private val registerClient: RegisterClient, private val findClients: FindClients) {
