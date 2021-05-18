@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class InvoiceResponse(@JsonProperty("") val id: Long,
-                           @JsonProperty("") val billingDate: String,
-                           @JsonProperty("") val type: String,
-                           @JsonProperty("") val client: ClientResponse,
-                           @JsonProperty("") val branchAddress: String,
-                           @JsonProperty("") val branchContact: String,
-                           @JsonProperty("") val cuit: String,
-                           @JsonProperty("") val activitySince: String,
-                           @JsonProperty("") val saleDetails: SaleDetailsResponse,
-                           @JsonProperty("") val subTotal: Double,
-                           @JsonProperty("") val ivaSubTotal: Double,
-                           @JsonProperty("") val total: Double)
+data class InvoiceResponse(@JsonProperty("invoice_id") val invoiceId: String,
+                           @JsonProperty("billing_date") val billingDate: String,
+                           @JsonProperty("type") val type: String,
+                           @JsonProperty("client") val client: ClientResponse,
+                           @JsonProperty("branch_address") val branchAddress: String,
+                           @JsonProperty("branch_contact") val branchContact: String,
+                           @JsonProperty("cuit") val cuit: String,
+                           @JsonProperty("activity_since") val activitySince: String,
+                           @JsonProperty("sale_details") val saleDetails: SaleDetailsResponse,
+                           @JsonProperty("subtotal") val subtotal: Double,
+                           @JsonProperty("iva_subtotal") val ivaSubtotal: Double,
+                           @JsonProperty("total") val total: Double)

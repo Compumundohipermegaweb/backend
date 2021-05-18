@@ -22,7 +22,7 @@ class SaleController(private val invoiceSale: InvoiceSale) {
         return ResponseEntity.ok(invoiceSale.invoke(sale).toInvoiceResponse())
     }
 
-    private fun Invoice.toInvoiceResponse() = InvoiceResponse(id, SimpleDateFormat("dd/MM/yyyy").format(billingDate), type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
+    private fun Invoice.toInvoiceResponse() = InvoiceResponse(voucherNumber, SimpleDateFormat("dd/MM/yyyy").format(billingDate), type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
 
     private fun Client.toClientResponse() = ClientResponse(documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
 

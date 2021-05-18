@@ -15,10 +15,14 @@ class DefaultStockService(private val stockRepository: StockRepository): StockSe
         return null
     }
 
-    override fun reduceStock(idItem: Long, idBranch: Long, amount: Int): Stock {
+    override fun reduceStock(idItem: Long, idBranch: Long, amount: Int) {
         val stock = stockRepository.findByIdAndBranchId(idItem, idBranch)
-        stock.stockTotal = stock.stockTotal - amount
-        return stockRepository.save(stock.toDao()).toStock()
+        if (stock != null) {
+            stock.stockTotal = stock.stockTotal - amount
+        }
+        if (stock != null) {
+            stockRepository.save(stock.toDao()).toStock()
+        }
     }
 
     private fun Stock.toDao(): StockDao {

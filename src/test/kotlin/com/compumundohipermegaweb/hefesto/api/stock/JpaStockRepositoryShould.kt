@@ -89,7 +89,7 @@ class JpaStockRepositoryShould {
     }
 
     private fun whenFindingTheStockForIdItem() {
-        stockFoundForIdItem = stockRepository.findByIdAndBranchId(0L, 0)
+        stockFoundForIdItem = stockRepository.findByIdAndBranchId(0L, 0)!!
     }
 
     private fun whenFindingTheStockWhitNonExistsSku() {

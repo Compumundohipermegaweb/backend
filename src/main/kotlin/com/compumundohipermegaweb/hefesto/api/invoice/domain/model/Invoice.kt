@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import java.util.*
 
 data class Invoice(val id: Long,
+                   val voucherNumber: String,
                    val billingDate: Date,
                    val type: String,
                    val client: Client,

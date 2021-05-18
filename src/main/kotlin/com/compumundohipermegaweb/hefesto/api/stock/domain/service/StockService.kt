@@ -5,5 +5,5 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 interface StockService {
     fun save(stock: Stock): Stock
     fun findBySku(sku: String): Stock?
-    fun reduceStock(idItem: Long, idBranch: Long, amount: Int): Stock
+    fun reduceStock(idItem: Long, idBranch: Long, amount: Int)
 }

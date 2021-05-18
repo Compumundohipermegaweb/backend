@@ -86,7 +86,7 @@ class DefaultStockServiceShould {
     }
 
     private fun whenReducingTheStock() {
-        stockReduced = stockService.reduceStock(0L, 0, 50)
+        stockService.reduceStock(0L, 0, 50)
     }
 
     private fun thenStockFound() {

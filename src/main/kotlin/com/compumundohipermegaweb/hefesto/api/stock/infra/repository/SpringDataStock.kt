@@ -7,5 +7,5 @@ import java.util.*
 interface SpringDataStock: CrudRepository<StockDao, Long> {
     fun findBySku(sku: String): Optional<StockDao>
     fun findAllByBranchId(branchId: Long): List<StockDao>
-    fun findByIdAndBranchId(id: Long, branchId: Long): StockDao
+    fun findByIdAndBranchId(id: Long, branchId: Long): StockDao?
 }
