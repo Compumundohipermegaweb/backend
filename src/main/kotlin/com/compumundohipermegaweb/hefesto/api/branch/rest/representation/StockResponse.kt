@@ -7,6 +7,7 @@ data class StockResponse(
 )
 
 data class ItemStockResponse(
+        @JsonProperty("id") val itemId: Long,
         @JsonProperty("sku") val sku: String,
         @JsonProperty("short_description") val shortDescription: String,
         @JsonProperty("long_description") val longDescription: String,

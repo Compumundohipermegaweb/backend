@@ -34,11 +34,12 @@ class BranchController (private val registerBranch: RegisterBranch,
         val searchCriteria = SearchCriteria(branchId, categoryId, description, brandId, imported)
         val items = findStockedItems(searchCriteria)
         val itemResponse = items.map { it.toItemStockResponse() }
+
         return ResponseEntity.ok(StockResponse(itemResponse))
     }
 
     private fun ItemStock.toItemStockResponse(): ItemStockResponse {
-        return ItemStockResponse(sku, shortDescription, longDescription, brandName, price, availableStock, imported)
+        return ItemStockResponse(id, sku, shortDescription, longDescription, brandName, price, availableStock, imported)
     }
 }
 
