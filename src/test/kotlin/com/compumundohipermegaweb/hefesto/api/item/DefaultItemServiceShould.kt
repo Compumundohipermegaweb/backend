@@ -18,7 +18,7 @@ class DefaultItemServiceShould {
     private lateinit var itemService: DefaultItemService
 
     private lateinit var savedItem: Item
-    private lateinit var itemFound: Item
+    private var itemFound: Item? = null
     private lateinit var itemsFound: List<Item>
 
     @Test
@@ -45,12 +45,12 @@ class DefaultItemServiceShould {
     }
 
     @Test
-    fun `find the item`() {
+    fun `find the item by description`() {
         givenItemRepository()
         givenStockRepository()
         givenItemService()
 
-        whenSearchingTheItem()
+        whenSearchingTheItembyDescription()
 
         thenItemIsFound()
     }
@@ -61,7 +61,7 @@ class DefaultItemServiceShould {
         givenStockRepository()
         givenItemService()
 
-        whenSearchingTheItem()
+        whenSearchingTheItembyDescription()
 
         thenItemFoundIsReturned()
     }
@@ -77,6 +77,28 @@ class DefaultItemServiceShould {
         thenTheAllItemsInStockWhereFound()
     }
 
+    @Test
+    fun `find the item by id`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenSearchingTheItemById()
+
+        thenItemIsFoundById()
+    }
+
+    @Test
+    fun `not find the item by id`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenSearchingTheItemByInvalidId()
+
+        thenItemIsNotFoundById()
+    }
+
     private fun givenItemRepository() {
         itemRepository = mock()
         `when`(itemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
@@ -86,6 +108,9 @@ class DefaultItemServiceShould {
         `when`(itemRepository.findBySku(STOCK[1].sku)).thenReturn(ITEMS[1])
         `when`(itemRepository.findBySku(STOCK[2].sku)).thenReturn(ITEMS[2])
         `when`(itemRepository.findBySku(STOCK[3].sku)).thenReturn(ITEMS[3])
+
+        `when`(itemRepository.findById(0L)).thenReturn(ITEM)
+        `when`(itemRepository.findById(1L)).thenReturn(null)
     }
 
     private fun givenStockRepository() {
@@ -101,8 +126,16 @@ class DefaultItemServiceShould {
         savedItem = itemService.save(ITEM)
     }
 
-    private fun whenSearchingTheItem() {
+    private fun whenSearchingTheItembyDescription() {
         itemFound = itemService.findAllItemByShortDescription(SHORT_DESCRIPTION)[0]
+    }
+
+    private fun whenSearchingTheItemById() {
+        itemFound = itemService.findItemById(0L)!!
+    }
+
+    private fun whenSearchingTheItemByInvalidId() {
+        itemFound = itemService.findItemById(1L)
     }
 
     private fun whenFindingStock() {
@@ -119,6 +152,16 @@ class DefaultItemServiceShould {
 
     private fun thenItemIsFound() {
         verify(itemRepository).findAllItemByShortDescription(SHORT_DESCRIPTION)
+    }
+
+    private fun thenItemIsFoundById() {
+        then(itemFound).isEqualTo(ITEM)
+        verify(itemRepository).findById(0L)
+    }
+
+    private fun thenItemIsNotFoundById() {
+        then(itemFound).isNull()
+        verify(itemRepository).findById(1L)
     }
 
     private fun thenItemFoundIsReturned() {

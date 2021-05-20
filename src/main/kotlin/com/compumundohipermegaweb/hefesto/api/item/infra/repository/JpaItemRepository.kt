@@ -20,6 +20,14 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
         return itemDao?.toItem()
     }
 
+    override fun findById(id: Long): Item? {
+        val item = repository.findById(id)
+        if(item.isPresent){
+            return item.get().toItem()
+        }
+        return null
+    }
+
     private fun ItemDao.toItem(): Item {
         return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
     }

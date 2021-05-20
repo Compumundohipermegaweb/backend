@@ -4,6 +4,8 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
+import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
@@ -28,6 +30,7 @@ class InvoiceSaleShould {
     private lateinit var saleService: SaleService
     private lateinit var invoiceService: InvoiceService
     private lateinit var stockService: StockService
+    private lateinit var itemService: ItemService
 
     private lateinit var generatedInvoice: Invoice
 
@@ -38,6 +41,7 @@ class InvoiceSaleShould {
         givenSaleService()
         givenInvoiceService()
         givenStockService()
+        givenItemService()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
@@ -50,6 +54,7 @@ class InvoiceSaleShould {
         givenSaleService()
         givenInvoiceService()
         givenStockService()
+        givenItemService()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
@@ -72,8 +77,13 @@ class InvoiceSaleShould {
         `when`(stockService.reduceStock(any(), any(), any())).then {  }
     }
 
+    private fun givenItemService() {
+        itemService = mock()
+        `when`(itemService.findItemById(0L)).thenReturn(ITEM)
+    }
+
     private fun givenInvoiceSale() {
-        invoiceSale = InvoiceSale(saleService, invoiceService, stockService)
+        invoiceSale = InvoiceSale(saleService, invoiceService, stockService, itemService)
     }
 
     private fun whenInvoiceSale(saleRequest: SaleRequest) {
@@ -89,11 +99,12 @@ class InvoiceSaleShould {
         val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "")
         val CLIENT_REQUEST = ClientRequest(0L,"", "", "", "", 0.0, "", "")
         val CLIENT = Client(0L, "", "", "", "", 0.0, "", "")
+        val ITEM = Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0)
         val SALE_ITEM_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, "",1, 200.50))
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentRequest("EFECTIVO",  200.50))
         val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)
         val TYPE_A_SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST)
-        val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "",1, 200.50))
+        val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "","",1, 200.50))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L, "EFECTIVO",200.50))
         val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL)
         val SAVED_SALE_TYPE_A = Sale(0L, TYPE_A_SALE_REQUEST.invoiceType, CLIENT, TYPE_A_SALE_REQUEST.salesmanId, TYPE_A_SALE_REQUEST.branchId, SALE_DETAILS, 200.5)

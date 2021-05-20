@@ -6,4 +6,5 @@ interface ItemService {
     fun save(item: Item): Item
     fun findAllItemByShortDescription(shortDescription: String): List<Item>
     fun findAllWithStock(branchId: Long): List<Item>
+    fun findItemById(id: Long): Item?
 }

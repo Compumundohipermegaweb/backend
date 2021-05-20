@@ -7,4 +7,5 @@ interface ItemRepository {
     fun save(item: ItemDao): ItemDao
     fun findAllItemByShortDescription(description: String): List<ItemDao>
     fun findBySku(sku: String): Item?
+    fun findById(id: Long): Item?
 }

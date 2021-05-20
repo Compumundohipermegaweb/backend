@@ -5,6 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "SALE_DETAIL")
 data class SaleDetailDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
+                         @Column(name = "SKU") val sku: String,
                          @Column(name = "DESCRIPTION") val description: String,
                          @Column(name = "SALE_ID") val saleId: Long,
                          @Column(name = "QUANTITY") val quantity: Int,

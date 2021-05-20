@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import java.util.*
 
 class JpaItemRepositoryShould {
     private lateinit var springDataItemRepository: SpringDataItemRepository
@@ -39,7 +40,7 @@ class JpaItemRepositoryShould {
     }
 
     @Test
-    fun `find the item`() {
+    fun `find the item by description`() {
         givenItemCrudRepository()
         givenItemRepository()
 
@@ -68,12 +69,33 @@ class JpaItemRepositoryShould {
         then(itemFound).isEqualTo(EXPECTED_ITEM)
     }
 
+    @Test
+    fun `find by id`() {
+        givenItemCrudRepository()
+        givenItemRepository()
+
+        itemFound = itemRepository.findById(1L)
+
+        then(itemFound).isEqualTo(EXPECTED_ITEM)
+    }
+
+    @Test
+    fun `not find by id`() {
+        givenItemCrudRepository()
+        givenItemRepository()
+
+        itemFound = itemRepository.findById(0L)
+
+        then(itemFound).isNull()
+    }
 
     private fun givenItemCrudRepository() {
         springDataItemRepository = mock(SpringDataItemRepository::class.java)
         `when`(springDataItemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
         `when`(springDataItemRepository.findAllItemByDescription("%$DESCRIPTION%")).thenReturn(listOf(ITEM_DAO, ANOTHER_ITEM_DAO))
         `when`(springDataItemRepository.findBySku(SKU)).thenReturn(ITEM_DAO_WITH_SKU)
+        `when`(springDataItemRepository.findById(ID)).thenReturn(Optional.of(ITEM_DAO_WITH_SKU))
+        `when`(springDataItemRepository.findById(0L)).thenReturn(Optional.empty())
     }
 
     private fun givenItemRepository() {
@@ -106,6 +128,7 @@ class JpaItemRepositoryShould {
     }
 
     private companion object {
+        const val ID = 1L
         const val SKU = "123"
         const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
         const val DESCRIPTION = "DESCRIPTION"
