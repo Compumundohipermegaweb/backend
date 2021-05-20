@@ -24,7 +24,7 @@ class SaleController(private val invoiceSale: InvoiceSale) {
 
     private fun Invoice.toInvoiceResponse() = InvoiceResponse(voucherNumber, SimpleDateFormat("dd/MM/yyyy").format(billingDate), type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)
 
-    private fun Client.toClientResponse() = ClientResponse(id,documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+    private fun Client.toClientResponse() = ClientResponse(documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
 
     private fun SaleDetails.toSaleDetailsResponse() = SaleDetailsResponse(details.map { SaleItemDetailResponse(it.id, it.description, it.quantity, it.unitPrice) }.toList())
 }

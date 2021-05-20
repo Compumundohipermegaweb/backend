@@ -31,6 +31,6 @@ class ClientController(private val registerClient: RegisterClient, private val f
     }
 
     private fun Client.toClientResponse(): ClientResponse {
-        return ClientResponse(id,documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+        return ClientResponse(documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }
 }
