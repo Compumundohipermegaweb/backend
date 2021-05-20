@@ -1,6 +1,5 @@
 package com.compumundohipermegaweb.hefesto.api.invoice.domain.service
 
-import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.repository.InvoiceRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
@@ -36,7 +35,7 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
                     voucherNumber = "",
                     billingDate = Date(),
                     type = sale.type,
-                    client = defaultClient(sale.type),
+                    client = sale.client,
                     branchId = sale.branchId,
                     branchAddress = "Domicilio fiscal",
                     branchContact = "1134567892",
@@ -46,13 +45,5 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
                     subTotal = subTotal,
                     ivaSubTotal = iva,
                     total = sale.total)
-
-    private fun defaultClient(invoiceType: String): Client {
-        return when(invoiceType) {
-            "B" -> Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "")
-            else -> Client(0L, "", "", "", "", 0.0, "", "")
-        }
-    }
-
 }
 

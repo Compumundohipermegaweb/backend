@@ -1,5 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.sale.domain.action
 
+import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
+import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
@@ -31,7 +33,7 @@ class InvoiceSale(private val saleService: SaleService,
         val total = saleDetails.details.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
         return Sale(id = 0L,
             type = invoiceType,
-            clientId = 0L,
+            client = clientRequest.toClient(),
             salesmanId = salesmanId,
             branchId = branchId,
             saleDetails = saleDetails,
@@ -43,6 +45,11 @@ class InvoiceSale(private val saleService: SaleService,
     private fun SaleDetailsRequest.toSaleDetails() =
         SaleDetails(detailsRequest.map { SaleDetail(it.id, it.description, it.quantity, it.unitPrice) }, paymentsRequest.map { SalePayment(0L, it.type, it.subTotal) })
 
+    private fun ClientRequest.toClient(): Client {
+        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+    }
 }
+
+
 
 

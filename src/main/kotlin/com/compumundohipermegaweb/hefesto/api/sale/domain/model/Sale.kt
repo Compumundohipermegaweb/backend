@@ -4,7 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 
 data class Sale(val id: Long,
                 val type: String,
-                val clientId: Long,
+                val client: Client,
                 val salesmanId: Long,
                 val branchId: Long,
                 var saleDetails: SaleDetails,
