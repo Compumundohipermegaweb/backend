@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class ClientResponse(@JsonProperty("document_number") val documentNumber: String,
+data class ClientResponse(@JsonProperty("id") val id: Long,
+                          @JsonProperty("document_number") val documentNumber: String,
                           @JsonProperty("first_name") val firstName: String,
                           @JsonProperty("last_name") val lastName: String,
                           @JsonProperty("state") val state: String,
