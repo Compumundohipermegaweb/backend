@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale
 
+import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
@@ -113,8 +114,9 @@ class DefaultSaleServiceShould {
     private companion object {
         const val INVOICE_ID = 0L
         const val SALE_ID = 0L
+        val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "",0, 0.0))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L, "EFECTIVO", 0.0))
-        val SALE = Sale(SALE_ID, "B", 0L, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0)
+        val SALE = Sale(SALE_ID, "B", CLIENT, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0)
     }
 }

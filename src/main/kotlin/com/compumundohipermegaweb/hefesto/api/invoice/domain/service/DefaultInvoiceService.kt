@@ -36,7 +36,7 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
                     voucherNumber = "",
                     billingDate = Date(),
                     type = sale.type,
-                    client = defaultClient(sale.type),
+                    client = sale.client,//defaultClient(sale.type),
                     branchId = sale.branchId,
                     branchAddress = "Domicilio fiscal",
                     branchContact = "1134567892",
@@ -46,12 +46,13 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
                     subTotal = subTotal,
                     ivaSubTotal = iva,
                     total = sale.total)
-
+/*
     private fun defaultClient(invoiceType: String): Client {
         return when(invoiceType) {
             "B" -> Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "")
             else -> Client(0L, "", "", "", "", 0.0, "", "")
         }
     }
+*/
 }
 
