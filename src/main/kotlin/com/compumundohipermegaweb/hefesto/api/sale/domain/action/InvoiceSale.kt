@@ -46,7 +46,13 @@ class InvoiceSale(private val saleService: SaleService,
 
     private fun SaleDetailsRequest.toSaleDetails(): SaleDetails {
         val saleDetails = SaleDetails(detailsRequest.map { SaleDetail(it.id, "", it.description, it.quantity, it.unitPrice) }, paymentsRequest.map { SalePayment(0L, it.type, it.subTotal) })
-        saleDetails.details.forEach { val item = itemService.findItemById(it.id); if(item != null){ it.sku = item.sku  }; it.id = 0L }
+        saleDetails.details.forEach {
+            val item = itemService.findItemById(it.id)
+            if(item != null) {
+                it.sku = item.sku
+            }
+            //it.id = 0L
+        }
         return saleDetails
     }
 
