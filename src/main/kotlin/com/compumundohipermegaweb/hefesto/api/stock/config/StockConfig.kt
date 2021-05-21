@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.stock.config
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration
 class StockConfig {
 
     @Bean
-    fun stockService(stockRepository: StockRepository): StockService {
-        return DefaultStockService(stockRepository)
+    fun stockService(stockRepository: StockRepository, itemRepository: ItemRepository): StockService {
+        return DefaultStockService(stockRepository, itemRepository)
     }
 
     @Bean

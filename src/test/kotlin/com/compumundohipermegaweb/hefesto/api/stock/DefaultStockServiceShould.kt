@@ -1,5 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.stock
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
+import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
@@ -13,6 +15,7 @@ import java.util.*
 
 class DefaultStockServiceShould {
     private lateinit var stockRepository: StockRepository
+    private lateinit var itemRepository: ItemRepository
     private lateinit var stockService: DefaultStockService
 
     private lateinit var stockSaved: Stock
@@ -20,8 +23,9 @@ class DefaultStockServiceShould {
 
     @Test
     fun `save the stock`() {
-        givenStockCrudRepository()
         givenStockRepository()
+        givenItemRepository()
+        givenStockService()
 
         whenSavingTheStock()
 
@@ -30,8 +34,9 @@ class DefaultStockServiceShould {
 
     @Test
     fun `find the result for a sku`() {
-        givenStockCrudRepository()
         givenStockRepository()
+        givenItemRepository()
+        givenStockService()
 
         whenFindingTheStock()
 
@@ -40,8 +45,9 @@ class DefaultStockServiceShould {
 
     @Test
     fun `not find the result for a sku non-existent`() {
-        givenStockCrudRepository()
         givenStockRepository()
+        givenItemRepository()
+        givenStockService()
 
         whenFindingTheStockWhitNonExistsSku()
 
@@ -49,23 +55,25 @@ class DefaultStockServiceShould {
     }
     @Test
     fun `find the result for a sku and branch`() {
-        givenStockCrudRepository()
         givenStockRepository()
+        givenItemRepository()
+        givenStockService()
         whenFindingTheStockAvailableBySkuAndBranch()
         thenStockAvailableFound()
     }
 
     @Test
     fun `reduce the stock`() {
-        givenStockCrudRepository()
         givenStockRepository()
+        givenItemRepository()
+        givenStockService()
 
         whenReducingTheStock()
 
         thenStockReduced()
     }
 
-    private fun givenStockCrudRepository() {
+    private fun givenStockRepository() {
         stockRepository = mock()
         `when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
         `when`(stockRepository.save(STOCK_DAO_SAVED)).thenReturn(STOCK_DAO_SAVED)
@@ -74,11 +82,16 @@ class DefaultStockServiceShould {
         `when`(stockRepository.findBySku(STOCK.sku)).thenReturn(Optional.of(STOCK_DAO))
         `when`(stockRepository.findByIdAndBranchId(STOCK.id, STOCK.branchId)).thenReturn(STOCK)
         `when`(stockRepository.findBySkuAndBranchId("1",1L)).thenReturn(STOCK_DAO_1)
-
+        `when`(stockRepository.findBySkuAndBranchId("2",0L)).thenReturn(STOCK_DAO)
     }
 
-    private fun givenStockRepository() {
-        stockService = DefaultStockService(stockRepository)
+    private fun givenItemRepository() {
+        itemRepository = mock()
+        `when`(itemRepository.findById(0L)).thenReturn(ITEM)
+    }
+
+    private fun givenStockService() {
+        stockService = DefaultStockService(stockRepository, itemRepository)
     }
 
     private fun whenFindingTheStock() {
@@ -91,7 +104,6 @@ class DefaultStockServiceShould {
     private fun whenFindingTheStockAvailableBySkuAndBranch() {
         stockFound = stockService.findBySkuAndBranchId("1",1L)
     }
-
 
     private fun whenSavingTheStock() {
         stockSaved = stockService.save(STOCK_TO_SAVE)
@@ -118,17 +130,17 @@ class DefaultStockServiceShould {
     }
 
     private fun thenStockReduced(){
-        verify(stockRepository).save(REDUCED_STOCK_DAO)
+        verify(stockRepository).save(STOCK_DAO)
         then(STOCK.stockTotal).isEqualTo(50)
     }
 
     private companion object {
-
+        val ITEM = Item(0L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0)
         val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0)
         val STOCK_DAO_SAVED = StockDao(2L, "2", 0, 0,0, 0)
-        val STOCK = Stock(0L, "1", 0, 100, 0,0)
-        val STOCK_DAO = StockDao(0L, "1", 0, 100,0, 0)
-        val REDUCED_STOCK_DAO = StockDao(0L, "1", 0, 50,0, 0)
+        val STOCK = Stock(0L, "1", 0, 50, 0,0)
+        val STOCK_DAO = StockDao(0L, "2", 0, 100,0, 0)
+        val REDUCED_STOCK_DAO = StockDao(1L, "1", 1, 50,0, 0)
         val STOCK_DAO_1 = StockDao(0L, "1", 1L, 3,0, 0)
 
     }
