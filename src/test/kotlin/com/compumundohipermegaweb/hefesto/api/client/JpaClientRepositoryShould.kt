@@ -2,9 +2,9 @@ package com.compumundohipermegaweb.hefesto.api.client
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infrastructure.ClientDao
-import com.compumundohipermegaweb.hefesto.api.client.infrastructure.JpaClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infrastructure.SpringDataClientRepository
+import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientDao
+import com.compumundohipermegaweb.hefesto.api.client.infra.repository.JpaClientRepository
+import com.compumundohipermegaweb.hefesto.api.client.infra.repository.SpringDataClientRepository
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito

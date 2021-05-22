@@ -5,8 +5,8 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClien
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.DefaultClientService
-import com.compumundohipermegaweb.hefesto.api.client.infrastructure.JpaClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infrastructure.SpringDataClientRepository
+import com.compumundohipermegaweb.hefesto.api.client.infra.repository.JpaClientRepository
+import com.compumundohipermegaweb.hefesto.api.client.infra.repository.SpringDataClientRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

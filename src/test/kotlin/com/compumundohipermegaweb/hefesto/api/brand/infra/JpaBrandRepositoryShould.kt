@@ -2,6 +2,9 @@ package com.compumundohipermegaweb.hefesto.api.brand.infra
 
 import com.compumundohipermegaweb.hefesto.api.brand.domain.model.Brand
 import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
+import com.compumundohipermegaweb.hefesto.api.brand.infra.repository.JpaBrandRepository
+import com.compumundohipermegaweb.hefesto.api.brand.infra.repository.SpringDataBrandClient
+import com.compumundohipermegaweb.hefesto.api.brand.infra.representation.BrandDao
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
