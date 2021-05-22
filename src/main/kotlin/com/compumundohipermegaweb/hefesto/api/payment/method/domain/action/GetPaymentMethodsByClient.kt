@@ -15,17 +15,20 @@ class GetPaymentMethodsByClient(private val paymentMethodService: PaymentMethodS
     }
 
     private fun filterPaymentMethodsByClient(clientId: Long, paymentMethods: List<PaymentMethod>): List<PaymentMethod> {
+        var filterPaymentMethods: List<PaymentMethod> = paymentMethods
         val client = clientService.findById(clientId)
+
         if(client != null) {
             if(client.state == "MOROSO"){
-                paymentMethods.filter { it.paymentMethod != "CUENTA CORRIENTE" }
+                filterPaymentMethods = paymentMethods.filterNot { it.description == "CUENTA CORRIENTE" }
             } else {
                 val checkingAccount = checkingAccountService.findCheckingAccountByClientId(clientId)
                 if(checkingAccount == null) {
-                    paymentMethods.filter { it.paymentMethod != "CUENTA CORRIENTE" }
+                    filterPaymentMethods = paymentMethods.filterNot { it.description == "CUENTA CORRIENTE" }
                 }
             }
         }
-        return paymentMethods
+
+        return filterPaymentMethods
     }
 }

@@ -49,8 +49,8 @@ class JpaCheckingAccountRepositoryShould {
 
     private fun givenSpringCheckingAccountRepository() {
         springDataCheckingAccountDao = mock()
-        `when`(springDataCheckingAccountDao.findCheckingAccountByClientId(0L)).thenReturn(CHECKING_ACCOUNT_REPRESENTATION)
-        `when`(springDataCheckingAccountDao.findCheckingAccountByClientId(1L)).thenReturn(null)
+        `when`(springDataCheckingAccountDao.findByClientId(0L)).thenReturn(CHECKING_ACCOUNT_REPRESENTATION)
+        `when`(springDataCheckingAccountDao.findByClientId(1L)).thenReturn(null)
     }
 
     private fun givenCheckingAccountRepository() {
@@ -62,7 +62,7 @@ class JpaCheckingAccountRepositoryShould {
     }
 
     private fun thenCheckingAccountIsFound() {
-        verify(springDataCheckingAccountDao).findCheckingAccountByClientId(0L)
+        verify(springDataCheckingAccountDao).findByClientId(0L)
         then(checkingAccountFound).isNotNull
     }
 
@@ -71,7 +71,7 @@ class JpaCheckingAccountRepositoryShould {
     }
 
     private fun thenCheckingAccountIsNotFound() {
-        verify(springDataCheckingAccountDao).findCheckingAccountByClientId(1L)
+        verify(springDataCheckingAccountDao).findByClientId(1L)
         then(checkingAccountFound).isNull()
     }
 

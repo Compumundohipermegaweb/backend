@@ -16,11 +16,11 @@ class JpaPaymentMethodRepository (private val springDataPaymentMethodClient: Spr
     }
 
     private fun PaymentMethod.toPaymentMethodDao(): PaymentMethodDao {
-        return PaymentMethodDao(id, paymentMethod, state)
+        return PaymentMethodDao(id, description, state)
     }
 
     private fun PaymentMethodDao.toPaymentMethod(): PaymentMethod {
-        return PaymentMethod(id, paymentMethod, state)
+        return PaymentMethod(id, description, state)
     }
 }
 

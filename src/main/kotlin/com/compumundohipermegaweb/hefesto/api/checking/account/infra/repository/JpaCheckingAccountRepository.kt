@@ -6,11 +6,8 @@ import com.compumundohipermegaweb.hefesto.api.checking.account.infra.representat
 
 class JpaCheckingAccountRepository(private val springDataCheckingAccountDao: SpringDataCheckingAccountDao): CheckingAccountRepository {
     override fun findCheckingAccountByClientId(clientId: Long): CheckingAccount? {
-        val checkingAccountRepresentation = springDataCheckingAccountDao.findCheckingAccountByClientId(clientId)
-        if(checkingAccountRepresentation != null) {
-            return checkingAccountRepresentation.toCheckingAccount()
-        }
-        return null
+        val checkingAccountRepresentation = springDataCheckingAccountDao.findByClientId(clientId)
+        return checkingAccountRepresentation?.toCheckingAccount()
     }
 
     private fun CheckingAccountRepresentation.toCheckingAccount(): CheckingAccount {

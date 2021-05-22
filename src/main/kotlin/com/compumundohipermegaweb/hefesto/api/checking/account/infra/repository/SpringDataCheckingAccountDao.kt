@@ -4,5 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.checking.account.infra.representat
 import org.springframework.data.repository.CrudRepository
 
 interface SpringDataCheckingAccountDao: CrudRepository<CheckingAccountRepresentation, Long> {
-    fun findCheckingAccountByClientId(clientId: Long): CheckingAccountRepresentation
+    fun findByClientId(clientId: Long): CheckingAccountRepresentation?
 }
