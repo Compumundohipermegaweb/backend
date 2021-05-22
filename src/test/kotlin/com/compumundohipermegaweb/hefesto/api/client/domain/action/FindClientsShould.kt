@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.client.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ActionData
+import com.compumundohipermegaweb.hefesto.api.client.rest.request.ActionData
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test

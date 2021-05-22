@@ -1,6 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale.rest.response
 
-import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientResponse
+import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 

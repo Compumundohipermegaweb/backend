@@ -1,7 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.sale.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
-import com.compumundohipermegaweb.hefesto.api.client.rest.representation.ClientResponse
+import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
