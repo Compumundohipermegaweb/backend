@@ -8,9 +8,20 @@ class JpaPaymentMethodRepository (private val springDataPaymentMethodClient: Spr
     PaymentMethodRepository {
 
     override fun save(paymentMethod: PaymentMethod): PaymentMethod {
-        val paymentMethodDao = PaymentMethodDao(paymentMethod.id,paymentMethod.paymentMethod,paymentMethod.state)
-        return springDataPaymentMethodClient.save(paymentMethodDao).toPaymentMethod()
+        return springDataPaymentMethodClient.save(paymentMethod.toPaymentMethodDao()).toPaymentMethod()
     }
 
-    private fun PaymentMethodDao.toPaymentMethod() = PaymentMethod(id, paymentMethod, state)
+    override fun findAllPaymentMethod(): List<PaymentMethod> {
+        return springDataPaymentMethodClient.findAll().map { it.toPaymentMethod() }
+    }
+
+    private fun PaymentMethod.toPaymentMethodDao(): PaymentMethodDao {
+        return PaymentMethodDao(id, paymentMethod, state)
+    }
+
+    private fun PaymentMethodDao.toPaymentMethod(): PaymentMethod {
+        return PaymentMethod(id, paymentMethod, state)
+    }
 }
+
+

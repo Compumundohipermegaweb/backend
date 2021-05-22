@@ -1,10 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.payment.method.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
 
-class RegisterPaymentMethod (private val paymentMethodRepository: PaymentMethodRepository){
-    operator fun invoke (paymentMethod: PaymentMethod) = paymentMethodRepository.save(paymentMethod)
-
+class RegisterPaymentMethod (private val paymentMethodService: PaymentMethodService){
+    operator fun invoke (paymentMethod: PaymentMethod): PaymentMethod {
+        return paymentMethodService.savePaymentMethod(paymentMethod)
+    }
 }
 

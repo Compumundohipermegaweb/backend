@@ -4,4 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.Paymen
 
 interface PaymentMethodRepository {
     fun save (paymentMethod : PaymentMethod) : PaymentMethod
+    fun findAllPaymentMethod(): List<PaymentMethod>
 }
