@@ -6,4 +6,5 @@ interface ClientRepository {
     fun save(client: Client): Client
     fun findByFirstNameOrLastNameIn(names: List<String>): List<Client>
     fun findByDocument(document: String): Client?
+    fun findById(id: Long): Client?
 }

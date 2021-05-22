@@ -7,4 +7,8 @@ class DefaultClientService(private val clientRepository: ClientRepository): Clie
     override fun save(client: Client): Client {
         return clientRepository.save(client)
     }
+
+    override fun findById(id: Long): Client? {
+        return clientRepository.findById(id)
+    }
 }

@@ -4,4 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 
 interface ClientService {
     fun save(client: Client): Client
+    fun findById(id: Long): Client?
 }

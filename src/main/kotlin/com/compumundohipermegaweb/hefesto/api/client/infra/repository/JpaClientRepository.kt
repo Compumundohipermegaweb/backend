@@ -18,6 +18,14 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         return repository.findByDocumentNumber(document)?.toClient()
     }
 
+    override fun findById(id: Long): Client? {
+        val client = repository.findById(id)
+        if(client.isPresent){
+            return client.get().toClient()
+        }
+        return null
+    }
+
     private fun ClientDao.toClient(): Client {
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
     }

@@ -1,5 +1,6 @@
-package com.compumundohipermegaweb.hefesto.api.client.domain.action
+package com.compumundohipermegaweb.hefesto.api.client
 
+import com.compumundohipermegaweb.hefesto.api.client.domain.action.FindClients
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ActionData
@@ -109,7 +110,9 @@ class FindClientsShould {
     private fun givenClientRepository() {
         clientRepository = mock()
         `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_1.firstName))).thenReturn(listOf(CLIENT_1, CLIENT_2))
-        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_3.firstName, CLIENT_3.lastName))).thenReturn(listOf(CLIENT_2, CLIENT_3))
+        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_3.firstName, CLIENT_3.lastName))).thenReturn(listOf(
+            CLIENT_2, CLIENT_3
+        ))
         `when`(clientRepository.findByDocument(CLIENT_1.documentNumber)).thenReturn(CLIENT_1)
         `when`(clientRepository.findByDocument(CLIENT_3.documentNumber)).thenReturn(CLIENT_3)
         `when`(clientRepository.findByDocument(UNKNOWN_DOCUMENT)).thenReturn(null)

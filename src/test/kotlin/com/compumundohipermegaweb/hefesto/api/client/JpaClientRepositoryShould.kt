@@ -2,15 +2,16 @@ package com.compumundohipermegaweb.hefesto.api.client
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientDao
 import com.compumundohipermegaweb.hefesto.api.client.infra.repository.JpaClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.infra.repository.SpringDataClientRepository
+import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientDao
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import java.util.*
 
 class JpaClientRepositoryShould {
 
@@ -71,6 +72,36 @@ class JpaClientRepositoryShould {
         thenNoClientsWhereFound()
     }
 
+    @Test
+    fun `find client by id`() {
+        givenSpringDataClientRepository()
+        givenClientRepository()
+
+        whenFindingClientById(CLIENT.id)
+
+        thenClientHasBeenFoundById()
+    }
+
+    @Test
+    fun `return the found client by id`() {
+        givenSpringDataClientRepository()
+        givenClientRepository()
+
+        whenFindingClientById(CLIENT.id)
+
+        thenTheFoundClientIsReturned()
+    }
+
+    @Test
+    fun `not find client by id`() {
+        givenSpringDataClientRepository()
+        givenClientRepository()
+
+        whenFindingClientById(1L)
+
+        thenClientHasNotFoundById()
+    }
+
     private fun givenSpringDataClientRepository() {
         springDataClientRepository = mock(SpringDataClientRepository::class.java)
         `when`(springDataClientRepository.save(CLIENT_DAO)).thenReturn(CLIENT_DAO)
@@ -78,6 +109,7 @@ class JpaClientRepositoryShould {
         `when`(springDataClientRepository.findByDocumentNumber(CLIENT.documentNumber)).thenReturn(CLIENT_DAO)
         `when`(springDataClientRepository.findAllByFirstOrLastName(listOf(RANDOM_FIRST_NAME, RANDOM_LAST_NAME))).thenReturn(emptyList())
         `when`(springDataClientRepository.findByDocumentNumber(RANDOM_DOCUMENT_NUMBER)).thenReturn(null)
+        `when`(springDataClientRepository.findById(CLIENT_DAO.id)).thenReturn(Optional.of(CLIENT_DAO))
     }
 
     private fun givenClientRepository() {
@@ -96,6 +128,10 @@ class JpaClientRepositoryShould {
         clientFound = clientRepository.findByDocument(documentNumber)
     }
 
+    private fun whenFindingClientById(clientId: Long) {
+        clientFound = clientRepository.findById(clientId)
+    }
+
     private fun thenInputSaved() {
         verify(springDataClientRepository).save(Mockito.any())
         then(clientSaved).isNotNull
@@ -109,12 +145,26 @@ class JpaClientRepositoryShould {
         then(clientFound).isEqualTo(CLIENT)
     }
 
+    private fun thenClientHasBeenFoundById() {
+        verify(springDataClientRepository).findById(CLIENT.id)
+        then(clientFound).isNotNull
+    }
+
+    private fun thenClientHasNotFoundById() {
+        verify(springDataClientRepository).findById(1L)
+        then(clientFound).isNull()
+    }
+
     private fun thenNoClientWhereFound() {
         then(clientFound).isNull()
     }
 
     private fun thenNoClientsWhereFound() {
         then(clientsFound).isEmpty()
+    }
+
+    private fun thenTheFoundClientIsReturned() {
+        then(clientFound).isEqualTo(CLIENT)
     }
 
     private companion object {
