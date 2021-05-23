@@ -31,6 +31,10 @@ class DefaultItemService(private val itemRepository: ItemRepository,
         return itemRepository.findById(id)
     }
 
+    override fun findAllItems(): List<Item> {
+        return itemRepository.findAllItem()
+    }
+
     private fun Item.toItemDao(): ItemDao {
         return ItemDao(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, imported, state.toUpperCase())
     }

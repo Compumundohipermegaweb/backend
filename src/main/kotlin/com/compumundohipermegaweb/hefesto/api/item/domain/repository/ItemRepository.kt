@@ -8,4 +8,5 @@ interface ItemRepository {
     fun findAllItemByShortDescription(description: String): List<ItemDao>
     fun findBySku(sku: String): Item?
     fun findById(id: Long): Item?
+    fun findAllItem(): List<Item>
 }

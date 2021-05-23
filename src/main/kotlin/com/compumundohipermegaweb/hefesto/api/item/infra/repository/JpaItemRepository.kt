@@ -28,6 +28,10 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
         return null
     }
 
+    override fun findAllItem(): List<Item> {
+        return repository.findAll().map { it.toItem() }
+    }
+
     private fun ItemDao.toItem(): Item {
         return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
     }
