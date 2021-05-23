@@ -4,4 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.checking.account.domain.model.Chec
 
 interface CheckingAccountService {
     fun findCheckingAccountByClientId(clientId: Long): CheckingAccount?
+    fun discount(clientId: Long, amount: Double)
 }

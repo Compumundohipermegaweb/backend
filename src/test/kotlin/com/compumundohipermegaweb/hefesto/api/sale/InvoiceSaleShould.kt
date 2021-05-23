@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale
 
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
@@ -31,6 +32,7 @@ class InvoiceSaleShould {
     private lateinit var invoiceService: InvoiceService
     private lateinit var stockService: StockService
     private lateinit var itemService: ItemService
+    private lateinit var checkingAccountService: CheckingAccountService
 
     private lateinit var generatedInvoice: Invoice
 
@@ -42,6 +44,7 @@ class InvoiceSaleShould {
         givenInvoiceService()
         givenStockService()
         givenItemService()
+        givenCheckingAccountService()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
@@ -55,11 +58,30 @@ class InvoiceSaleShould {
         givenInvoiceService()
         givenStockService()
         givenItemService()
+        givenCheckingAccountService()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
 
         verify(saleService).save(any(), any())
+    }
+
+    @Test
+    fun `should discount client credit if uses it checking account`() {
+        givenSaleService()
+        givenInvoiceService()
+        givenStockService()
+        givenItemService()
+        givenCheckingAccountService()
+        givenInvoiceSale()
+
+        whenInvoiceSale(SALE_WITH_CHECKING_ACCOUNT_PAYMENT)
+
+        verify(checkingAccountService)
+                .discount(
+                        SALE_WITH_CHECKING_ACCOUNT_PAYMENT.clientRequest.id,
+                        SALE_WITH_CHECKING_ACCOUNT_PAYMENT.saleDetailsRequest.paymentsRequest[0].subTotal
+                )
     }
 
     private fun givenSaleService() {
@@ -82,8 +104,12 @@ class InvoiceSaleShould {
         `when`(itemService.findItemById(0L)).thenReturn(ITEM)
     }
 
+    private fun givenCheckingAccountService() {
+        checkingAccountService = mock()
+    }
+
     private fun givenInvoiceSale() {
-        invoiceSale = InvoiceSale(saleService, invoiceService, stockService, itemService)
+        invoiceSale = InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService)
     }
 
     private fun whenInvoiceSale(saleRequest: SaleRequest) {
@@ -109,5 +135,37 @@ class InvoiceSaleShould {
         val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL)
         val SAVED_SALE_TYPE_A = Sale(0L, TYPE_A_SALE_REQUEST.invoiceType, CLIENT, TYPE_A_SALE_REQUEST.salesmanId, TYPE_A_SALE_REQUEST.branchId, SALE_DETAILS, 200.5)
         val SAVED_INVOICE_TYPE_A = Invoice(0L, "", Date(), SAVED_SALE_TYPE_A.type, DEFAULT_CLIENT, SAVED_SALE_TYPE_A.branchId,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SALE_DETAILS, 200.50, 42.105, 200.50)
+        val SALE_WITH_CHECKING_ACCOUNT_PAYMENT = SaleRequest(
+                invoiceType = "B",
+                clientRequest = ClientRequest(
+                        id = 14L,
+                        documentNumber = "",
+                        firstName = "",
+                        lastName = "",
+                        state = "",
+                        creditLimit = 0.0,
+                        email = "",
+
+                        contactNumber = ""
+                ),
+                salesmanId = 1L,
+                branchId = 1L,
+                saleDetailsRequest = SaleDetailsRequest(
+                        detailsRequest = listOf(
+                                SaleDetailRequest(
+                                        id = 1L,
+                                        description = "",
+                                        quantity = 1,
+                                        unitPrice = 150.50
+                                )
+                        ),
+                        paymentsRequest = listOf(
+                                PaymentRequest(
+                                        type = "CUENTA_CORRIENTE",
+                                        subTotal = 150.50
+                                )
+                        )
+                )
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale.domain.action
 
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
@@ -17,12 +18,19 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 class InvoiceSale(private val saleService: SaleService,
                   private val invoiceService: InvoiceService,
                   private val stockService: StockService,
-                  private val itemService: ItemService,
-) {
+                  private val itemService: ItemService, private val checkingAccountService: CheckingAccountService) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
         val sale = saleRequest.toSale()
 
-        sale.saleDetails.details.forEach { stockService.reduceStock(it.id, sale.branchId, it.quantity) }
+        sale.saleDetails.details.forEach {
+            stockService.reduceStock(it.id, sale.branchId, it.quantity)
+        }
+
+        sale.saleDetails.payments.forEach {
+            if(it.type == "CUENTA_CORRIENTE") {
+                checkingAccountService.discount(sale.client.id, it.subTotal)
+            }
+        }
 
         val invoice = invoiceService.invoiceSale(sale)
         saleService.save(sale, invoice.id)

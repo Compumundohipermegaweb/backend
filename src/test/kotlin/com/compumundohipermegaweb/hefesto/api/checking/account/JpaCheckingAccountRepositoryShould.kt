@@ -47,6 +47,26 @@ class JpaCheckingAccountRepositoryShould {
         thenCheckingAccountIsNotFound()
     }
 
+    @Test
+    fun `update balance due`() {
+        givenSpringCheckingAccountRepository()
+        givenCheckingAccountRepository()
+
+        whenUpdatingBalanceDue(1L, 120.0)
+
+        thenBalanceDueWasUpdated(1L, 120.0)
+    }
+
+    @Test
+    fun `update balance`() {
+        givenSpringCheckingAccountRepository()
+        givenCheckingAccountRepository()
+
+        whenUpdatingBalance(2L, 350.10)
+
+        thenBalanceWasUpdated(2L, 350.10)
+    }
+
     private fun givenSpringCheckingAccountRepository() {
         springDataCheckingAccountDao = mock()
         `when`(springDataCheckingAccountDao.findByClientId(0L)).thenReturn(CHECKING_ACCOUNT_REPRESENTATION)
@@ -61,6 +81,14 @@ class JpaCheckingAccountRepositoryShould {
         checkingAccountFound = checkingAccountRepository.findCheckingAccountByClientId(clientId)
     }
 
+    private fun whenUpdatingBalanceDue(clientId: Long, amount: Double) {
+        checkingAccountRepository.updateBalanceDue(clientId, amount)
+    }
+
+    private fun whenUpdatingBalance(clientId: Long, amount: Double) {
+        checkingAccountRepository.updateBalance(clientId, amount)
+    }
+
     private fun thenCheckingAccountIsFound() {
         verify(springDataCheckingAccountDao).findByClientId(0L)
         then(checkingAccountFound).isNotNull
@@ -73,6 +101,14 @@ class JpaCheckingAccountRepositoryShould {
     private fun thenCheckingAccountIsNotFound() {
         verify(springDataCheckingAccountDao).findByClientId(1L)
         then(checkingAccountFound).isNull()
+    }
+
+    private fun thenBalanceDueWasUpdated(clientId: Long, amount: Double) {
+        verify(springDataCheckingAccountDao).updateBalanceDueByClient(clientId, amount)
+    }
+
+    private fun thenBalanceWasUpdated(clientId: Long, amount: Double) {
+        verify(springDataCheckingAccountDao).updateBalanceByClient(clientId, amount)
     }
 
     private companion object {

@@ -10,6 +10,14 @@ class JpaCheckingAccountRepository(private val springDataCheckingAccountDao: Spr
         return checkingAccountRepresentation?.toCheckingAccount()
     }
 
+    override fun updateBalanceDue(clientId: Long, amount: Double) {
+        springDataCheckingAccountDao.updateBalanceDueByClient(clientId, amount)
+    }
+
+    override fun updateBalance(clientId: Long, amount: Double) {
+        springDataCheckingAccountDao.updateBalanceByClient(clientId, amount)
+    }
+
     private fun CheckingAccountRepresentation.toCheckingAccount(): CheckingAccount {
         return CheckingAccount(id, clientId, creditLimit, balanceDue, balance)
     }

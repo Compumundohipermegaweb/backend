@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.sale.config
 
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.DefaultInvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
@@ -17,8 +18,12 @@ import org.springframework.context.annotation.Configuration
 class SaleConfig {
 
     @Bean
-    fun invoiceSale(saleService: DefaultSaleService, invoiceService: DefaultInvoiceService, stockService: DefaultStockService, itemService: DefaultItemService): InvoiceSale {
-        return InvoiceSale(saleService, invoiceService, stockService, itemService)
+    fun invoiceSale(saleService: DefaultSaleService,
+                    invoiceService: DefaultInvoiceService,
+                    stockService: DefaultStockService,
+                    itemService: DefaultItemService,
+                    checkingAccountService: CheckingAccountService): InvoiceSale {
+        return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService)
     }
 
     @Bean

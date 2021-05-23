@@ -4,4 +4,6 @@ import com.compumundohipermegaweb.hefesto.api.checking.account.domain.model.Chec
 
 interface CheckingAccountRepository {
     fun findCheckingAccountByClientId(clientId: Long): CheckingAccount?
+    fun updateBalanceDue(clientId: Long, amount: Double)
+    fun updateBalance(clientId: Long, amount: Double)
 }
