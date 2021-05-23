@@ -83,9 +83,9 @@ class JpaPaymentMethodRepositoryShould {
 
 
     private companion object{
-        val PAYMENT_METHOD_DAO = PaymentMethodDao(0L,"EFECTIVO","ACTIVE")
-        val ANOTHER_PAYMENT_METHOD_DAO = PaymentMethodDao(1L,"CUENTA CORRIENTE","ACTIVE")
-        val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO","ACTIVE")
-        val ANOTHER_PAYMENT_METHOD = PaymentMethod(1L,"CUENTA CORRIENTE","ACTIVE")
+        val PAYMENT_METHOD_DAO = PaymentMethodDao(0L, "EFECTIVO","EFECTIVO", "ACTIVE")
+        val ANOTHER_PAYMENT_METHOD_DAO = PaymentMethodDao(1L,"CUENTA_CORRIENTE", "CUENTA_CORRIENTE", "ACTIVE")
+        val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVE")
+        val ANOTHER_PAYMENT_METHOD = PaymentMethod(1L,"CUENTA_CORRIENTE", "CUENTA_CORRIENTE", "ACTIVE")
     }
 }

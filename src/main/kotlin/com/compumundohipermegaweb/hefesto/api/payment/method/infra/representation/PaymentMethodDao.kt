@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table (name = "PAYMENT_METHOD")
 data class PaymentMethodDao (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
+    @Column(name = "TYPE") val type: String,
     @Column(name = "DESCRIPTION") val description: String,
     @Column(name = "STATE") val state: String
 )

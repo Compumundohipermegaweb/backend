@@ -58,6 +58,6 @@ class RegisterPaymentMethodShould {
     }
 
     private companion object{
-        val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO","ACTIVO")
+        val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVO")
     }
 }

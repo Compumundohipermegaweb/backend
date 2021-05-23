@@ -11,7 +11,7 @@ class GetPaymentMethodsByClient(private val paymentMethodService: PaymentMethodS
     operator fun invoke (clientId: Long): List<PaymentMethod> {
         var paymentMethods = paymentMethodService.findAllPaymentMethod()
         paymentMethods = filterPaymentMethodsByClient(clientId, paymentMethods)
-        return paymentMethods.filter { it.state == "ACTIVE" }
+        return paymentMethods.filter { it.state.toUpperCase() == "ACTIVE" }
     }
 
     private fun filterPaymentMethodsByClient(clientId: Long, paymentMethods: List<PaymentMethod>): List<PaymentMethod> {
@@ -19,16 +19,15 @@ class GetPaymentMethodsByClient(private val paymentMethodService: PaymentMethodS
         val client = clientService.findById(clientId)
 
         if(client != null) {
-            if(client.state == "MOROSO"){
-                filterPaymentMethods = paymentMethods.filterNot { it.description == "CUENTA CORRIENTE" }
+            if(client.state.toUpperCase() == "MOROSO"){
+                filterPaymentMethods = paymentMethods.filterNot { it.type.toUpperCase() == "CUENTA_CORRIENTE" }
             } else {
                 val checkingAccount = checkingAccountService.findCheckingAccountByClientId(clientId)
                 if(checkingAccount == null) {
-                    filterPaymentMethods = paymentMethods.filterNot { it.description == "CUENTA CORRIENTE" }
+                    filterPaymentMethods = paymentMethods.filterNot { it.type.toUpperCase() == "CUENTA_CORRIENTE" }
                 }
             }
         }
-
         return filterPaymentMethods
     }
 }
