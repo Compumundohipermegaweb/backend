@@ -20,6 +20,7 @@ class DefaultStockServiceShould {
 
     private lateinit var stockSaved: Stock
     private  var stockFound: Stock? = null
+    private lateinit var stocked: List<Stock>
 
     @Test
     fun `save the stock`() {
@@ -73,6 +74,28 @@ class DefaultStockServiceShould {
         thenStockReduced()
     }
 
+    @Test
+    fun `find the stock of a given branch`() {
+        givenStockRepository()
+        givenItemRepository()
+        givenStockService()
+
+        whenFindingStockOfABranch()
+
+        thenStockWasFound()
+    }
+
+    @Test
+    fun `return the stock found of a given branch`() {
+        givenStockRepository()
+        givenItemRepository()
+        givenStockService()
+
+        whenFindingStockOfABranch()
+
+        thenStockFoundWasReturned()
+    }
+
     private fun givenStockRepository() {
         stockRepository = mock()
         `when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
@@ -83,6 +106,7 @@ class DefaultStockServiceShould {
         `when`(stockRepository.findByIdAndBranchId(STOCK.id, STOCK.branchId)).thenReturn(STOCK)
         `when`(stockRepository.findBySkuAndBranchId("1",1L)).thenReturn(STOCK_DAO_1)
         `when`(stockRepository.findBySkuAndBranchId("2",0L)).thenReturn(STOCK_DAO)
+        `when`(stockRepository.findAllInStock(0)).thenReturn(listOf(STOCK, STOCK_TO_SAVE))
     }
 
     private fun givenItemRepository() {
@@ -113,6 +137,10 @@ class DefaultStockServiceShould {
         stockService.reduceStock(0L, 0, 50)
     }
 
+    private fun whenFindingStockOfABranch() {
+        stocked = stockService.findAllStockByBranchID(0L)
+    }
+
     private fun thenStockFound() {
         then(stockFound).isNotNull
     }
@@ -132,6 +160,15 @@ class DefaultStockServiceShould {
     private fun thenStockReduced(){
         verify(stockRepository).save(STOCK_DAO)
         then(STOCK.stockTotal).isEqualTo(50)
+    }
+
+    private fun thenStockWasFound(){
+        verify(stockRepository).findAllInStock(0L)
+        then(stocked).isNotNull
+    }
+
+    private fun thenStockFoundWasReturned(){
+        then(stocked).isEqualTo(listOf(STOCK, STOCK_TO_SAVE))
     }
 
     private companion object {

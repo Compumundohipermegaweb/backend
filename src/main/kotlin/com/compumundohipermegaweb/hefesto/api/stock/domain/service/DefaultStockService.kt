@@ -34,6 +34,10 @@ class DefaultStockService(private val stockRepository: StockRepository,
         return stock?.toStock()
     }
 
+    override fun findAllStockByBranchID(branchId: Long): List<Stock> {
+        return stockRepository.findAllInStock(branchId)
+    }
+
     private fun Stock.toDao(): StockDao {
         return StockDao(id, sku, branchId, stockTotal, minimumStock, securityStock)
     }
