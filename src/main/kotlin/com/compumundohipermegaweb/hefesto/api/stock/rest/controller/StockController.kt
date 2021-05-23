@@ -12,28 +12,25 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/stock")
 class StockController(private val getAllStockByBranch: GetAllStockByBranch,
                       private val reduceStock: ReduceStock,
                       private val increaseStock: IncreaseStock) {
 
-    @GetMapping
-    fun getAllStockByBranch(@RequestParam("branch_id") branchId: Long): ResponseEntity<StocksResponse> {
+    @GetMapping("/api/branches/{branch_id}/stock/all")
+    fun getAllStockByBranch(@PathVariable("branch_id") branchId: Long): ResponseEntity<StocksResponse> {
         return ResponseEntity.ok(StocksResponse(getAllStockByBranch.invoke(branchId).map { it.toStockedResponse() }))
     }
 
-    @PostMapping
-    @RequestMapping("/reduce-all")
-    fun reduceAllStocks(@RequestBody toReduce: StockModificationRequest, @RequestParam("branch_id") branchId: Long): ResponseEntity<Boolean> {
+    @PostMapping("/api/branches/{branch_id}/stock/decrease")
+    fun reduceAllStocks(@RequestBody toReduce: StockModificationRequest, @PathVariable("branch_id") branchId: Long): ResponseEntity<Boolean> {
         reduceStock.invoke(toReduce, branchId)
-        return ResponseEntity.ok(true)
+        return ResponseEntity.noContent().build()
     }
 
-    @PostMapping
-    @RequestMapping("/increase-all")
-    fun increaseAllStocks(@RequestBody toIncrease: StockModificationRequest, @RequestParam("branch_id") branchId: Long): ResponseEntity<Boolean> {
+    @PostMapping("/api/branches/{branch_id}/stock/increase")
+    fun increaseAllStocks(@RequestBody toIncrease: StockModificationRequest, @PathVariable("branch_id") branchId: Long): ResponseEntity<Boolean> {
         increaseStock.invoke(toIncrease, branchId)
-        return ResponseEntity.ok(true)
+        return ResponseEntity.noContent().build()
     }
 
     private fun Stock.toStockedResponse(): StockedResponse {
