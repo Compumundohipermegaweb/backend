@@ -11,4 +11,5 @@ data class ClientRequest(@JsonProperty("id") val id: Long,
                          @JsonProperty("state") val state: String,
                          @JsonProperty("credit_limit") val creditLimit: Double,
                          @JsonProperty("email") val email: String,
-                         @JsonProperty("contact_number") val contactNumber: String)
+                         @JsonProperty("contact_number") val contactNumber: String,
+                         @JsonProperty("address") val address: String)

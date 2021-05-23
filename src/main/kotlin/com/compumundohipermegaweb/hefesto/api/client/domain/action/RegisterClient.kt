@@ -8,7 +8,7 @@ class RegisterClient(private val clientService: ClientService) {
     operator fun invoke(client: ClientRequest) = clientService.save(client.toClient())
 
     private fun ClientRequest.toClient(): Client {
-        return Client(0L, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+        return Client(0L, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 
 }

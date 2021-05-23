@@ -142,9 +142,9 @@ class FindClientsShould {
     private companion object {
         const val UNKNOWN_DOCUMENT = "40060441"
         const val UNKNOWN_NAME = "Unknown Name"
-        val CLIENT_1 = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "")
-        val CLIENT_2 = Client(1L, "11111111","Name", "Lastname", "", 0.0, "", "")
-        val CLIENT_3 = Client(2L, "22222222","Mister", "Lastname", "", 0.0, "", "")
+        val CLIENT_1 = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "", "")
+        val CLIENT_2 = Client(1L, "11111111","Name", "Lastname", "", 0.0, "", "", "")
+        val CLIENT_3 = Client(2L, "22222222","Mister", "Lastname", "", 0.0, "", "", "")
 
     }
 }

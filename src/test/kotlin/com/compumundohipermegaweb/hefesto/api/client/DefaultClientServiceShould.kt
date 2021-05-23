@@ -95,6 +95,6 @@ class DefaultClientServiceShould {
     }
 
     private companion object {
-        val CLIENT = Client(0L, "", "", "", "", 0.0, "", "")
+        val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
     }
 }

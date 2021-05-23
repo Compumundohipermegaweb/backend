@@ -52,7 +52,7 @@ class GetBalanceByClientIdShould {
 
     companion object{
         const val CLIENT_ID = 2L
-        val CLIENT = Client(2L,"99999999","","","ACTIVO",1000.0,"","")
+        val CLIENT = Client(2L,"99999999","","","ACTIVO",1000.0,"","", "")
         val CHECKING_ACCOUNT = CheckingAccount(0L,2L,1000.00,300.00,700.00)
 
     }

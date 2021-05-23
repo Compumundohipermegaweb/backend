@@ -171,7 +171,7 @@ class JpaClientRepositoryShould {
         const val RANDOM_DOCUMENT_NUMBER = "40060441"
         const val RANDOM_FIRST_NAME = "Random"
         const val RANDOM_LAST_NAME = "Name"
-        val CLIENT_DAO = ClientDao(0L, "00000000", "First", "Last", "", 0.0, "", "")
-        val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "")
+        val CLIENT_DAO = ClientDao(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
+        val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
     }
 }

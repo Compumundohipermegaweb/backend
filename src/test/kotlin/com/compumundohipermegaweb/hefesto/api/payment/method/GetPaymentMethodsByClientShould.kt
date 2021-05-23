@@ -158,9 +158,9 @@ class GetPaymentMethodsByClientShould {
         val INACTIVE_PAYMENT_METHOD = PaymentMethod(1L,"TARJETA", "AHORA12", "INACTIVE")
         val ANOTHER_PAYMENT_METHOD = PaymentMethod(2L,"CUENTA_CORRIENTE", "CUENTA_CORRIENTE", "ACTIVE")
 
-        val ACTIVE_CLIENT = Client(1L, "00000000", "First", "Last", "ACTIVE", 0.0, "", "")
-        val DEFAULTER_CLIENT = Client(2L, "00000000", "First", "Last", "MOROSO", 0.0, "", "")
-        val CLIENT_WITHOUT_CHECKING_ACCOUNT = Client(3L, "00000000", "First", "Last", "ACTIVE", 0.0, "", "")
+        val ACTIVE_CLIENT = Client(1L, "00000000", "First", "Last", "ACTIVE", 0.0, "", "", "")
+        val DEFAULTER_CLIENT = Client(2L, "00000000", "First", "Last", "MOROSO", 0.0, "", "", "")
+        val CLIENT_WITHOUT_CHECKING_ACCOUNT = Client(3L, "00000000", "First", "Last", "ACTIVE", 0.0, "", "", "")
 
         val CHECKING_ACCOUNT = CheckingAccount(0L, 1L, 0.0, 0.0, 0.0)
 

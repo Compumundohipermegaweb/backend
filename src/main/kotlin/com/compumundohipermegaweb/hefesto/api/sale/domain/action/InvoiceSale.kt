@@ -67,7 +67,7 @@ class InvoiceSale(private val saleService: SaleService,
     }
 
     private fun ClientRequest.toClient(): Client {
-        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 }
 

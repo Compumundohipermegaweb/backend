@@ -27,10 +27,10 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
     }
 
     private fun ClientDao.toClient(): Client {
-        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+        return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 
     private fun Client.toDao(): ClientDao {
-        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 }

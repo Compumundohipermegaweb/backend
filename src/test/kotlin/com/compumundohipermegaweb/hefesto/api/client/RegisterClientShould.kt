@@ -46,8 +46,8 @@ class RegisterClientShould {
     }
 
     private companion object {
-        private val CLIENT = Client(0L, "", "", "", "", 0.0, "", "")
-        val CLIENT_REQUEST = ClientRequest(0L, "", "", "", "", 0.0, "", "")
+        private val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
+        val CLIENT_REQUEST = ClientRequest(0L, "", "", "", "", 0.0, "", "", "")
 
     }
 }

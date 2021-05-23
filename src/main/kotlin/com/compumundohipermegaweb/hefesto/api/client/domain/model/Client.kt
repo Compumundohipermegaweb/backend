@@ -8,4 +8,5 @@ data class Client(val id: Long,
                   val state: String,
                   val creditLimit: Double,
                   val email: String,
-                  val contactNumber: String)
+                  val contactNumber: String,
+                  val address: String)
