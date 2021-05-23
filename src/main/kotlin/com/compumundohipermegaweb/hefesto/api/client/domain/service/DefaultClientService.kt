@@ -11,4 +11,8 @@ class DefaultClientService(private val clientRepository: ClientRepository): Clie
     override fun findById(id: Long): Client? {
         return clientRepository.findById(id)
     }
+
+    override fun findByDocument(documentNumber: String): Client? {
+        return clientRepository.findByDocument(documentNumber)
+    }
 }

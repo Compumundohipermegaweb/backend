@@ -56,11 +56,45 @@ class DefaultClientServiceShould {
         thenClientHasNotFoundById()
     }
 
+    @Test
+    fun `find client by document number`() {
+        givenClientRepository()
+        givenClientService()
+
+        whenFindingClientByDocumentNumber(CLIENT.documentNumber)
+
+        thenClientHasFoundByDocumentNumber()
+    }
+
+    @Test
+    fun `return the found client by documennt number`() {
+        givenClientRepository()
+        givenClientService()
+
+        whenFindingClientByDocumentNumber(CLIENT.documentNumber)
+
+        thenClientHasFoundByDocumentNumberIsReturned()
+    }
+
+    @Test
+    fun `not find client by document number`() {
+        givenClientRepository()
+        givenClientService()
+
+        whenFindingClientByDocumentNumber("")
+
+        thenClientHasNotFoundByDocumentNumber()
+    }
+
+
     private fun givenClientRepository() {
         clientRepository = Mockito.mock(ClientRepository::class.java)
         `when`(clientRepository.save(CLIENT)).thenReturn(CLIENT)
         `when`(clientRepository.findById(CLIENT.id)).thenReturn(CLIENT)
         `when`(clientRepository.findById(1L)).thenReturn(null)
+        `when`(clientRepository.findByDocument(CLIENT.documentNumber)).thenReturn(CLIENT)
+        `when`(clientRepository.findByDocument("")).thenReturn(null)
+
     }
 
     private fun givenClientService() {
@@ -73,6 +107,10 @@ class DefaultClientServiceShould {
 
     private fun whenFindingClientById(clientId: Long) {
         clientFound = clientService.findById(clientId)
+    }
+
+    private fun whenFindingClientByDocumentNumber(documentNumber: String) {
+        clientFound = clientService.findByDocument(documentNumber)
     }
 
     private fun thenInputSaved() {
@@ -94,7 +132,22 @@ class DefaultClientServiceShould {
         then(clientFound).isEqualTo(CLIENT)
     }
 
+    private fun thenClientHasFoundByDocumentNumber() {
+        verify(clientRepository).findByDocument(CLIENT.documentNumber)
+        then(clientFound).isNotNull
+    }
+
+    private fun thenClientHasFoundByDocumentNumberIsReturned() {
+        then(clientFound).isEqualTo(CLIENT)
+    }
+
+    private fun thenClientHasNotFoundByDocumentNumber() {
+        verify(clientRepository).findByDocument("")
+        then(clientFound).isNull()
+    }
+
+
     private companion object {
-        val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
+        val CLIENT = Client(0L, "99999999", "", "", "", 0.0, "", "", "")
     }
 }
