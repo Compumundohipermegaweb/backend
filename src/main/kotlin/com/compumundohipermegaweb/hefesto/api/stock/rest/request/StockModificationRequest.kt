@@ -4,5 +4,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class StockToReduceRequest(@JsonProperty("item_id") val itemId: Long,
-                                @JsonProperty("amount") val amount: Int)
+data class StockModificationRequest(@JsonProperty("modify_all") val stock: List<StockToModifyRequest>)

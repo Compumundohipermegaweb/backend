@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.stock.rest.controller
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
-import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StocksToReduceRequest
+import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockModificationRequest
 import com.compumundohipermegaweb.hefesto.api.stock.rest.response.StockedResponse
 import com.compumundohipermegaweb.hefesto.api.stock.rest.response.StocksResponse
 import org.springframework.http.ResponseEntity
@@ -22,7 +22,7 @@ class StockController(private val getAllStockByBranch: GetAllStockByBranch,
 
     @PostMapping
     @RequestMapping("/reduce-all")
-    fun reduceAllStocks(@RequestBody toReduce: StocksToReduceRequest, @RequestParam("branch_id") branchId: Long): ResponseEntity<Boolean> {
+    fun reduceAllStocks(@RequestBody toReduce: StockModificationRequest, @RequestParam("branch_id") branchId: Long): ResponseEntity<Boolean> {
         reduceStock.invoke(toReduce, branchId)
         return ResponseEntity.ok(true)
     }

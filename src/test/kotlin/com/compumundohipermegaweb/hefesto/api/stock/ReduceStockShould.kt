@@ -2,8 +2,8 @@ package com.compumundohipermegaweb.hefesto.api.stock
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
-import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockToReduceRequest
-import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StocksToReduceRequest
+import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockToModifyRequest
+import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockModificationRequest
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.jupiter.api.Test
@@ -46,10 +46,10 @@ class ReduceStockShould {
 
     private companion object {
 
-        private val TO_REDUCE = StocksToReduceRequest(listOf(
-            StockToReduceRequest(1L, 100),
-            StockToReduceRequest(2L, 100),
-            StockToReduceRequest(3L, 100)))
+        private val TO_REDUCE = StockModificationRequest(listOf(
+            StockToModifyRequest(1L, 100),
+            StockToModifyRequest(2L, 100),
+            StockToModifyRequest(3L, 100)))
 
     }
 }
