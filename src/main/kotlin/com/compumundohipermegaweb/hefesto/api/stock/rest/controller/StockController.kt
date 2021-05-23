@@ -1,22 +1,30 @@
 package com.compumundohipermegaweb.hefesto.api.stock.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
+import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
+import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StocksToReduceRequest
 import com.compumundohipermegaweb.hefesto.api.stock.rest.response.StockedResponse
 import com.compumundohipermegaweb.hefesto.api.stock.rest.response.StocksResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/stock")
-class StockController(private val getAllStockByBranch: GetAllStockByBranch) {
+class StockController(private val getAllStockByBranch: GetAllStockByBranch,
+                      private val reduceStock: ReduceStock) {
 
     @GetMapping
     fun getAllStockByBranch(@RequestParam("branch_id") branchId: Long): ResponseEntity<StocksResponse> {
         return ResponseEntity.ok(StocksResponse(getAllStockByBranch.invoke(branchId).map { it.toStockedResponse() }))
+    }
+
+    @PostMapping
+    @RequestMapping("/reduce-all")
+    fun reduceAllStocks(@RequestBody toReduce: StocksToReduceRequest, @RequestParam("branch_id") branchId: Long): ResponseEntity<Boolean> {
+        reduceStock.invoke(toReduce, branchId)
+        return ResponseEntity.ok(true)
     }
 
     private fun Stock.toStockedResponse(): StockedResponse {
