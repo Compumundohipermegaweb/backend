@@ -99,6 +99,28 @@ class DefaultItemServiceShould {
         thenItemIsNotFoundById()
     }
 
+    @Test
+    fun `find all items`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenFindingAllItems()
+
+        thenAllItemsFound()
+    }
+
+    @Test
+    fun `return all items`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenFindingAllItems()
+
+        thenAllItemsFoundReturned()
+    }
+
     private fun givenItemRepository() {
         itemRepository = mock()
         `when`(itemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
@@ -111,6 +133,8 @@ class DefaultItemServiceShould {
 
         `when`(itemRepository.findById(0L)).thenReturn(ITEM)
         `when`(itemRepository.findById(1L)).thenReturn(null)
+
+        `when`(itemRepository.findAllItem()).thenReturn(ITEMS)
     }
 
     private fun givenStockRepository() {
@@ -140,6 +164,10 @@ class DefaultItemServiceShould {
 
     private fun whenFindingStock() {
         itemsFound = itemService.findAllWithStock(BRANCH_ID)
+    }
+
+    private fun whenFindingAllItems() {
+        itemsFound = itemRepository.findAllItem()
     }
 
     private fun thenItemIsReturned() {
@@ -172,6 +200,15 @@ class DefaultItemServiceShould {
         then(itemsFound).containsAll(EXPECTED_ITEMS)
     }
 
+    private fun thenAllItemsFound() {
+        verify(itemRepository).findAllItem()
+        then(itemsFound).isNotNull
+    }
+
+    private fun thenAllItemsFoundReturned() {
+        then(itemsFound).isEqualTo(ALL_ITEMS)
+    }
+
     private companion object {
         const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
         private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
@@ -198,5 +235,11 @@ class DefaultItemServiceShould {
                 Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 30)
         )
 
+        val ALL_ITEMS = listOf(
+            Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0),
+            Item(1L, "1", "", "", 1L, 1L, "", 1.0, false, "", 0),
+            Item(2L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0),
+            Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 0)
+        )
     }
 }
