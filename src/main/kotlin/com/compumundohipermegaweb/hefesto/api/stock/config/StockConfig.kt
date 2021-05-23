@@ -2,6 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.stock.config
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
+import com.compumundohipermegaweb.hefesto.api.stock.domain.action.IncreaseStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
@@ -22,6 +23,11 @@ class StockConfig {
     @Bean
     fun reduceStock(stockService: StockService): ReduceStock {
         return ReduceStock(stockService)
+    }
+
+    @Bean
+    fun increaseStock(stockService: StockService): IncreaseStock {
+        return IncreaseStock(stockService)
     }
 
     @Bean
