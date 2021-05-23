@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @RestController
-@RequestMapping("/api/paymentmethods")
+@RequestMapping("/api")
 class PaymentMethodController (private val registerPaymentMethod: RegisterPaymentMethod,
                                private val getPaymentMethodsByClient: GetPaymentMethodsByClient){
     @PostMapping
@@ -24,14 +24,14 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
 
     }
 
-    @GetMapping
-    fun paymentMethodByClient(@RequestParam(name = "client_id") clientId: Long): ResponseEntity<PaymentMethodsResponse> {
+    @GetMapping("/clients/{CLIENT_ID}/payment-methods")
+    fun paymentMethodByClient(@PathVariable(name = "CLIENT_ID") clientId: Long): ResponseEntity<PaymentMethodsResponse> {
         val paymentMethods = getPaymentMethodsByClient.invoke(clientId)
         return ResponseEntity.ok(PaymentMethodsResponse(paymentMethods.map { it.toPaymentMethod() }))
     }
 
     private fun PaymentMethod.toPaymentMethod(): PaymentMethodResponse {
-        return PaymentMethodResponse(id, description, type)
+        return PaymentMethodResponse(id, type, description)
     }
 }
 
