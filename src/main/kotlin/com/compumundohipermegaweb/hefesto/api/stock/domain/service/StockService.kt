@@ -8,4 +8,6 @@ interface StockService {
     fun reduceStock(idItem: Long, idBranch: Long, amount: Int)
     fun findBySkuAndBranchId(sku: String, branchId: Long): Stock?
     fun findAllStockByBranchID(branchId: Long): List<Stock>
+    fun increaseStock(idItem: Long, idBranch: Long, amount: Int)
+
 }

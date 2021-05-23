@@ -38,6 +38,18 @@ class DefaultStockService(private val stockRepository: StockRepository,
         return stockRepository.findAllInStock(branchId)
     }
 
+    override fun increaseStock(idItem: Long, idBranch: Long, amount: Int) {
+        val stock: StockDao?
+        val sku = itemRepository.findById(idItem)?.sku
+        if(sku != null){
+            stock = stockRepository.findBySkuAndBranchId(sku, idBranch)
+            if (stock != null) {
+                stock.stockTotal = stock.stockTotal + amount
+                stockRepository.save(stock)
+            }
+        }
+    }
+
     private fun Stock.toDao(): StockDao {
         return StockDao(id, sku, branchId, stockTotal, minimumStock, securityStock)
     }

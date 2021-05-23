@@ -96,6 +96,17 @@ class DefaultStockServiceShould {
         thenStockFoundWasReturned()
     }
 
+    @Test
+    fun `increase the stock`() {
+        givenStockRepository()
+        givenItemRepository()
+        givenStockService()
+
+        whenIncreasingTheStock()
+
+        thenStockIncreased()
+    }
+
     private fun givenStockRepository() {
         stockRepository = mock()
         `when`(stockRepository.save(STOCK_DAO)).thenReturn(STOCK_DAO)
@@ -107,11 +118,16 @@ class DefaultStockServiceShould {
         `when`(stockRepository.findBySkuAndBranchId("1",1L)).thenReturn(STOCK_DAO_1)
         `when`(stockRepository.findBySkuAndBranchId("2",0L)).thenReturn(STOCK_DAO)
         `when`(stockRepository.findAllInStock(0)).thenReturn(listOf(STOCK, STOCK_TO_SAVE))
+
+        `when`(stockRepository.findBySkuAndBranchId("5",5L)).thenReturn(STOCK_DAO_TO_INCREASE)
+        `when`(stockRepository.save(STOCK_DAO_INCREASED)).thenReturn(STOCK_DAO_INCREASED)
+
     }
 
     private fun givenItemRepository() {
         itemRepository = mock()
         `when`(itemRepository.findById(0L)).thenReturn(ITEM)
+        `when`(itemRepository.findById(5L)).thenReturn(ITEM_TO_INCREASE_STOCK)
     }
 
     private fun givenStockService() {
@@ -139,6 +155,10 @@ class DefaultStockServiceShould {
 
     private fun whenFindingStockOfABranch() {
         stocked = stockService.findAllStockByBranchID(0L)
+    }
+
+    private fun whenIncreasingTheStock() {
+        stockService.increaseStock(5L, 5L, 50)
     }
 
     private fun thenStockFound() {
@@ -171,6 +191,11 @@ class DefaultStockServiceShould {
         then(stocked).isEqualTo(listOf(STOCK, STOCK_TO_SAVE))
     }
 
+    private fun thenStockIncreased(){
+        verify(stockRepository).save(STOCK_DAO_INCREASED)
+        then(STOCK_DAO_INCREASED.stockTotal).isEqualTo(150)
+    }
+
     private companion object {
         val ITEM = Item(0L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0)
         val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0)
@@ -180,5 +205,8 @@ class DefaultStockServiceShould {
         val REDUCED_STOCK_DAO = StockDao(1L, "1", 1, 50,0, 0)
         val STOCK_DAO_1 = StockDao(0L, "1", 1L, 3,0, 0)
 
+        val ITEM_TO_INCREASE_STOCK = Item(0L, "5", "", "", 1L, 1L, "", 1.0, false, "", 0)
+        val STOCK_DAO_TO_INCREASE = StockDao(5L, "5", 5L, 100,0, 0)
+        val STOCK_DAO_INCREASED = StockDao(5L, "5", 5L, 150,0, 0)
     }
 }
