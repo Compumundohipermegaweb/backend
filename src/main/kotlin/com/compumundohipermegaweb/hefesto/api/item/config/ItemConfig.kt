@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.item.config
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetAllItems
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByDescription
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
@@ -24,6 +25,11 @@ class ItemConfig {
     @Bean
     fun findAllItemByShortDescription(itemService: ItemService, stockService: StockService): GetItemsByDescription {
         return GetItemsByDescription(itemService, stockService)
+    }
+
+    @Bean
+    fun getAllItems(itemService: ItemService): GetAllItems {
+        return GetAllItems(itemService)
     }
 
     @Bean
