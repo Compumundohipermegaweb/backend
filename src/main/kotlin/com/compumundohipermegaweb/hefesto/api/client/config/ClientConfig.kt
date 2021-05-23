@@ -1,6 +1,9 @@
 package com.compumundohipermegaweb.hefesto.api.client.config
 
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.model.CheckingAccount
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.action.FindClients
+import com.compumundohipermegaweb.hefesto.api.client.domain.action.GetBalanceByClientId
 import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
@@ -31,5 +34,10 @@ class ClientConfig {
     @Bean
     fun jpaClientRepository(springDataClientRepository: SpringDataClientRepository): ClientRepository {
         return JpaClientRepository(springDataClientRepository)
+    }
+
+    @Bean
+    fun getBalanceByClientId(checkingAccountService: CheckingAccountService,clientService: ClientService): GetBalanceByClientId{
+        return GetBalanceByClientId(checkingAccountService,clientService)
     }
 }

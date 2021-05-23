@@ -12,3 +12,4 @@ data class ClientResponse(@JsonProperty("id") val id: Long,
                           @JsonProperty("credit_limit") val creditLimit: Double,
                           @JsonProperty("email") val email: String,
                           @JsonProperty("contact_number") val contactNumber: String)
+
