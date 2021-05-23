@@ -48,7 +48,8 @@ class InvoiceSale(private val saleService: SaleService,
             salesmanId = salesmanId,
             branchId = branchId,
             saleDetails = saleDetails,
-            total = total)
+            total = total,
+            category = category)
 
 
     }

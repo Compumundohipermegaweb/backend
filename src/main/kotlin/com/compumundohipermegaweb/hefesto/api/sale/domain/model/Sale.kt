@@ -8,4 +8,5 @@ data class Sale(val id: Long,
                 val salesmanId: Long,
                 val branchId: Long,
                 var saleDetails: SaleDetails,
-                val total: Double)
+                val total: Double,
+                val category: String)

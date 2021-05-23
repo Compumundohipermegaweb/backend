@@ -48,8 +48,8 @@ class JpaSaleRepositoryShould {
     private companion object {
         const val INVOICE_ID = 0L
         val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "")
-        val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, INVOICE_ID, 0.0)
-        val SALE = Sale(0L, "B", CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0)
+        val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, INVOICE_ID, 0.0, "")
+        val SALE = Sale(0L, "B", CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0, "")
 
     }
 }

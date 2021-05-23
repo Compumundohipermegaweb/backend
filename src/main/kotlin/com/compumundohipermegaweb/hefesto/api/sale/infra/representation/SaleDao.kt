@@ -10,4 +10,5 @@ data class SaleDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Colu
                    @Column(name = "SALESMAN_ID") val salesmanId: Long,
                    @Column(name = "BRANCH_ID") val branchId: Long,
                    @Column(name = "INVOICE_ID") val invoiceId: Long,
-                   @Column(name = "TOTAL") val total: Double)
+                   @Column(name = "TOTAL") val total: Double,
+                   @Column(name = "CATEGORY") val category: String)
