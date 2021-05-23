@@ -14,7 +14,7 @@ class GetBalanceByClientIdShould {
     private lateinit var clientService : ClientService
     private lateinit var checkingAccountService: CheckingAccountService
     private lateinit var getBalanceByClientId : GetBalanceByClientId
-    private var balance : Double? =null
+    private var checkingAccount : CheckingAccount? =null
    
 
     @Test
@@ -42,11 +42,11 @@ class GetBalanceByClientIdShould {
     }
 
     private fun whenClientBalanceFound() {
-        balance = getBalanceByClientId.invoke(CLIENT_ID)
+        checkingAccount = getBalanceByClientId.invoke(CLIENT_ID)
     }
 
     private fun thenTheClientBalanceIsReturned() {
-        then(balance).isEqualTo(CHECKING_ACCOUNT.balance)
+        then(checkingAccount).isEqualTo(CHECKING_ACCOUNT)
     }
 
 
