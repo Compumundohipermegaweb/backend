@@ -6,6 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
@@ -27,7 +28,7 @@ class InvoiceSale(private val saleService: SaleService,
         }
 
         sale.saleDetails.payments.forEach {
-            if(it.type == "CUENTA_CORRIENTE") {
+            if(PaymentMethod.Type.valueOf(it.type) == PaymentMethod.Type.CUENTA_CORRIENTE) {
                 checkingAccountService.discount(sale.client.id, it.subTotal)
             }
         }
