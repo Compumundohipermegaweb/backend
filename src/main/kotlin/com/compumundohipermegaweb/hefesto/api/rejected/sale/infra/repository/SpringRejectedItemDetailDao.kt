@@ -1,0 +1,6 @@
+package com.compumundohipermegaweb.hefesto.api.rejected.sale.infra.repository
+
+import com.compumundohipermegaweb.hefesto.api.rejected.sale.infra.representation.RejectedItemDetailRepresentation
+import org.springframework.data.repository.CrudRepository
+
+interface SpringRejectedItemDetailDao: CrudRepository<RejectedItemDetailRepresentation, Long>
