@@ -35,7 +35,7 @@ class ItemController(private val registerItem: RegisterItem,
 
     @GetMapping
     @RequestMapping("/all")
-    fun getAllItems(@RequestParam description: String): ResponseEntity<ItemsResponse> =
+    fun getAllItems(): ResponseEntity<ItemsResponse> =
         ResponseEntity.ok(ItemsResponse(getAllItems.invoke().map { it.toItemResponse() }))
 
     private fun Item.toItemResponse(): ItemResponse {
