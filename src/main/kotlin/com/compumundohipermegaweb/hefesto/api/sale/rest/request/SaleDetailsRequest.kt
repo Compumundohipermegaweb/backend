@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SaleDetailsRequest(@JsonProperty("details") val detailsRequest: List<SaleDetailRequest>,
+data class SaleDetailsRequest(@JsonProperty("details") var detailsRequest: List<SaleDetailRequest>,
                               @JsonProperty("payments") val paymentsRequest: List<PaymentRequest>)

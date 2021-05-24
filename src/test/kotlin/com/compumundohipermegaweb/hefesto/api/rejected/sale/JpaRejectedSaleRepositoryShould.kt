@@ -60,7 +60,7 @@ class JpaRejectedSaleRepositoryShould {
     }
 
     private companion object {
-        private val REJECTED_SALE_REPRESENTATION = RejectedSaleRepresentation(0L, 0L, 0.0, "", "")
-        private val REJECTED_SALE = RejectedSale(0L, 0L, 0.0, "", "")
+        private val REJECTED_SALE_REPRESENTATION = RejectedSaleRepresentation(0L, 0L, 0.0, "", "", "")
+        private val REJECTED_SALE = RejectedSale(0L, 0L, 0.0, "", "", "")
     }
 }

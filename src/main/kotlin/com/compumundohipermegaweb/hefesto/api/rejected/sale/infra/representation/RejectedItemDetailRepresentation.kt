@@ -5,7 +5,8 @@ import javax.persistence.*
 @Entity
 @Table(name = "REJECTION_REASON")
 data class RejectedItemDetailRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
-                                            @Column(name = "SKU") val sku: String,
+                                            @Column(name = "ITEM_ID") val itemId: Long?,
+                                            @Column(name = "SKU") val sku: String?,
                                             @Column(name = "DESCRIPTION") val description: String,
                                             @Column(name = "REJECTED_SALE_ID") val rejectedSaleId: Long,
                                             @Column(name = "QUANTITY") val quantity: Int,

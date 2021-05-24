@@ -59,7 +59,7 @@ class JpaRejectedItemDetailRepositoryShould {
     }
 
     private companion object {
-        private val REJECTED_ITEM_DETAIL_REPRESENTATION = RejectedItemDetailRepresentation(0L, "", "", 1L, 0, 0.0, "")
-        private val REJECTED_ITEM_DETAIL = RejectedItemDetail(0L, "", "",  0, 0.0, "")
+        private val REJECTED_ITEM_DETAIL_REPRESENTATION = RejectedItemDetailRepresentation(0L, 0L, "", "", 1L, 0, 0.0, "")
+        private val REJECTED_ITEM_DETAIL = RejectedItemDetail(0L, 0L, "", "",  0, 0.0, "")
     }
 }

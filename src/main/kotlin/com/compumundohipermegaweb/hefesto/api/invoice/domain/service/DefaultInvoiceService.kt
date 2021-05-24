@@ -44,6 +44,7 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository): I
                     saleDetails = sale.saleDetails,
                     subTotal = subTotal,
                     ivaSubTotal = iva,
-                    total = sale.total)
+                    total = sale.total,
+                    saleId = sale.id)
 }
 

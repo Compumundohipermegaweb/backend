@@ -72,9 +72,9 @@ class DefaultRejectedSaleServiceShould {
     }
 
     private companion object {
-        private val REJECTED_SALE = RejectedSale(0L, 0L, 0.0, "", "")
-        private val REJECTED_ITEM_DETAIL = RejectedItemDetail(1L, "", "",  0, 0.0, "")
-        private val ANOTHER_REJECTED_ITEM_DETAIL = RejectedItemDetail(2L, "", "",  0, 0.0, "")
-        private val EXPECTED_REJECTED_SALE = RejectedSale(1L, 0L, 0.0, "", "")
+        private val REJECTED_SALE = RejectedSale(0L, 0L, 0.0, "", "", "")
+        private val EXPECTED_REJECTED_SALE = RejectedSale(1L, 0L, 0.0, "", "", "")
+        private val REJECTED_ITEM_DETAIL = RejectedItemDetail(1L, 0L, "", "",  0, 0.0, "")
+        private val ANOTHER_REJECTED_ITEM_DETAIL = RejectedItemDetail(2L, 0L, "", "",  0, 0.0, "")
     }
 }

@@ -19,7 +19,8 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 class InvoiceSale(private val saleService: SaleService,
                   private val invoiceService: InvoiceService,
                   private val stockService: StockService,
-                  private val itemService: ItemService, private val checkingAccountService: CheckingAccountService) {
+                  private val itemService: ItemService,
+                  private val checkingAccountService: CheckingAccountService) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
         val sale = saleRequest.toSale()
 
@@ -50,8 +51,6 @@ class InvoiceSale(private val saleService: SaleService,
             saleDetails = saleDetails,
             total = total,
             category = "VENTA_ONLINE")
-
-
     }
 
     private fun SaleDetailsRequest.toSaleDetails(): SaleDetails {

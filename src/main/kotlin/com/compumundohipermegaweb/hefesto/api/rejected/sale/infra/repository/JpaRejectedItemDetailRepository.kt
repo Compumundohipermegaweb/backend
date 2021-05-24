@@ -10,11 +10,11 @@ class JpaRejectedItemDetailRepository(private val springRejectedItemDetailDao: S
     }
 
     private fun RejectedItemDetail.toRepresentation(rejectedSaleId: Long): RejectedItemDetailRepresentation {
-        return RejectedItemDetailRepresentation(id, sku, description, rejectedSaleId, quantity, unitPrice, reason)
+        return RejectedItemDetailRepresentation(id, itemId, sku, description, rejectedSaleId, quantity, unitPrice, reason)
     }
 
     private fun RejectedItemDetailRepresentation.toRejectedItemDetail(): RejectedItemDetail {
-        return RejectedItemDetail(id, sku, description, quantity, unitPrice, reason)
+        return RejectedItemDetail(id, itemId, sku, description, quantity, unitPrice, reason)
     }
 
 }

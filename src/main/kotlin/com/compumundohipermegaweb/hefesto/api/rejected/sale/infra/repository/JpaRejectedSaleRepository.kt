@@ -10,11 +10,11 @@ class JpaRejectedSaleRepository(private val springDataRejectedSaleDao: SpringDat
     }
 
     private fun RejectedSale.toRepresentation(): RejectedSaleRepresentation {
-        return RejectedSaleRepresentation(id, saleId, total, category, reason)
+        return RejectedSaleRepresentation(id, saleId, total, category, reason, level)
     }
 
     private fun RejectedSaleRepresentation.toRejectedSale(): RejectedSale {
-        return RejectedSale(id, saleId, total, category, reason)
+        return RejectedSale(id, saleId, total, category, reason, level)
     }
 }
 

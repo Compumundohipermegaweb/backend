@@ -26,10 +26,10 @@ class JpaInvoiceRepository(private val springDataInvoiceClient: SpringDataInvoic
     }
 
     private fun InvoiceDao.toInvoice(invoice: Invoice, voucherNumber: String): Invoice {
-        return Invoice(id, documentType+type+buildBranchNumber(branchId)+voucherNumber, billingDate, type, invoice.client, branchId, invoice.branchAddress, invoice.branchContact, invoice.cuit, invoice.activitySince, invoice.saleDetails, subTotal, ivaSubTotal, total)
+        return Invoice(id, saleId, documentType+type+buildBranchNumber(branchId)+voucherNumber, billingDate, type, invoice.client, branchId, invoice.branchAddress, invoice.branchContact, invoice.cuit, invoice.activitySince, invoice.saleDetails, subTotal, ivaSubTotal, total)
     }
 
     private fun Invoice.toInvoiceDao(): InvoiceDao {
-        return InvoiceDao(id, voucherNumber, billingDate, "FV", type, branchId, subTotal, ivaSubTotal, total)
+        return InvoiceDao(id, saleId, voucherNumber, billingDate, "FV", type, branchId, subTotal, ivaSubTotal, total)
     }
 }
