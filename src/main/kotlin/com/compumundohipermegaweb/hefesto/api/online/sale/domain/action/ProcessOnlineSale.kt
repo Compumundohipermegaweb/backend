@@ -20,8 +20,8 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                         private val clientService: ClientService,
                         private val rejectedSaleService: RejectedSaleService)
 {
-    private var acceptedItems: List<SaleDetailRequest> = emptyList()
-    private var rejectedItems: List<RejectedItemDetail> = emptyList()
+    private lateinit var acceptedItems: List<SaleDetailRequest>
+    private lateinit var rejectedItems: List<RejectedItemDetail>
 
     private val rejectPriceMotive = "The difference in price is greater than 5%"
     private val rejectStockMotive = "No stock available"
@@ -32,16 +32,17 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
 
         var invoice: Invoice? = null
         var idSale: Long? = null
-        var rejectionLevel = ""
+        val rejectionLevel: String
 
         acceptedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest
+        rejectedItems = ArrayList()
 
-        if(onlineSaleRequest.clientRequest.isValid()) {
-            val client = clientService.findByDocument(onlineSaleRequest.clientRequest.documentNumber)
-            if(client == null) {
-                clientService.save(onlineSaleRequest.clientRequest.toClient())
-            }
+        val client: Client? = clientService.findByDocument(onlineSaleRequest.clientRequest.documentNumber)
+        if(client == null) {
+            clientService.save(onlineSaleRequest.clientRequest.toClient())
+        }
 
+        if(client!!.isValid()) {
             validatePriceOfSaleItemsRequest(onlineSaleRequest)
 
             if(acceptedItems.isNotEmpty()){
@@ -58,17 +59,18 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                 rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "invalid items or stocks", rejectionLevel), rejectedItems)
             }
         } else {
+            rejectionLevel = "TOTAL"
             rejectedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest.map { it.toRejectedItemDetail("The client did not provide an address") }.toList()
             rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "The client did not provide an address",rejectionLevel), rejectedItems)
         }
         return invoice
     }
 
-    private fun ClientRequest.isValid(): Boolean {
+    private fun Client.isValid(): Boolean {
         if(address == null){
             return false
         }
-        if(address.isBlank() || address.isEmpty()){
+        if(address!!.isBlank() || address!!.isEmpty()){
             return false
         }
         return true
@@ -97,8 +99,9 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                 if(!item.priceIsValid(it)){
                     rejectedItems = rejectedItems+RejectedItemDetail(0L, item.id ,item.sku, it.description, it.quantity, it.unitPrice, rejectPriceMotive)
                     acceptedItems = acceptedItems-it
+                } else{
+                    validateStock(it, item)
                 }
-                validateStock(it, item)
             } else {
                 rejectedItems = rejectedItems+RejectedItemDetail(0L, it.id, "", it.description, it.quantity, it.unitPrice, rejectedItemMotive)
                 acceptedItems = acceptedItems-it

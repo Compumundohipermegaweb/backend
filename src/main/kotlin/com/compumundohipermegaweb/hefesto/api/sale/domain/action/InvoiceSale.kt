@@ -35,7 +35,7 @@ class InvoiceSale(private val saleService: SaleService,
         }
 
         val invoice = invoiceService.invoiceSale(sale)
-        saleService.save(sale, invoice.id)
+        invoice.saleId = saleService.save(sale, invoice.id).id
 
         return invoice
     }

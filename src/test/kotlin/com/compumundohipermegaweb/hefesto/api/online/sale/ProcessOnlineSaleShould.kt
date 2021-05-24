@@ -155,7 +155,7 @@ class ProcessOnlineSaleShould {
     }
 
     private companion object {
-        val CLIENT = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "", "")
+        val CLIENT = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "", "Domicilio falso 123")
 
         val ITEM_UNO = Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         val ITEM_DOS = Item(2L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)

@@ -31,6 +31,9 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
     }
 
     private fun Client.toDao(): ClientDao {
-        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
+        if(address == null) {
+            address = ""
+        }
+        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address!!)
     }
 }
