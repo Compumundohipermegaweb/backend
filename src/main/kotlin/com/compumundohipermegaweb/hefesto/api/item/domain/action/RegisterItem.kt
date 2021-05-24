@@ -32,7 +32,7 @@ class RegisterItem(private val itemService: ItemService,
     }
 
     private fun ItemRequest.toItem(): Item {
-        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, stock.stockTotal)
+        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, stock.stockTotal)
     }
 
     private fun StockRequest.toStock(sku: String): Stock {

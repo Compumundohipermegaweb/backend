@@ -71,7 +71,7 @@ class GetItemsByDescriptionShould {
 
     private companion object {
         const val SHORT_DESCRIPTION = "short description"
-        private val ITEM = Item(0L, "1", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
+        private val ITEM = Item(0L, "1", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
         val STOCK = Stock(0L, "1", 0, 0, 0,0)
     }
 }

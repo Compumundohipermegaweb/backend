@@ -139,10 +139,10 @@ class FindStockedItemsShould {
         val SEARCH_BY_CATEGORY_AND_IMPORTED = SearchCriteria(BRANCH_ID, 20L, null, null, true)
 
         val SAVED_ITEMS = listOf(
-                Item(1L, "1", "", "a", BRAND_1.id, 10L, "", 10.0, false, "", 20),
-                Item(2L, "2", "", "b", BRAND_1.id, 1L, "", 20.0, false, "", 100),
-                Item(3L, "3", "", "c", BRAND_2.id, 20L, "", 20.0, true, "", 69),
-                Item(4L, "4", "", "asd", BRAND_2.id, 20L, "", 20.0, true, "", 14),
+                Item(1L, "1", "", "a", BRAND_1.id, 10L, "", 10.0, 10.0, false, "", 20),
+                Item(2L, "2", "", "b", BRAND_1.id, 1L, "", 20.0, 10.0, false, "", 100),
+                Item(3L, "3", "", "c", BRAND_2.id, 20L, "", 20.0, 10.0, true, "", 69),
+                Item(4L, "4", "", "asd", BRAND_2.id, 20L, "", 20.0, 10.0, true, "", 14),
         )
 
         val EXPECTED_ITEMS = listOf(

@@ -197,7 +197,7 @@ class DefaultStockServiceShould {
     }
 
     private companion object {
-        val ITEM = Item(0L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0)
+        val ITEM = Item(0L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0)
         val STOCK_DAO_SAVED = StockDao(2L, "2", 0, 0,0, 0)
         val STOCK = Stock(0L, "1", 0, 50, 0,0)
@@ -205,7 +205,7 @@ class DefaultStockServiceShould {
         val REDUCED_STOCK_DAO = StockDao(1L, "1", 1, 50,0, 0)
         val STOCK_DAO_1 = StockDao(0L, "1", 1L, 3,0, 0)
 
-        val ITEM_TO_INCREASE_STOCK = Item(0L, "5", "", "", 1L, 1L, "", 1.0, false, "", 0)
+        val ITEM_TO_INCREASE_STOCK = Item(0L, "5", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         val STOCK_DAO_TO_INCREASE = StockDao(5L, "5", 5L, 100,0, 0)
         val STOCK_DAO_INCREASED = StockDao(5L, "5", 5L, 150,0, 0)
     }

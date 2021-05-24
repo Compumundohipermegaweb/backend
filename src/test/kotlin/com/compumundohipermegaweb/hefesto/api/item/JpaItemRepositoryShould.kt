@@ -4,7 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infra.repository.JpaItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infra.repository.SpringDataItemRepository
-import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
+import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -15,8 +15,8 @@ import java.util.*
 class JpaItemRepositoryShould {
     private lateinit var springDataItemRepository: SpringDataItemRepository
     private lateinit var itemRepository: ItemRepository
-    private lateinit var savedItem: ItemDao
-    private lateinit var itemsFound: List<ItemDao>
+    private lateinit var savedItem: ItemRepresentation
+    private lateinit var itemsFound: List<ItemRepresentation>
     private lateinit var allItems: List<Item>
     private var itemFound: Item? = null
 
@@ -168,14 +168,14 @@ class JpaItemRepositoryShould {
         const val SKU = "123"
         const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
         const val DESCRIPTION = "DESCRIPTION"
-        val ITEM_DAO = ItemDao(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
-        val ANOTHER_ITEM_DAO = ItemDao(0L, "", DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
-        val ITEM_DAO_WITH_SKU = ItemDao(1L, SKU, "", "", 1L, 1L, "", 11.0, false, "")
+        val ITEM_DAO = ItemRepresentation(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "")
+        val ANOTHER_ITEM_DAO = ItemRepresentation(0L, "", DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "")
+        val ITEM_DAO_WITH_SKU = ItemRepresentation(1L, SKU, "", "", 1L, 1L, "", 11.0, 10.0, false, "")
 
-        val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
-        val ANOTHER = Item(0L, "", DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
-        val ITEM_WITH_SKU = Item(1L, SKU, "", "", 1L, 1L, "", 11.0, false, "", 0)
+        val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
+        val ANOTHER = Item(0L, "", DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
+        val ITEM_WITH_SKU = Item(1L, SKU, "", "", 1L, 1L, "", 11.0, 10.0, false, "", 0)
 
-        val EXPECTED_ITEM = Item(1L, SKU, "", "", 1L, 1L, "", 11.0, false, "", 0)
+        val EXPECTED_ITEM = Item(1L, SKU, "", "", 1L, 1L, "", 11.0, 10.0, false, "", 0)
     }
 }

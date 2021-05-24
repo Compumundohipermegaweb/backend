@@ -80,11 +80,11 @@ class RegisterItemShould {
     }
 
     private companion object {
-        private val ITEM = Item(0L, "", "", "", 0L, 0L, "", 0.0, true, "", 0)
+        private val ITEM = Item(0L, "", "", "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
         private val STOCK_REQUEST = StockRequest(0L, 0, 0, 0)
         private val STOCK = Stock(0L, "", 0L, 0,0,0)
         private val SUPPLIER_REQUEST = PostSupplierRequest("", "", "", "", "")
         private val SUPPLIER = Supplier(0L, "", "", "" ,"", "")
-        private val ITEM_REQUEST = ItemRequest("", "", "",  0L, 0L, "", 0.0, true, "", STOCK_REQUEST, SUPPLIER_REQUEST)
+        private val ITEM_REQUEST = ItemRequest("", "", "",  0L, 0L, "", 0.0, 10.0, true, "", STOCK_REQUEST, SUPPLIER_REQUEST)
     }
 }

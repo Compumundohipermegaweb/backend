@@ -59,10 +59,10 @@ class GetAllItemsShould {
 
     private companion object {
         val ALL_ITEMS = listOf(
-            Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(1L, "1", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(2L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 0)
+            Item(0L, "0", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(2L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(3L, "3", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         )
     }
 }

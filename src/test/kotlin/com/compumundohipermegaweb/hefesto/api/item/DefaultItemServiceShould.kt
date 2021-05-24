@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
-import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
+import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.nhaarman.mockito_kotlin.mock
@@ -211,8 +211,8 @@ class DefaultItemServiceShould {
 
     private companion object {
         const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
-        private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "", 0)
-        private val ITEM_DAO = ItemDao(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, true, "")
+        private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
+        private val ITEM_DAO = ItemRepresentation(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "")
         const val BRANCH_ID = 10L
         val STOCK = listOf(
                 Stock(0L, "0", BRANCH_ID, 99, 10, 15),
@@ -222,24 +222,24 @@ class DefaultItemServiceShould {
         )
 
         val ITEMS = listOf(
-                Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0),
-                Item(1L, "1", "", "", 1L, 1L, "", 1.0, false, "", 0),
-                Item(2L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0),
-                Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 0)
+                Item(0L, "0", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+                Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+                Item(2L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+                Item(3L, "3", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         )
 
         val EXPECTED_ITEMS = listOf(
-                Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 99),
-                Item(1L, "1", "", "", 1L, 1L, "", 1.0, false, "", 6),
-                Item(2L, "2", "", "", 1L, 1L, "", 1.0, false, "", 100),
-                Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 30)
+                Item(0L, "0", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 99),
+                Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 6),
+                Item(2L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 100),
+                Item(3L, "3", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 30)
         )
 
         val ALL_ITEMS = listOf(
-            Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(1L, "1", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(2L, "2", "", "", 1L, 1L, "", 1.0, false, "", 0),
-            Item(3L, "3", "", "", 1L, 1L, "", 1.0, false, "", 0)
+            Item(0L, "0", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(2L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0),
+            Item(3L, "3", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         )
     }
 }

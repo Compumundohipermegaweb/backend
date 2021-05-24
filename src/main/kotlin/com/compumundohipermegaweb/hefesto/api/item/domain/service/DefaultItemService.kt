@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.item.domain.service
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
-import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
+import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import kotlin.streams.toList
 
@@ -35,12 +35,12 @@ class DefaultItemService(private val itemRepository: ItemRepository,
         return itemRepository.findAllItem()
     }
 
-    private fun Item.toItemDao(): ItemDao {
-        return ItemDao(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, imported, state.toUpperCase())
+    private fun Item.toItemDao(): ItemRepresentation {
+        return ItemRepresentation(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, cost, imported, state.toUpperCase())
     }
 
-    private fun ItemDao.toItem(): Item {
-        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
+    private fun ItemRepresentation.toItem(): Item {
+        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, 0)
     }
 }
 

@@ -125,7 +125,7 @@ class InvoiceSaleShould {
         val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "", "")
         val CLIENT_REQUEST = ClientRequest(0L,"", "", "", "", 0.0, "", "", "")
         val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
-        val ITEM = Item(0L, "0", "", "", 1L, 1L, "", 1.0, false, "", 0)
+        val ITEM = Item(0L, "0", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         val SALE_ITEM_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, "",1, 200.50))
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentRequest("EFECTIVO",  200.50))
         val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)

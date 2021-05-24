@@ -2,15 +2,15 @@ package com.compumundohipermegaweb.hefesto.api.item.infra.repository
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
-import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemDao
+import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 
 class JpaItemRepository(private val repository: SpringDataItemRepository): ItemRepository {
 
-    override fun save(item: ItemDao): ItemDao {
+    override fun save(item: ItemRepresentation): ItemRepresentation {
         return repository.save(item)
     }
 
-    override fun findAllItemByShortDescription(description: String): List<ItemDao> {
+    override fun findAllItemByShortDescription(description: String): List<ItemRepresentation> {
         return repository.findAllItemByDescription("%${description.toUpperCase()}%")
     }
 
@@ -32,7 +32,7 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
         return repository.findAll().map { it.toItem() }
     }
 
-    private fun ItemDao.toItem(): Item {
-        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, imported, state, 0)
+    private fun ItemRepresentation.toItem(): Item {
+        return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, 0)
     }
 }
