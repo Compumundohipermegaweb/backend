@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ItemConfig {
     @Bean
-    fun registerItem(itemService: ItemService, stockService: StockService, supplierRepository: SupplierRepository): RegisterItem {
-        return RegisterItem(itemService, stockService, supplierRepository)
+    fun registerItem(itemService: ItemService, supplierRepository: SupplierRepository): RegisterItem {
+        return RegisterItem(itemService, supplierRepository)
     }
 
     @Bean

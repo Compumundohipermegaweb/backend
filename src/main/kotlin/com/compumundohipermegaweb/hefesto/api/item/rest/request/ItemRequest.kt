@@ -1,6 +1,5 @@
 package com.compumundohipermegaweb.hefesto.api.item.rest.request
 
-import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockRequest
 import com.compumundohipermegaweb.hefesto.api.supplier.rest.representation.PostSupplierRequest
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -16,6 +15,5 @@ data class ItemRequest(@JsonProperty("sku")  val sku: String,
                        @JsonProperty("cost")  val cost: Double,
                        @JsonProperty("imported")  val imported: Boolean,
                        @JsonProperty("state")  val state: String,
-                       @JsonProperty("stock")  val stock: StockRequest,
                        @JsonProperty("supplier")  val supplier: PostSupplierRequest
 )

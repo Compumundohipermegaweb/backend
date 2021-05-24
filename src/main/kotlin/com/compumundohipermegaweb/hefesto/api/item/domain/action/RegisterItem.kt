@@ -11,20 +11,14 @@ import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.Supplie
 import com.compumundohipermegaweb.hefesto.api.supplier.rest.representation.PostSupplierRequest
 
 class RegisterItem(private val itemService: ItemService,
-                    private val stockService: StockService,
                     private val supplierRepository: SupplierRepository) {
 
     operator fun invoke(item: ItemRequest): Item {
 
         val savedItem = itemService.save(item.toItem())
-        val stock = saveStock(item.stock, savedItem.sku)
-        val supplierId = saveSupplier(item.supplier)
-        savedItem.availableStock = stock.stockTotal
-        return savedItem
-    }
+         saveSupplier(item.supplier)
 
-    private fun saveStock(stockRequest: StockRequest, sku: String): Stock {
-        return stockService.findBySku(sku) ?: return stockService.save(stockRequest.toStock(sku))
+        return savedItem
     }
 
     private fun saveSupplier(supplierRequest: PostSupplierRequest): Long {
@@ -32,11 +26,7 @@ class RegisterItem(private val itemService: ItemService,
     }
 
     private fun ItemRequest.toItem(): Item {
-        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, stock.stockTotal)
-    }
-
-    private fun StockRequest.toStock(sku: String): Stock {
-        return Stock(0L, sku, branchId, stockTotal, minimumStock, securityStock)
+        return Item(0L, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, 0)
     }
 
     private fun PostSupplierRequest.toSupplier(): Supplier {

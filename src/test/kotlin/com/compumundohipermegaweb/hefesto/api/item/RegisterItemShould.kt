@@ -20,14 +20,12 @@ class RegisterItemShould {
 
     private lateinit var registerItem: RegisterItem
     private lateinit var itemService: ItemService
-    private lateinit var stockService: StockService
     private lateinit var supplierRepository: SupplierRepository
     private lateinit var registeredItem: Item
 
     @Test
     fun `register a item`(){
         givenItemRepository()
-        givenStockService()
         givenSupplierRepository()
         givenRegisterItem()
 
@@ -39,7 +37,6 @@ class RegisterItemShould {
     @Test
     fun `return registered item`(){
         givenItemRepository()
-        givenStockService()
         givenSupplierRepository()
         givenRegisterItem()
 
@@ -53,18 +50,13 @@ class RegisterItemShould {
         `when`(itemService.save(ITEM)).thenReturn(ITEM)
     }
 
-    private fun givenStockService() {
-        stockService = mock(StockService::class.java)
-        `when`(stockService.save(STOCK)).thenReturn(STOCK)
-    }
-
     private fun givenSupplierRepository() {
         supplierRepository = mock(SupplierRepository::class.java)
         `when`(supplierRepository.save(SUPPLIER)).thenReturn(SUPPLIER)
     }
 
     private fun givenRegisterItem() {
-       registerItem = RegisterItem(itemService, stockService, supplierRepository)
+       registerItem = RegisterItem(itemService, supplierRepository)
     }
 
     private fun whenRegisteringItem() {
@@ -81,10 +73,8 @@ class RegisterItemShould {
 
     private companion object {
         private val ITEM = Item(0L, "", "", "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
-        private val STOCK_REQUEST = StockRequest(0L, 0, 0, 0)
-        private val STOCK = Stock(0L, "", 0L, 0,0,0)
         private val SUPPLIER_REQUEST = PostSupplierRequest("", "", "", "", "")
         private val SUPPLIER = Supplier(0L, "", "", "" ,"", "")
-        private val ITEM_REQUEST = ItemRequest("", "", "",  0L, 0L, "", 0.0, 10.0, true, "", STOCK_REQUEST, SUPPLIER_REQUEST)
+        private val ITEM_REQUEST = ItemRequest("", "", "",  0L, 0L, "", 0.0, 10.0, true, "", SUPPLIER_REQUEST)
     }
 }
