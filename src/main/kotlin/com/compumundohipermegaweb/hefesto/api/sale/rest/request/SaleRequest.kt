@@ -10,4 +10,4 @@ data class SaleRequest(@JsonProperty("invoice_type") val invoiceType: String,
                        @JsonProperty("salesman_id") val salesmanId: Long,
                        @JsonProperty("branch_id") val branchId: Long,
                        @JsonProperty("sale_details") val saleDetailsRequest: SaleDetailsRequest,
-                       @JsonProperty("category") val category: String)
+                       @JsonProperty("category") val category: String?)

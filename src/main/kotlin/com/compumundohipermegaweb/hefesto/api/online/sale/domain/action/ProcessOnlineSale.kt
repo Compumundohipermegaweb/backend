@@ -49,6 +49,9 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
     }
 
     private fun ClientRequest.isValid(): Boolean {
+        if(address == null) {
+            return false
+        }
         if(address.isBlank() || address.isEmpty()){
             return false
         }

@@ -49,7 +49,7 @@ class InvoiceSale(private val saleService: SaleService,
             branchId = branchId,
             saleDetails = saleDetails,
             total = total,
-            category = category)
+            category = "VENTA_ONLINE")
 
 
     }

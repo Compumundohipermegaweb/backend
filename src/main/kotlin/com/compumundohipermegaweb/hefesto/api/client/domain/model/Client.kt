@@ -9,4 +9,4 @@ data class Client(val id: Long,
                   val creditLimit: Double,
                   val email: String,
                   val contactNumber: String,
-                  val address: String)
+                  val address: String?)
