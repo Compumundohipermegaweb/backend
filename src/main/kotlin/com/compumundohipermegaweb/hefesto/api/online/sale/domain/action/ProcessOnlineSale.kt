@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.online.sale.domain.action
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
+import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
@@ -27,25 +28,26 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
     private val rejectPartialStockMotive = "There is not enough stock to cover the total quantity requested"
     private val rejectedItemMotive = "The item does not exist in our item master"
 
-    operator fun invoke(onlineSaleRequest: SaleRequest) {
+    operator fun invoke(onlineSaleRequest: SaleRequest): Invoice? {
 
+        var invoice: Invoice? = null
         var idSale: Long? = null
         var rejectionLevel = ""
 
         acceptedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest
 
-
         if(onlineSaleRequest.clientRequest.isValid()) {
             val client = clientService.findByDocument(onlineSaleRequest.clientRequest.documentNumber)
             if(client == null) {
-                clientService.save(onlineSaleRequest.clientRequest.toClient()) //falta testear
+                clientService.save(onlineSaleRequest.clientRequest.toClient())
             }
 
             validatePriceOfSaleItemsRequest(onlineSaleRequest)
 
             if(acceptedItems.isNotEmpty()){
                 onlineSaleRequest.saleDetailsRequest.detailsRequest = acceptedItems
-                idSale = invoiceSale.invoke(onlineSaleRequest).saleId
+                invoice = invoiceSale.invoke(onlineSaleRequest)
+                idSale = invoice.saleId
             }
             if(rejectedItems.isNotEmpty()){
                 rejectionLevel = if(acceptedItems.isEmpty()) {
@@ -59,6 +61,7 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
             rejectedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest.map { it.toRejectedItemDetail("The client did not provide an address") }.toList()
             rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "The client did not provide an address",rejectionLevel), rejectedItems)
         }
+        return invoice
     }
 
     private fun ClientRequest.isValid(): Boolean {
