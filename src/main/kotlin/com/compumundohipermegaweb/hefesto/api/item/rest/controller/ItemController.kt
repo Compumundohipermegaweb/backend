@@ -39,6 +39,6 @@ class ItemController(private val registerItem: RegisterItem,
         ResponseEntity.ok(ItemsResponse(getAllItems.invoke().map { it.toItemResponse() }))
 
     private fun Item.toItemResponse(): ItemResponse {
-        return ItemResponse(sku, shortDescription, description, categoryId, uomSale, price, imported, state, availableStock)
+        return ItemResponse(sku, shortDescription, description, categoryId, uomSale, price, imported, state)
     }
 }

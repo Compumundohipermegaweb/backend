@@ -11,5 +11,4 @@ data class ItemResponse(@JsonProperty("sku")  val sku: String,
                         @JsonProperty("uom_sale")  val uomSale: String,
                         @JsonProperty("price")  val price: Double,
                         @JsonProperty("imported")  val imported: Boolean,
-                        @JsonProperty("state")  val state: String,
-                        @JsonProperty("available_stock")  var availableStock: Int)
+                        @JsonProperty("state")  val state: String)
