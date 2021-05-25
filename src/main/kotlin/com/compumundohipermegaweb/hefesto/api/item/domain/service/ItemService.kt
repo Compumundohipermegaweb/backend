@@ -8,4 +8,5 @@ interface ItemService {
     fun findAllWithStock(branchId: Long): List<Item>
     fun findItemById(id: Long): Item?
     fun findAllItems(): List<Item>
+    fun findBySku(sku: String): Item?
 }

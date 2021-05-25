@@ -35,6 +35,10 @@ class DefaultItemService(private val itemRepository: ItemRepository,
         return itemRepository.findAllItem()
     }
 
+    override fun findBySku(sku: String): Item? {
+        return itemRepository.findBySku(sku)
+    }
+
     private fun Item.toItemDao(): ItemRepresentation {
         return ItemRepresentation(id, sku.toUpperCase(), shortDescription.toUpperCase(), description.toUpperCase(), brandId, categoryId, uomSale.toUpperCase(), price, cost, imported, state.toUpperCase())
     }

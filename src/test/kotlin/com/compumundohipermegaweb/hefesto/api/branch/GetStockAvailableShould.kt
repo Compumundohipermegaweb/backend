@@ -44,6 +44,6 @@ class GetStockAvailableShould {
     companion object{
         const val BRANCH_ID = 1L
         const val SKU="1"
-        val STOCK = Stock(0L, "1", 1L, 3, 0,0)
+        val STOCK = Stock(0L, "1", 1L, 3, 0,0, "")
     }
 }

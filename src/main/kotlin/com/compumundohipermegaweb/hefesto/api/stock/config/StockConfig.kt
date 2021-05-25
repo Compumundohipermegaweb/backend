@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.stock.config
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
+import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.IncreaseStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
@@ -16,8 +17,8 @@ import org.springframework.context.annotation.Configuration
 class StockConfig {
 
     @Bean
-    fun getAllStockByBranch(stockService: StockService): GetAllStockByBranch {
-        return GetAllStockByBranch(stockService)
+    fun getAllStockByBranch(stockService: StockService, itemService: ItemService): GetAllStockByBranch {
+        return GetAllStockByBranch(stockService, itemService)
     }
 
     @Bean

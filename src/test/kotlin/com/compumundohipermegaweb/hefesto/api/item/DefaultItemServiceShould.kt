@@ -121,6 +121,28 @@ class DefaultItemServiceShould {
         thenAllItemsFoundReturned()
     }
 
+    @Test
+    fun `find the item by sku`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenSearchingTheItemBySku()
+
+        thenItemIsFoundBySku()
+    }
+
+    @Test
+    fun `return the item found by sku`() {
+        givenItemRepository()
+        givenStockRepository()
+        givenItemService()
+
+        whenSearchingTheItemBySku()
+
+        thenItemFoundBySkuIsReturned()
+    }
+
     private fun givenItemRepository() {
         itemRepository = mock()
         `when`(itemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
@@ -130,6 +152,7 @@ class DefaultItemServiceShould {
         `when`(itemRepository.findBySku(STOCK[1].sku)).thenReturn(ITEMS[1])
         `when`(itemRepository.findBySku(STOCK[2].sku)).thenReturn(ITEMS[2])
         `when`(itemRepository.findBySku(STOCK[3].sku)).thenReturn(ITEMS[3])
+        `when`(itemRepository.findBySku(ANOTHER_ITEM.sku)).thenReturn(ANOTHER_ITEM)
 
         `when`(itemRepository.findById(0L)).thenReturn(ITEM)
         `when`(itemRepository.findById(1L)).thenReturn(null)
@@ -168,6 +191,10 @@ class DefaultItemServiceShould {
 
     private fun whenFindingAllItems() {
         itemsFound = itemRepository.findAllItem()
+    }
+
+    private fun whenSearchingTheItemBySku() {
+        itemFound = itemService.findBySku("TEST")
     }
 
     private fun thenItemIsReturned() {
@@ -209,16 +236,26 @@ class DefaultItemServiceShould {
         then(itemsFound).isEqualTo(ALL_ITEMS)
     }
 
+    private fun thenItemIsFoundBySku() {
+        verify(itemRepository).findBySku("TEST")
+        then(itemFound).isNotNull
+    }
+
+    private fun thenItemFoundBySkuIsReturned() {
+        then(itemFound).isEqualTo(ANOTHER_ITEM)
+    }
+
     private companion object {
         const val SHORT_DESCRIPTION = "SHORT DESCRIPTION"
         private val ITEM = Item(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
+        private val ANOTHER_ITEM = Item(0L, "TEST", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
         private val ITEM_DAO = ItemRepresentation(0L, "", SHORT_DESCRIPTION, "", 0L, 0L, "", 0.0, 10.0, true, "")
         const val BRANCH_ID = 10L
         val STOCK = listOf(
-                Stock(0L, "0", BRANCH_ID, 99, 10, 15),
-                Stock(1L, "1", BRANCH_ID, 6, 3, 5),
-                Stock(2L, "2", BRANCH_ID, 100, 20, 50),
-                Stock(3L, "3", BRANCH_ID, 30, 10, 15)
+                Stock(0L, "0", BRANCH_ID, 99, 10, 15, ""),
+                Stock(1L, "1", BRANCH_ID, 6, 3, 5, ""),
+                Stock(2L, "2", BRANCH_ID, 100, 20, 50, ""),
+                Stock(3L, "3", BRANCH_ID, 30, 10, 15, "")
         )
 
         val ITEMS = listOf(

@@ -164,10 +164,10 @@ class ProcessOnlineSaleShould {
 
 
 
-        val STOCK_UNO = Stock(1L, "1", 1L, 5, 0,0)
-        val STOCK_DOS = Stock(2L, "2", 1L, 5, 0,0)
-        val STOCK_TRES = Stock(3L, "3", 1L, 0, 0,0)
-        val STOCK_CUATRO = Stock(4L, "4", 1L, 0, 0,0)
+        val STOCK_UNO = Stock(1L, "1", 1L, 5, 0,0, "")
+        val STOCK_DOS = Stock(2L, "2", 1L, 5, 0,0, "")
+        val STOCK_TRES = Stock(3L, "3", 1L, 0, 0,0, "")
+        val STOCK_CUATRO = Stock(4L, "4", 1L, 0, 0,0, "")
 
         val SALE_ITEM_DETAIL_UNO = SaleDetail(1L, "1","",5, 752.50)
         val SALE_ITEM_DETAIL_DOS = SaleDetail(2L, "2","",5, 287.50)

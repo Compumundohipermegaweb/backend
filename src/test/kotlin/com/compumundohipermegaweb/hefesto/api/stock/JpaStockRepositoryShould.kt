@@ -129,7 +129,7 @@ class JpaStockRepositoryShould {
     private companion object {
         const val BRANCH_ID = 100L
         val STOCK_DAO = StockDao(0L, "1", 0, 0, 0,0)
-        val STOCK = Stock(0L, "1", 0, 0, 0,0)
+        val STOCK = Stock(0L, "1", 0, 0, 0,0, "")
 
         val SAVED_STOCK = listOf(
                 StockDao(1L, "1", BRANCH_ID, 10, 5, 1),
@@ -139,10 +139,10 @@ class JpaStockRepositoryShould {
         )
 
         val EXPECTED_STOCK = listOf(
-                Stock(1L, "1", BRANCH_ID, 10, 5, 1),
-                Stock(2L, "2", BRANCH_ID, 10, 5, 1),
-                Stock(3L, "3", BRANCH_ID, 10, 5, 1),
-                Stock(4L, "4", BRANCH_ID, 10, 5, 1)
+                Stock(1L, "1", BRANCH_ID, 10, 5, 1, ""),
+                Stock(2L, "2", BRANCH_ID, 10, 5, 1, ""),
+                Stock(3L, "3", BRANCH_ID, 10, 5, 1, ""),
+                Stock(4L, "4", BRANCH_ID, 10, 5, 1, "")
         )
     }
 }

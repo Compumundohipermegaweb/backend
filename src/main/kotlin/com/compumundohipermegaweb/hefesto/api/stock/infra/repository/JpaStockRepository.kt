@@ -31,7 +31,7 @@ class JpaStockRepository(private val springDataStock: SpringDataStock): StockRep
     }
 
     private fun StockDao.toStock(): Stock {
-        return Stock(id, sku, branchId, stockTotal, minimumStock, securityStock)
+        return Stock(id, sku, branchId, stockTotal, minimumStock, securityStock, "")
     }
 }
 

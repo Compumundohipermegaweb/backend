@@ -34,7 +34,7 @@ class StockController(private val getAllStockByBranch: GetAllStockByBranch,
     }
 
     private fun Stock.toStockedResponse(): StockedResponse {
-        return StockedResponse(id, sku, stockTotal, minimumStock, securityStock)
+        return StockedResponse(id, sku, stockTotal, minimumStock, securityStock, itemDescription)
     }
 }
 

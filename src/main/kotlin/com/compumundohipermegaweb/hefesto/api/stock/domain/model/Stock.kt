@@ -5,4 +5,5 @@ data class Stock(val id: Long,
                  val branchId: Long,
                  var stockTotal: Int,
                  val minimumStock: Int,
-                 val securityStock: Int)
+                 val securityStock: Int,
+                 var itemDescription: String)
