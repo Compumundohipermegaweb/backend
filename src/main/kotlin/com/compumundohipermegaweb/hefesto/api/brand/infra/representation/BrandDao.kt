@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.brand.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table(name ="BRAND")
+@Audited
 class BrandDao(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.client.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table(name = "CLIENT")
+@Audited
 data class ClientDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                      @Column(name = "DOCUMENT_NUMBER") val documentNumber: String,
                      @Column(name = "FIST_NAME") val firstName: String,

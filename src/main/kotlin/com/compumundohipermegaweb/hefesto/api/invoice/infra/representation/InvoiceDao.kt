@@ -1,10 +1,12 @@
 package com.compumundohipermegaweb.hefesto.api.invoice.infra.representation
 
+import org.hibernate.envers.Audited
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "INVOICE")
+@Audited
 data class InvoiceDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                       @Column(name = "SALE_ID") val saleId: Long,
                       @Column(name = "VOUCHER_NUMBER") var voucherNumber: String,

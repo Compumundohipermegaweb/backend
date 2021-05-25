@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.item.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table(name = "ITEM")
+@Audited
 data class ItemRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")val id: Long,
                               @Column(name = "SKU") val sku: String,
                               @Column(name = "SHORT_DESCRIPTION") val shortDescription: String,

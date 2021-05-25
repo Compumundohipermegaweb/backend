@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.payment.method.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table (name = "PAYMENT_METHOD")
+@Audited
 data class PaymentMethodDao (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
     @Column(name = "TYPE") val type: String,

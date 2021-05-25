@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.rejected.sale.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table(name = "REJECTION_ITEM_DETAIL")
+@Audited
 data class RejectedItemDetailRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                                             @Column(name = "ITEM_ID") val itemId: Long?,
                                             @Column(name = "SKU") val sku: String?,

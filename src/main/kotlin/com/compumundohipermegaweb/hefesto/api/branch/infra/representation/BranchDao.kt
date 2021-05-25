@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.branch.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
 @Table(name ="BRANCH")
+@Audited
 data class BranchDao (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)  @Column (name = "ID")  val id : Long,
     @Column (name = "BRANCH") val branch : String,
