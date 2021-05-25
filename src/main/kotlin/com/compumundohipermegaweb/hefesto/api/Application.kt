@@ -21,5 +21,6 @@ class WebConfiguration: WebMvcConfigurer {
 	override fun addCorsMappings(registry: CorsRegistry) {
 		registry.addMapping("/**")
 				.allowedOrigins("http://localhost:4200", "https://hefesto-dev.web.app")
+				.allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
 	}
 }
