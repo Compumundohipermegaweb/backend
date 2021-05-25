@@ -4,24 +4,24 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 
-class JpaItemRepository(private val repository: SpringDataItemRepository): ItemRepository {
+class JpaItemRepository(private val itemDao: ItemDao): ItemRepository {
 
     override fun save(item: ItemRepresentation): ItemRepresentation {
-        return repository.save(item)
+        return itemDao.save(item)
     }
 
     override fun findAllItemByShortDescription(description: String): List<ItemRepresentation> {
-        return repository.findAllItemByDescription("%${description.toUpperCase()}%")
+        return itemDao.findAllItemByDescription("%${description.toUpperCase()}%")
     }
 
     override fun findBySku(sku: String): Item? {
-        val itemDao = repository.findBySku(sku)
+        val itemDao = itemDao.findBySku(sku)
 
         return itemDao?.toItem()
     }
 
     override fun findById(id: Long): Item? {
-        val item = repository.findById(id)
+        val item = itemDao.findById(id)
         if(item.isPresent){
             return item.get().toItem()
         }
@@ -29,7 +29,11 @@ class JpaItemRepository(private val repository: SpringDataItemRepository): ItemR
     }
 
     override fun findAllItem(): List<Item> {
-        return repository.findAll().map { it.toItem() }
+        return itemDao.findAll().map { it.toItem() }
+    }
+
+    override fun deleteBySku(sku: String) {
+        itemDao.deleteBySku(sku)
     }
 
     private fun ItemRepresentation.toItem(): Item {

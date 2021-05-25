@@ -9,4 +9,5 @@ interface ItemRepository {
     fun findBySku(sku: String): Item?
     fun findById(id: Long): Item?
     fun findAllItem(): List<Item>
+    fun deleteBySku(sku: String)
 }

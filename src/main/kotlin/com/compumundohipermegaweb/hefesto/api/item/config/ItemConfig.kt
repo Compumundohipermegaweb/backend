@@ -6,7 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.item.infra.repository.JpaItemRepository
-import com.compumundohipermegaweb.hefesto.api.item.infra.repository.SpringDataItemRepository
+import com.compumundohipermegaweb.hefesto.api.item.infra.repository.ItemDao
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.JpaStockRepository
@@ -43,7 +43,7 @@ class ItemConfig {
     }
 
     @Bean
-    fun jpaItemRepository(springDataItemRepository: SpringDataItemRepository): JpaItemRepository {
-        return JpaItemRepository(springDataItemRepository)
+    fun jpaItemRepository(itemDao: ItemDao): JpaItemRepository {
+        return JpaItemRepository(itemDao)
     }
 }

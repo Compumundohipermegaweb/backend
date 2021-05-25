@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.item
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.infra.repository.JpaItemRepository
-import com.compumundohipermegaweb.hefesto.api.item.infra.repository.SpringDataItemRepository
+import com.compumundohipermegaweb.hefesto.api.item.infra.repository.ItemDao
 import com.compumundohipermegaweb.hefesto.api.item.infra.representation.ItemRepresentation
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
@@ -13,7 +13,7 @@ import org.mockito.Mockito.verify
 import java.util.*
 
 class JpaItemRepositoryShould {
-    private lateinit var springDataItemRepository: SpringDataItemRepository
+    private lateinit var itemDao: ItemDao
     private lateinit var itemRepository: ItemRepository
     private lateinit var savedItem: ItemRepresentation
     private lateinit var itemsFound: List<ItemRepresentation>
@@ -22,7 +22,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `save the item`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenSavingTheItem()
@@ -32,7 +32,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `return the saved item`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenSavingTheItem()
@@ -42,7 +42,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `find the item by description`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenSearchingTheItem()
@@ -52,7 +52,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `return the found item`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenSearchingTheItem()
@@ -62,7 +62,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `find by sku`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         itemFound = itemRepository.findBySku(SKU)
@@ -72,7 +72,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `find by id`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         itemFound = itemRepository.findById(1L)
@@ -82,7 +82,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `not find by id`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         itemFound = itemRepository.findById(0L)
@@ -92,7 +92,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `find all items`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenFindingAllItems()
@@ -102,7 +102,7 @@ class JpaItemRepositoryShould {
 
     @Test
     fun `return all items`() {
-        givenItemCrudRepository()
+        givenItemDao()
         givenItemRepository()
 
         whenFindingAllItems()
@@ -110,18 +110,28 @@ class JpaItemRepositoryShould {
         thenAllItemsFoundReturned()
     }
 
-    private fun givenItemCrudRepository() {
-        springDataItemRepository = mock(SpringDataItemRepository::class.java)
-        `when`(springDataItemRepository.save(ITEM_DAO)).thenReturn(ITEM_DAO)
-        `when`(springDataItemRepository.findAllItemByDescription("%$DESCRIPTION%")).thenReturn(listOf(ITEM_DAO, ANOTHER_ITEM_DAO))
-        `when`(springDataItemRepository.findBySku(SKU)).thenReturn(ITEM_DAO_WITH_SKU)
-        `when`(springDataItemRepository.findById(ID)).thenReturn(Optional.of(ITEM_DAO_WITH_SKU))
-        `when`(springDataItemRepository.findById(0L)).thenReturn(Optional.empty())
-        `when`(springDataItemRepository.findAll()).thenReturn(listOf(ITEM_DAO, ITEM_DAO_WITH_SKU, ANOTHER_ITEM_DAO))
+    @Test
+    fun `delete an item by its sku`() {
+        givenItemDao()
+        givenItemRepository()
+
+        itemRepository.deleteBySku("SKU")
+
+        verify(itemDao).deleteBySku("SKU")
+    }
+
+    private fun givenItemDao() {
+        itemDao = mock(ItemDao::class.java)
+        `when`(itemDao.save(ITEM_DAO)).thenReturn(ITEM_DAO)
+        `when`(itemDao.findAllItemByDescription("%$DESCRIPTION%")).thenReturn(listOf(ITEM_DAO, ANOTHER_ITEM_DAO))
+        `when`(itemDao.findBySku(SKU)).thenReturn(ITEM_DAO_WITH_SKU)
+        `when`(itemDao.findById(ID)).thenReturn(Optional.of(ITEM_DAO_WITH_SKU))
+        `when`(itemDao.findById(0L)).thenReturn(Optional.empty())
+        `when`(itemDao.findAll()).thenReturn(listOf(ITEM_DAO, ITEM_DAO_WITH_SKU, ANOTHER_ITEM_DAO))
     }
 
     private fun givenItemRepository() {
-        itemRepository = JpaItemRepository(springDataItemRepository)
+        itemRepository = JpaItemRepository(itemDao)
     }
 
     private fun whenSavingTheItem() {
@@ -137,7 +147,7 @@ class JpaItemRepositoryShould {
     }
 
     private fun thenItemSaved() {
-        verify(springDataItemRepository).save(ITEM_DAO)
+        verify(itemDao).save(ITEM_DAO)
     }
 
     private fun thenTheItemSavedIsReturned() {
@@ -145,7 +155,7 @@ class JpaItemRepositoryShould {
     }
 
     private fun thenItemsFound() {
-        verify(springDataItemRepository).findAllItemByDescription("%$DESCRIPTION%")
+        verify(itemDao).findAllItemByDescription("%$DESCRIPTION%")
     }
 
     private fun thenTheItemsFoundIsReturned() {
@@ -154,12 +164,12 @@ class JpaItemRepositoryShould {
     }
 
     private fun thenAllItemsFound() {
-        verify(springDataItemRepository).findAll()
+        verify(itemDao).findAll()
         then(allItems).isNotNull
     }
 
     private fun thenAllItemsFoundReturned() {
-        verify(springDataItemRepository).findAll()
+        verify(itemDao).findAll()
         then(allItems).isEqualTo(listOf(ITEM, ITEM_WITH_SKU ,ANOTHER))
     }
 
