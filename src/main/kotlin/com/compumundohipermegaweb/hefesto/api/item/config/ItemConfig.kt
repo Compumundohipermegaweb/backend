@@ -1,8 +1,10 @@
 package com.compumundohipermegaweb.hefesto.api.item.config
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.DeleteItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetAllItems
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByDescription
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
+import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.item.infra.repository.JpaItemRepository
@@ -17,6 +19,12 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class ItemConfig {
+
+    @Bean
+    fun deleteItem(jpaItemRepository: ItemRepository): DeleteItem {
+        return DeleteItem(jpaItemRepository)
+    }
+
     @Bean
     fun registerItem(itemService: ItemService, supplierRepository: SupplierRepository): RegisterItem {
         return RegisterItem(itemService, supplierRepository)

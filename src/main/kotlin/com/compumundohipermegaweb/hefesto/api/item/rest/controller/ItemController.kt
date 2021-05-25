@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.item.rest.controller
 
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.DeleteItem
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetAllItems
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByDescription
 import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/items")
 class ItemController(private val registerItem: RegisterItem,
                      private val getItemsByDescription: GetItemsByDescription,
-                     private val getAllItems: GetAllItems) {
+                     private val getAllItems: GetAllItems,
+                     private val deleteItem: DeleteItem) {
 
     @PostMapping
     fun registerItem(@RequestBody itemRequest: ItemRequest): ResponseEntity<ItemResponse> {
@@ -37,6 +39,12 @@ class ItemController(private val registerItem: RegisterItem,
     @RequestMapping("/all")
     fun getAllItems(): ResponseEntity<ItemsResponse> =
         ResponseEntity.ok(ItemsResponse(getAllItems.invoke().map { it.toItemResponse() }))
+
+    @DeleteMapping("/{sku}")
+    fun deleteItemBySku(@PathVariable("sku") sku: String): ResponseEntity<String> {
+        deleteItem(sku)
+        return ResponseEntity.noContent().build()
+    }
 
     private fun Item.toItemResponse(): ItemResponse {
         return ItemResponse(sku, shortDescription, description, categoryId, uomSale, price, cost, imported, state)
