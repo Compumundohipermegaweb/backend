@@ -19,6 +19,7 @@ class JpaCashRepositoryShould {
 
     private lateinit var savedCash: Cash
     private var cashFound: Cash? = null
+    private lateinit var allCash: List<Cash>
 
     @Test
     fun `save a cash`() {
@@ -50,11 +51,22 @@ class JpaCashRepositoryShould {
         thenTheCashIsNotFound()
     }
 
+    @Test
+    fun `find all cash`() {
+        givenSpringCashDao()
+        givenCashRepository()
+
+        whenFindingAllCash()
+
+        thenAllCashAreFound()
+    }
+
     private fun givenSpringCashDao() {
         springCashDao = mock()
         `when`(springCashDao.save(CASH_REPRESENTATION)).thenReturn(CASH_REPRESENTATION)
         `when`(springCashDao.findById(0L)).thenReturn(Optional.of(CASH_REPRESENTATION))
         `when`(springCashDao.findById(1L)).thenReturn(Optional.empty())
+        `when`(springCashDao.findAll()).thenReturn(listOf(CASH_REPRESENTATION, ANOTHER_CASH_REPRESENTATION))
     }
 
     private fun givenCashRepository() {
@@ -67,6 +79,10 @@ class JpaCashRepositoryShould {
 
     private fun whenFindingTheCash(cashId: Long) {
         cashFound = cashRepository.findById(cashId)
+    }
+
+    private fun whenFindingAllCash() {
+        allCash = cashRepository.findAll()
     }
 
     private fun thenTheCashIsSuccessfullySaved() {
@@ -84,8 +100,18 @@ class JpaCashRepositoryShould {
         then(cashFound).isEqualTo(null)
     }
 
+    private fun thenAllCashAreFound() {
+        verify(springCashDao).findAll()
+        then(allCash).isEqualTo(listOf(CASH_REPRESENTATION.toCash(), ANOTHER_CASH_REPRESENTATION.toCash()))
+    }
+
     private companion object {
         private val CASH = Cash(0L, 0L, 0L, "CLOSE")
         private val CASH_REPRESENTATION = CashRepresentation(0L, 0L, 0L, "CLOSE")
+        private val ANOTHER_CASH_REPRESENTATION = CashRepresentation(1L, 1L, 1L, "OPEN")
+    }
+
+    private fun CashRepresentation.toCash(): Cash {
+        return Cash(id, branchId, pointOfSale, status)
     }
 }

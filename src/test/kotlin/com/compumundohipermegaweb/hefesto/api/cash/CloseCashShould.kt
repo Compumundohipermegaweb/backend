@@ -68,6 +68,5 @@ class CloseCashShould {
         private val CASH_START_END = CashStartEnd(0L, 0L, Date(), 0.0, 0L, null, 0.0, 0.0, Date())
         private val DATE = Date()
         private val CASH_START_END_CLOSED = CashStartEnd(0L, 0L, Date(), 0.0, 0L, DATE, 0.0, 0.0, Date())
-
     }
 }

@@ -17,6 +17,10 @@ class JpaCashRepository(private val springCashDao: SpringCashDao): CashRepositor
         return null
     }
 
+    override fun findAll(): List<Cash> {
+        return springCashDao.findAll().map { it.toCash() }.toList()
+    }
+
     private fun Cash.toRepresentation(): CashRepresentation {
         return CashRepresentation(id, branchId, pointOfSale, status)
     }

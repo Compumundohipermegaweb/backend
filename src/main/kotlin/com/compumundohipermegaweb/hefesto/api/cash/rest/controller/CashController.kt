@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.CloseCash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.action.GetAllRegisterCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.OpenCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.RegisterCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
@@ -10,6 +11,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/api/cash")
 class CashController(private val openCash: OpenCash,
                      private val registerCash: RegisterCash,
-                     private val closeCash: CloseCash) {
+                     private val closeCash: CloseCash,
+                     private val getAllRegisterCash: GetAllRegisterCash) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -40,6 +43,12 @@ class CashController(private val openCash: OpenCash,
     @RequestMapping("/end")
     fun closeCash(@RequestBody closeRequest: CloseRequest): ResponseEntity<CashResponse> {
         return ResponseEntity.ok(closeCash.invoke(closeRequest)?.toResponse())
+    }
+
+    @GetMapping
+    @RequestMapping("/all")
+    fun getAllRegisterCash(): ResponseEntity<List<CashResponse>> {
+        return ResponseEntity.ok(getAllRegisterCash.invoke().map { it.toResponse() })
     }
 
     private fun Cash.toResponse(): CashResponse {
