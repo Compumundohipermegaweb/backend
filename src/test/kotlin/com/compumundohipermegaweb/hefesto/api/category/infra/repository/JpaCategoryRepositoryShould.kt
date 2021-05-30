@@ -35,6 +35,16 @@ class JpaCategoryRepositoryShould {
         thenCategoriesWhereFound()
     }
 
+    @Test
+    fun `delete a category by id`() {
+        givenCategoryDao()
+        givenCategoryRepository()
+
+        categoryRepository.delete(1L)
+
+        verify(categoryDao).deleteById(1L)
+    }
+
     private fun givenCategoryDao() {
         categoryDao = mock()
         `when`(categoryDao.save(CATEGORY_REPRESENTATION_TO_SAVE)).thenReturn(CATEGORY_REPRESENTATION_TO_SAVE)
