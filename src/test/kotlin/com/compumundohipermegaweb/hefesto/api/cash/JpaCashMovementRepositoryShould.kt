@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import java.util.*
 
-class JpaCashMovementShould {
+class JpaCashMovementRepositoryShould {
 
     private lateinit var springCashMovementDao: SpringCashMovementDao
     private lateinit var cashMovementRepository: CashMovementRepository

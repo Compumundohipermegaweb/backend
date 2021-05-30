@@ -9,6 +9,14 @@ class JpaCashRepository(private val springCashDao: SpringCashDao): CashRepositor
         return springCashDao.save(cash.toRepresentation()).toCash()
     }
 
+    override fun findById(cashId: Long): Cash? {
+        val cashRepresentation = springCashDao.findById(cashId)
+        if(cashRepresentation.isPresent) {
+            return cashRepresentation.get().toCash()
+        }
+        return null
+    }
+
     private fun Cash.toRepresentation(): CashRepresentation {
         return CashRepresentation(id, branchId, pointOfSale, status)
     }

@@ -19,7 +19,7 @@ data class CashStartEndRepresentation(@Id @GeneratedValue(strategy = GenerationT
                                       @Column(name = "USER_ID")
                                       val userId: Long,
                                       @Column(name = "CLOSE_DATE")
-                                      val closeDate: Date,
+                                      val closeDate: Date?,
                                       @Column(name = "REAL_BALANCE")
                                       val realBalance: Double,
                                       @Column(name = "THEORETICAL_BALANCE")

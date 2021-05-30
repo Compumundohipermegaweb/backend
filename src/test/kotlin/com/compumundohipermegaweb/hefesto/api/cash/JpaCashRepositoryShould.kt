@@ -10,6 +10,7 @@ import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import java.util.*
 
 class JpaCashRepositoryShould {
 
@@ -17,6 +18,7 @@ class JpaCashRepositoryShould {
     private lateinit var cashRepository: CashRepository
 
     private lateinit var savedCash: Cash
+    private var cashFound: Cash? = null
 
     @Test
     fun `save a cash`() {
@@ -28,9 +30,31 @@ class JpaCashRepositoryShould {
         thenTheCashIsSuccessfullySaved()
     }
 
+    @Test
+    fun `find a cash by id`() {
+        givenSpringCashDao()
+        givenCashRepository()
+
+        whenFindingTheCash(CASH.id)
+
+        thenTheCashIsSuccessfullyFound()
+    }
+
+    @Test
+    fun `not find a cash by id`() {
+        givenSpringCashDao()
+        givenCashRepository()
+
+        whenFindingTheCash(1L)
+
+        thenTheCashIsNotFound()
+    }
+
     private fun givenSpringCashDao() {
         springCashDao = mock()
         `when`(springCashDao.save(CASH_REPRESENTATION)).thenReturn(CASH_REPRESENTATION)
+        `when`(springCashDao.findById(0L)).thenReturn(Optional.of(CASH_REPRESENTATION))
+        `when`(springCashDao.findById(1L)).thenReturn(Optional.empty())
     }
 
     private fun givenCashRepository() {
@@ -41,9 +65,23 @@ class JpaCashRepositoryShould {
         savedCash = cashRepository.save(CASH)
     }
 
+    private fun whenFindingTheCash(cashId: Long) {
+        cashFound = cashRepository.findById(cashId)
+    }
+
     private fun thenTheCashIsSuccessfullySaved() {
         verify(springCashDao).save(CASH_REPRESENTATION)
-        then(savedCash).isNotNull
+        then(savedCash).isEqualTo(CASH)
+    }
+
+    private fun thenTheCashIsSuccessfullyFound() {
+        verify(springCashDao).findById(0L)
+        then(cashFound).isEqualTo(CASH)
+    }
+
+    private fun thenTheCashIsNotFound() {
+        verify(springCashDao).findById(1L)
+        then(cashFound).isEqualTo(null)
     }
 
     private companion object {
