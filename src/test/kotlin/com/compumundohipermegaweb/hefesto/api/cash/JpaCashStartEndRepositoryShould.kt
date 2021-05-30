@@ -17,6 +17,7 @@ class JpaCashStartEndRepositoryShould {
     private lateinit var cashStartEndRepository: CashStartEndRepository
 
     private lateinit var savedCashStartEnd: CashStartEnd
+    private lateinit var cashStartEndNotClosedFound: CashStartEnd
 
     @Test
     fun `save a cash start-end`() {
@@ -28,9 +29,21 @@ class JpaCashStartEndRepositoryShould {
         thenTheCashStartEndIsSuccessfullySaved()
     }
 
+    @Test
+    fun `find a cash start end opened but not closed`() {
+        givenSpringCashStartEndDao()
+        givenCashStartEndRepository()
+
+        whenFindingACashStarNotClosed()
+
+        thenTheCashStartNotCloseIsSuccessfullyFound()
+    }
+
     private fun givenSpringCashStartEndDao() {
         springCashStartEndDao = mock()
         `when`(springCashStartEndDao.save(CASH_START_END.toRepresentation())).thenReturn(CASH_START_END.toRepresentation())
+        `when`(springCashStartEndDao.findByCashIdAndEndDate(0L)).thenReturn(CASH_START_NOT_CLOSED.toRepresentation())
+
     }
 
     private fun givenCashStartEndRepository() {
@@ -41,16 +54,28 @@ class JpaCashStartEndRepositoryShould {
         savedCashStartEnd = cashStartEndRepository.save(CASH_START_END)
     }
 
+    private fun whenFindingACashStarNotClosed() {
+        cashStartEndNotClosedFound = cashStartEndRepository.findByCashIdAndEndDate(0L)
+        CASH_START_NOT_CLOSED.closeDate = cashStartEndNotClosedFound.closeDate
+    }
+
     private fun thenTheCashStartEndIsSuccessfullySaved() {
         verify(springCashStartEndDao).save(CASH_START_END.toRepresentation())
-        then(savedCashStartEnd).isNotNull
+        then(savedCashStartEnd).isEqualTo(CASH_START_END)
+    }
+
+    private fun thenTheCashStartNotCloseIsSuccessfullyFound() {
+        verify(springCashStartEndDao).findByCashIdAndEndDate(0L)
+        then(cashStartEndNotClosedFound).isEqualTo(CASH_START_NOT_CLOSED)
     }
 
     private companion object {
-        private val CASH_START_END = CashStartEnd(0L, 0L, Date(), 0.0, 0L,Date(),0.0,0.0, Date())
+        private val CASH_START_END = CashStartEnd(0L, 0L, Date(), 0.0, 0L,null,0.0,0.0, Date())
+        private val CASH_START_NOT_CLOSED = CashStartEnd(0L, 0L, Date(), 0.0, 0L,Date(),0.0,0.0, Date())
+
     }
 
     private fun CashStartEnd.toRepresentation(): CashStartEndRepresentation {
-        return CashStartEndRepresentation(id, cashId, openDate, openingBalance, userId, closeDate, realBalance, theoreticalBalance, date)
+        return CashStartEndRepresentation(id, cashId, openDate, openingBalance, userId, null, realBalance, theoreticalBalance, date)
     }
 }
