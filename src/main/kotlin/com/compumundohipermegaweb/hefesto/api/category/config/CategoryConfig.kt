@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.category.config
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.CreateCategory
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.FindAllCategories
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.PhysicalDeleteCategory
+import com.compumundohipermegaweb.hefesto.api.category.domain.action.UpdateCategory
 import com.compumundohipermegaweb.hefesto.api.category.domain.repository.CategoryRepository
 import com.compumundohipermegaweb.hefesto.api.category.infra.repository.CategoryDao
 import com.compumundohipermegaweb.hefesto.api.category.infra.repository.JpaCategoryRepository
@@ -25,6 +26,11 @@ class CategoryConfig {
     @Bean
     fun physicalDeleteCategory(categoryRepository: CategoryRepository): PhysicalDeleteCategory {
         return PhysicalDeleteCategory(categoryRepository)
+    }
+
+    @Bean
+    fun updateCategory(categoryRepository: CategoryRepository): UpdateCategory {
+        return UpdateCategory(categoryRepository)
     }
 
     @Bean

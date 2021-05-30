@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.category.rest
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.CreateCategory
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.FindAllCategories
 import com.compumundohipermegaweb.hefesto.api.category.domain.action.PhysicalDeleteCategory
+import com.compumundohipermegaweb.hefesto.api.category.domain.action.UpdateCategory
 import com.compumundohipermegaweb.hefesto.api.category.domain.model.Category
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +15,8 @@ import javax.xml.ws.Response
 class CategoryController(
         private val createCategory: CreateCategory,
         private val findAllCategories: FindAllCategories,
-        private val physicalDeleteCategory: PhysicalDeleteCategory) {
+        private val physicalDeleteCategory: PhysicalDeleteCategory,
+        private val updateCategory: UpdateCategory) {
 
     @GetMapping
     fun getAllCategories(): ResponseEntity<FindAllCategoriesResponse> {
@@ -33,6 +35,13 @@ class CategoryController(
     fun deleteCategory(@PathVariable("categoryId") categoryId: Long): ResponseEntity<String> {
         physicalDeleteCategory(categoryId)
         return ResponseEntity.noContent().build()
+    }
+
+    @PutMapping
+    fun putCategory(@RequestBody request: UpdateCategoryRequest): ResponseEntity<CategoryResponse> {
+        val actionData = UpdateCategory.ActionData(request.id, request.name, request.description)
+        val category = updateCategory(actionData)
+        return ResponseEntity.ok(category.toResponse())
     }
 }
 

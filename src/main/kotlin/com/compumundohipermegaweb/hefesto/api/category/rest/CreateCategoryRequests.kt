@@ -7,3 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class CreateCategoryRequests(
         @JsonProperty("name") val name: String,
         @JsonProperty("description") val description: String)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class UpdateCategoryRequest(
+        @JsonProperty("id") val id: Long,
+        @JsonProperty("name") val name: String,
+        @JsonProperty("description") val description: String)
