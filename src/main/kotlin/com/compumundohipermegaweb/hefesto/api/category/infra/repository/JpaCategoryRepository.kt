@@ -11,6 +11,10 @@ class JpaCategoryRepository(private val categoryDao: CategoryDao): CategoryRepos
         return categoryDao.save(categoryRepresentation).toCategory()
     }
 
+    override fun findAll(): List<Category> {
+        return categoryDao.findAll().map { it.toCategory() }
+    }
+
     private fun Category.toRepresentation() = CategoryRepresentation(id, name, description)
 
     private fun CategoryRepresentation.toCategory() = Category(id, name, description)

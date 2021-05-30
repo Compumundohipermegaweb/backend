@@ -13,6 +13,8 @@ class JpaCategoryRepositoryShould {
     private lateinit var categoryDao: CategoryDao
     private lateinit var categoryRepository: CategoryRepository
 
+    private lateinit var categoriesFound: List<Category>
+
     @Test
     fun `save the category`() {
         givenCategoryDao()
@@ -21,6 +23,16 @@ class JpaCategoryRepositoryShould {
         whenSavingCategory()
 
         thenCategoryWasSaved()
+    }
+
+    @Test
+    fun `find all the categories`() {
+        givenCategoryDao()
+        givenCategoryRepository()
+
+        whenFindingAllCategories()
+
+        thenCategoriesWhereFound()
     }
 
     private fun givenCategoryDao() {
@@ -36,8 +48,16 @@ class JpaCategoryRepositoryShould {
         categoryRepository.save(CATEGORY_TO_SAVE)
     }
 
+    private fun whenFindingAllCategories() {
+        categoriesFound = categoryRepository.findAll()
+    }
+
     private fun thenCategoryWasSaved() {
         verify(categoryDao).save(CATEGORY_REPRESENTATION_TO_SAVE)
+    }
+
+    private fun thenCategoriesWhereFound() {
+        verify(categoryDao).findAll()
     }
 
     private companion object {
