@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.cash.config
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.OpenCash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.action.RegisterCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.JpaCashRepository
@@ -16,6 +17,11 @@ class CashConfig {
     @Bean
     fun openCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository): OpenCash {
         return OpenCash(cashRepository, cashStartEndRepository)
+    }
+
+    @Bean
+    fun registerCash(cashRepository: CashRepository): RegisterCash {
+        return RegisterCash(cashRepository)
     }
 
     @Bean
