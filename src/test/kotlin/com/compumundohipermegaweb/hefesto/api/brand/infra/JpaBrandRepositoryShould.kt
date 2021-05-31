@@ -35,9 +35,19 @@ class JpaBrandRepositoryShould {
         givenBrandDao()
         givenBrandRepository()
 
-        brandsFound = brandRepository.findAll()
+        whenFindingAllBrands()
 
-        verify(brandDao).findAll()
+        thenBrandsWhereFound()
+    }
+
+    @Test
+    fun `delete by id`() {
+        givenBrandDao()
+        givenBrandRepository()
+
+        whenDeletingBrand()
+
+        thenBrandWasDeleted()
     }
 
     private fun givenBrandDao() {
@@ -53,8 +63,24 @@ class JpaBrandRepositoryShould {
         brandFound = brandRepository.findById(BRAND_ID)
     }
 
+    private fun whenFindingAllBrands() {
+        brandsFound = brandRepository.findAll()
+    }
+
+    private fun whenDeletingBrand() {
+        brandRepository.delete(1L)
+    }
+
     private fun thenBrandFound() {
         then(brandFound).isEqualTo(EXPECTED_BRAND)
+    }
+
+    private fun thenBrandsWhereFound() {
+        verify(brandDao).findAll()
+    }
+
+    private fun thenBrandWasDeleted() {
+        verify(brandDao).deleteById(1L)
     }
 
     private companion object {

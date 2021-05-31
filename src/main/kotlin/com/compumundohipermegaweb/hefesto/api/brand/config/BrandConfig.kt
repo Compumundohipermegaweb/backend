@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.brand.config
 
+import com.compumundohipermegaweb.hefesto.api.brand.domain.action.DeleteBrand
 import com.compumundohipermegaweb.hefesto.api.brand.domain.action.FindAllBrands
 import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
 import com.compumundohipermegaweb.hefesto.api.brand.infra.repository.JpaBrandRepository
@@ -11,12 +12,17 @@ import org.springframework.context.annotation.Configuration
 class BrandConfig {
 
     @Bean
-    fun findAllBrands(jpaBrandRepository: JpaBrandRepository): FindAllBrands {
-        return FindAllBrands(jpaBrandRepository)
+    fun findAllBrands(brandRepository: JpaBrandRepository): FindAllBrands {
+        return FindAllBrands(brandRepository)
     }
 
     @Bean
-    fun jpaBrandRepository(brandDao: BrandDao): BrandRepository {
+    fun deleteBrand(brandRepository: BrandRepository): DeleteBrand {
+        return DeleteBrand(brandRepository)
+    }
+
+    @Bean
+    fun brandRepository(brandDao: BrandDao): BrandRepository {
         return JpaBrandRepository(brandDao)
     }
 }

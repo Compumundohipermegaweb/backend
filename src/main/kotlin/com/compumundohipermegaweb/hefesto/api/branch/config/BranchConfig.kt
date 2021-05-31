@@ -20,8 +20,8 @@ class BranchConfig {
     }
 
     @Bean
-    fun findStockedItems(defaultItemService: ItemService, jpaBrandRepository: BrandRepository): FindStockedItems {
-        return FindStockedItems(defaultItemService, jpaBrandRepository)
+    fun findStockedItems(defaultItemService: ItemService, brandRepository: BrandRepository): FindStockedItems {
+        return FindStockedItems(defaultItemService, brandRepository)
     }
 
     @Bean

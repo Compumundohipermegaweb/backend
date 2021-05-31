@@ -17,6 +17,10 @@ class JpaBrandRepository(private val brandDao: BrandDao): BrandRepository {
         return brandsRepresentation.map { it.toBrand() }
     }
 
+    override fun delete(brandId: Long) {
+        brandDao.deleteById(brandId)
+    }
+
     private fun BrandRepresentation.toBrand(): Brand {
         return Brand(id, name)
     }
