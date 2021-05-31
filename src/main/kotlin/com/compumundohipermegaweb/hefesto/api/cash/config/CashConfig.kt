@@ -1,12 +1,10 @@
 package com.compumundohipermegaweb.hefesto.api.cash.config
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
-import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.JpaCashRepository
-import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.JpaCashStartEndRepository
-import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.SpringCashDao
-import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.SpringCashStartEndDao
+import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -39,6 +37,11 @@ class CashConfig {
     }
 
     @Bean
+    fun getAllCashMovements(cashMovementRepository: CashMovementRepository): GetAllCashMovements {
+        return GetAllCashMovements(cashMovementRepository)
+    }
+
+    @Bean
     fun cashRepository(springCashDao: SpringCashDao): CashRepository {
         return JpaCashRepository(springCashDao)
     }
@@ -46,5 +49,10 @@ class CashConfig {
     @Bean
     fun cashStartEndRepository(springCashStartEndDao: SpringCashStartEndDao): CashStartEndRepository {
         return JpaCashStartEndRepository(springCashStartEndDao)
+    }
+
+    @Bean
+    fun cashMovementRepository(springCashMovementDao: SpringCashMovementDao): CashMovementRepository {
+        return JpaCashMovementRepository(springCashMovementDao)
     }
 }

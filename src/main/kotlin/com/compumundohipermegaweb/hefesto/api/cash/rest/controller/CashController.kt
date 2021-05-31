@@ -2,12 +2,14 @@ package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashResponse
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashStarEndIdResponse
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.FindAllCashResponse
+import com.compumundohipermegaweb.hefesto.api.cash.rest.response.TransactionResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -18,7 +20,8 @@ class CashController(private val openCash: OpenCash,
                      private val registerCash: RegisterCash,
                      private val closeCash: CloseCash,
                      private val getAllRegisterCash: GetAllRegisterCash,
-                     private val getCashByUserId: GetCashByUserId) {
+                     private val getCashByUserId: GetCashByUserId,
+                     private val getAllCashMovements: GetAllCashMovements) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -55,8 +58,17 @@ class CashController(private val openCash: OpenCash,
         return ResponseEntity.ok(CashStarEndIdResponse(getCashByUserId.invoke(userId)))
     }
 
-    private fun Cash.toResponse() = CashResponse(id, branchId, pointOfSale, status)
+    @GetMapping
+    @RequestMapping("transaction/all")
+    fun getAllCashMovement(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<List<TransactionResponse>> {
+        return ResponseEntity.ok(getAllCashMovements.invoke(cashStartEndId).map { it.toTransaction()})
+    }
 
+    private fun Cash.toResponse(): CashResponse {
+        return CashResponse(id, branchId, pointOfSale, status)
+    }
+
+    private fun CashMovement.toTransaction(): TransactionResponse {
+        return TransactionResponse(transactionId, id, transactionDescription, "ACTIVO")
+    }
 }
-
-

@@ -69,12 +69,12 @@ class JpaCashMovementRepositoryShould {
     }
 
     private companion object {
-        private val CASH_MOVEMENT = CashMovement(0L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
-        private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
-        private val AND_ANOTHER_CASH_MOVEMENT = CashMovement(2L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
+        private val CASH_MOVEMENT = CashMovement(0L, 0L, "", Date(), 0L, "", 0L, 0L,0L, 0.0, "")
+        private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "", Date(), 0L, "", 0L, 0L,0L, 0.0, "")
+        private val AND_ANOTHER_CASH_MOVEMENT = CashMovement(2L, 0L, "", Date(), 0L, "", 0L, 0L,0L, 0.0, "")
     }
 
     private fun CashMovement.toRepresentation(): CashMovementRepresentation {
-        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
     }
 }

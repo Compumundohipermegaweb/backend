@@ -18,6 +18,8 @@ data class CashMovementRepresentation(@Id @GeneratedValue(strategy = GenerationT
                                       val dateTime: Date,
                                       @Column(name = "TRANSACTION_ID")
                                       val transactionId: Long,
+                                      @Column(name = "TRANSACTION_DESCRIPTION")
+                                      val transactionDescription: String,
                                       @Column(name = "PAYMENT_METHOD_ID")
                                       val paymentMethodId: Long,
                                       @Column(name = "CARD_ID")

@@ -14,11 +14,11 @@ class JpaCashMovementRepository(private val springCashMovementDao: SpringCashMov
     }
 
     private fun CashMovement.toRepresentation(cashStartEndId: Long): CashMovementRepresentation {
-        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
     }
 
     private fun CashMovementRepresentation.toCashMovement(): CashMovement {
-        return CashMovement(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovement(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
     }
 }
 
