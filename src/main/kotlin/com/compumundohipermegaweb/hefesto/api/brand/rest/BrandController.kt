@@ -7,7 +7,6 @@ import com.compumundohipermegaweb.hefesto.api.brand.domain.model.Brand
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import javax.xml.ws.Response
 
 @RestController
 @RequestMapping("/api/brands")

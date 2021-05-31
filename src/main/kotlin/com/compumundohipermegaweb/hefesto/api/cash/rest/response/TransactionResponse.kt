@@ -8,3 +8,6 @@ data class TransactionResponse(@JsonProperty("id") val id: Long,
                                @JsonProperty("movement_id") val movementId: Long,
                                @JsonProperty("description") val description: String,
                                @JsonProperty("state") val state: String)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class TransactionsResponse(@JsonProperty("transactions") val transactions: List<TransactionResponse>)

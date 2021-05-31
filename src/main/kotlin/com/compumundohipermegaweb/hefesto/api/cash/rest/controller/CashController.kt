@@ -6,10 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
-import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashResponse
-import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashStarEndIdResponse
-import com.compumundohipermegaweb.hefesto.api.cash.rest.response.FindAllCashResponse
-import com.compumundohipermegaweb.hefesto.api.cash.rest.response.TransactionResponse
+import com.compumundohipermegaweb.hefesto.api.cash.rest.response.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -47,9 +44,9 @@ class CashController(private val openCash: OpenCash,
 
     @GetMapping
     @RequestMapping("/all")
-    fun getAllRegisterCash(): ResponseEntity<FindAllCashResponse> {
+    fun getAllRegisterCash(): ResponseEntity<CashRegisters> {
         val cashRegisters = getAllRegisterCash.invoke().map { it.toResponse() }
-        return ResponseEntity.ok(FindAllCashResponse(cashRegisters))
+        return ResponseEntity.ok(CashRegisters(cashRegisters))
     }
 
     @GetMapping
@@ -60,8 +57,9 @@ class CashController(private val openCash: OpenCash,
 
     @GetMapping
     @RequestMapping("transaction/all")
-    fun getAllCashMovement(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<List<TransactionResponse>> {
-        return ResponseEntity.ok(getAllCashMovements.invoke(cashStartEndId).map { it.toTransaction()})
+    fun getAllCashMovement(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<TransactionsResponse> {
+        val transactions = getAllCashMovements.invoke(cashStartEndId).map { it.toTransaction()}
+        return ResponseEntity.ok(TransactionsResponse(transactions))
     }
 
     private fun Cash.toResponse(): CashResponse {
