@@ -14,6 +14,10 @@ class JpaSalePaymentRepository(private val springDataSalePaymentClient: SpringDa
         return springDataSalePaymentClient.saveAll(salePaymentsDao).map { it.toPaymentDetail() }
     }
 
+    override fun findBySaleId(saleID: Long): List<SalePayment> {
+        return springDataSalePaymentClient.findBySaleId(saleID).map { it.toPaymentDetail() }
+    }
+
     private fun SalePayment.toPaymentDetailDao(saleId: Long): SalePaymentDao {
         return SalePaymentDao(id, saleId, type, subTotal)
     }

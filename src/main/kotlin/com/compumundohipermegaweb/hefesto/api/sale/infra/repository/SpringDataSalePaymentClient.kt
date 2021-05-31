@@ -4,4 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.sale.infra.representation.SalePaym
 import org.springframework.data.repository.CrudRepository
 
 interface SpringDataSalePaymentClient: CrudRepository<SalePaymentDao, Long> {
+    fun findBySaleId(saleId: Long): List<SalePaymentDao>
 }

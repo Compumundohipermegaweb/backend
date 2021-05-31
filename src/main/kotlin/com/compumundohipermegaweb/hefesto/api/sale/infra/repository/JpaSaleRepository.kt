@@ -12,6 +12,14 @@ class JpaSaleRepository(private val springDataSaleClient: SpringDataSaleClient):
         return springDataSaleClient.save(saleDao).toSale(sale)
     }
 
+    override fun findById(saleId: Long): SaleDao? {
+        val sale = springDataSaleClient.findById(saleId)
+        if(sale.isPresent) {
+            return sale.get()
+        }
+        return null
+    }
+
     private fun SaleDao.toSale(sale: Sale): Sale {
         return Sale(id, type, sale.client, salesmanId, branchId,  SaleDetails(ArrayList(), ArrayList()), total, category)
     }

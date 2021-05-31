@@ -8,12 +8,14 @@ import com.compumundohipermegaweb.hefesto.api.sale.infra.representation.SalePaym
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 
 class JpaSalePaymentRepositoryShould {
     private lateinit var springDataSalePaymentClient: SpringDataSalePaymentClient
     private lateinit var salePaymentRepository: SalePaymentRepository
     private lateinit var savedSalePayment: SalePayment
+    private lateinit var foundSalePayments: List<SalePayment>
 
     @Test
     fun `save the input`() {
@@ -25,9 +27,21 @@ class JpaSalePaymentRepositoryShould {
         thenInputSaved()
     }
 
+    @Test
+    fun `find by sale id`() {
+        givenSalePaymentDetailCrudRepository()
+        givenSalePaymentDetailRepository()
+
+        whenFindingTheSalePayments()
+
+        thenInputFound()
+    }
+
     private fun givenSalePaymentDetailCrudRepository() {
         springDataSalePaymentClient = Mockito.mock(SpringDataSalePaymentClient::class.java)
-        Mockito.`when`(springDataSalePaymentClient.save(SALE_PAYMENT_DETAIL_DAO)).thenReturn(SALE_PAYMENT_DETAIL_DAO)
+        `when`(springDataSalePaymentClient.save(SALE_PAYMENT_DETAIL_DAO)).thenReturn(SALE_PAYMENT_DETAIL_DAO)
+        `when`(springDataSalePaymentClient.findBySaleId(0L)).thenReturn(listOf(SALE_PAYMENT_DETAIL_DAO))
+
     }
 
     private fun givenSalePaymentDetailRepository() {
@@ -38,9 +52,18 @@ class JpaSalePaymentRepositoryShould {
         savedSalePayment = salePaymentRepository.save(SALE_PAYMENT_DETAIL, 0L)
     }
 
+    private fun whenFindingTheSalePayments() {
+        foundSalePayments = salePaymentRepository.findBySaleId(0L)
+    }
+
     private fun thenInputSaved() {
         verify(springDataSalePaymentClient).save(SALE_PAYMENT_DETAIL_DAO)
         then(savedSalePayment).isNotNull
+    }
+
+    private fun thenInputFound() {
+        verify(springDataSalePaymentClient).findBySaleId(0L)
+        then(foundSalePayments).isEqualTo(listOf(SALE_PAYMENT_DETAIL))
     }
 
     private companion object {

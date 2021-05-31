@@ -11,11 +11,13 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import java.util.*
 
 class JpaSaleRepositoryShould {
     private lateinit var springDataSaleClient: SpringDataSaleClient
     private lateinit var saleRepository: JpaSaleRepository
     private lateinit var savedSale: Sale
+    private var foundSale: SaleDao? = null
 
     @Test
     fun `save the input`() {
@@ -27,9 +29,20 @@ class JpaSaleRepositoryShould {
         thenInputSaved()
     }
 
+    @Test
+    fun `find by id`() {
+        givenSaleCrudRepository()
+        givenSaleRepository()
+
+        whenFindingTheSale()
+
+        thenInputFound()
+    }
+
     private fun givenSaleCrudRepository() {
         springDataSaleClient = mock(SpringDataSaleClient::class.java)
         `when`(springDataSaleClient.save(SALE_DAO)).thenReturn(SALE_DAO)
+        `when`(springDataSaleClient.findById(0L)).thenReturn(Optional.of(SALE_DAO))
     }
 
     private fun givenSaleRepository() {
@@ -40,9 +53,18 @@ class JpaSaleRepositoryShould {
         savedSale = saleRepository.save(SALE, INVOICE_ID)
     }
 
+    private fun whenFindingTheSale() {
+        foundSale = saleRepository.findById(0L)
+    }
+
     private fun thenInputSaved() {
         verify(springDataSaleClient).save(SALE_DAO)
         then(savedSale).isNotNull
+    }
+
+    private fun thenInputFound() {
+        verify(springDataSaleClient).findById(0L)
+        then(foundSale).isEqualTo(SALE_DAO)
     }
 
     private companion object {
