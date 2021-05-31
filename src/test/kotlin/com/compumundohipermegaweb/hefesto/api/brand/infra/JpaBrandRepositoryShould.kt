@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepos
 import com.compumundohipermegaweb.hefesto.api.brand.infra.repository.BrandDao
 import com.compumundohipermegaweb.hefesto.api.brand.infra.repository.JpaBrandRepository
 import com.compumundohipermegaweb.hefesto.api.brand.infra.representation.BrandRepresentation
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
@@ -19,6 +20,7 @@ class JpaBrandRepositoryShould {
 
     private var brandFound: Brand? = null
     private lateinit var brandsFound: List<Brand>
+    private lateinit var brandCreated: Brand
 
     @Test
     fun `find by id`() {
@@ -50,9 +52,20 @@ class JpaBrandRepositoryShould {
         thenBrandWasDeleted()
     }
 
+    @Test
+    fun `create a brand`() {
+        givenBrandDao()
+        givenBrandRepository()
+
+        whenCreatingBrand()
+
+        thenBrandWasCreated()
+    }
+
     private fun givenBrandDao() {
         brandDao = mock()
         `when`(brandDao.findById(BRAND_ID)).thenReturn(BRAND_DAO)
+        `when`(brandDao.save(any())).thenReturn(BRAND_REPRESENTATION_TO_CREATE)
     }
 
     private fun givenBrandRepository() {
@@ -71,6 +84,10 @@ class JpaBrandRepositoryShould {
         brandRepository.delete(1L)
     }
 
+    private fun whenCreatingBrand() {
+        brandCreated = brandRepository.save(BRAND_TO_CREATE)
+    }
+
     private fun thenBrandFound() {
         then(brandFound).isEqualTo(EXPECTED_BRAND)
     }
@@ -83,9 +100,15 @@ class JpaBrandRepositoryShould {
         verify(brandDao).deleteById(1L)
     }
 
+    private fun thenBrandWasCreated() {
+        verify(brandDao).save(any())
+    }
+
     private companion object {
         const val BRAND_ID = 1L
         val BRAND_DAO = Optional.of(BrandRepresentation(BRAND_ID, "name"))
         val EXPECTED_BRAND = Brand(BRAND_ID, "name")
+        val BRAND_TO_CREATE = Brand(0L, "Name")
+        val BRAND_REPRESENTATION_TO_CREATE = BrandRepresentation(BRAND_TO_CREATE.id, BRAND_TO_CREATE.name)
     }
 }

@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.brand.config
 
+import com.compumundohipermegaweb.hefesto.api.brand.domain.action.CreateBrand
 import com.compumundohipermegaweb.hefesto.api.brand.domain.action.DeleteBrand
 import com.compumundohipermegaweb.hefesto.api.brand.domain.action.FindAllBrands
 import com.compumundohipermegaweb.hefesto.api.brand.domain.repository.BrandRepository
@@ -19,6 +20,11 @@ class BrandConfig {
     @Bean
     fun deleteBrand(brandRepository: BrandRepository): DeleteBrand {
         return DeleteBrand(brandRepository)
+    }
+
+    @Bean
+    fun createBrand(brandRepository: BrandRepository): CreateBrand {
+        return CreateBrand(brandRepository)
     }
 
     @Bean
