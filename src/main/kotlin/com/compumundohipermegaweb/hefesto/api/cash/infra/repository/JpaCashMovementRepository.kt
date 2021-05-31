@@ -5,16 +5,20 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovemen
 import com.compumundohipermegaweb.hefesto.api.cash.infra.representation.CashMovementRepresentation
 
 class JpaCashMovementRepository(private val springCashMovementDao: SpringCashMovementDao): CashMovementRepository {
-    override fun save(cashMovement: CashMovement): CashMovement {
-        return springCashMovementDao.save(cashMovement.toRepresentation()).toCashMovement()
+    override fun save(cashMovement: CashMovement, cashStartEndId: Long): CashMovement {
+        return springCashMovementDao.save(cashMovement.toRepresentation(cashStartEndId)).toCashMovement()
     }
 
-    private fun CashMovement.toRepresentation(): CashMovementRepresentation {
-        return CashMovementRepresentation(id, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+    override fun findByCashStartEndId(cashStartEndId: Long): List<CashMovement> {
+        return springCashMovementDao.findBycashStartEndId(cashStartEndId).map { it.toCashMovement() }
+    }
+
+    private fun CashMovement.toRepresentation(cashStartEndId: Long): CashMovementRepresentation {
+        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
     }
 
     private fun CashMovementRepresentation.toCashMovement(): CashMovement {
-        return CashMovement(id, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovement(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
     }
 }
 

@@ -18,6 +18,7 @@ class JpaCashMovementRepositoryShould {
     private lateinit var cashMovementRepository: CashMovementRepository
 
     private lateinit var savedCashMovement: CashMovement
+    private lateinit var cashMovements: List<CashMovement>
 
     @Test
     fun `save a cash movement`() {
@@ -29,9 +30,20 @@ class JpaCashMovementRepositoryShould {
         thenTheCashMovementIsSuccessfullySaved()
     }
 
+    @Test
+    fun `get all cash movement by cash start end id`() {
+        givenSpringCashMovementDao()
+        givenCashMovementRepository()
+
+        whenFindingCashMovementByCashStartEndId()
+
+        thenTheCashMovementByCashStartEndIdAreSuccessfullyFound()
+    }
+
     private fun givenSpringCashMovementDao() {
         springCashMovementDao = mock()
         `when`(springCashMovementDao.save(CASH_MOVEMENT.toRepresentation())).thenReturn(CASH_MOVEMENT.toRepresentation())
+        `when`(springCashMovementDao.findBycashStartEndId(0L)).thenReturn(listOf(CASH_MOVEMENT, ANOTHER_CASH_MOVEMENT, AND_ANOTHER_CASH_MOVEMENT).map { it.toRepresentation() })
     }
 
     private fun givenCashMovementRepository() {
@@ -39,7 +51,11 @@ class JpaCashMovementRepositoryShould {
     }
 
     private fun whenSavingCashMovement() {
-        savedCashMovement = cashMovementRepository.save(CASH_MOVEMENT)
+        savedCashMovement = cashMovementRepository.save(CASH_MOVEMENT, 0L)
+    }
+
+    private fun whenFindingCashMovementByCashStartEndId() {
+        cashMovements = cashMovementRepository.findByCashStartEndId(0L)
     }
 
     private fun thenTheCashMovementIsSuccessfullySaved() {
@@ -47,11 +63,18 @@ class JpaCashMovementRepositoryShould {
         then(savedCashMovement).isNotNull
     }
 
+    private fun thenTheCashMovementByCashStartEndIdAreSuccessfullyFound() {
+        verify(springCashMovementDao).findBycashStartEndId(0L)
+        then(cashMovements).isEqualTo(listOf(CASH_MOVEMENT, ANOTHER_CASH_MOVEMENT, AND_ANOTHER_CASH_MOVEMENT))
+    }
+
     private companion object {
-        private val CASH_MOVEMENT = CashMovement(0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
+        private val CASH_MOVEMENT = CashMovement(0L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
+        private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
+        private val AND_ANOTHER_CASH_MOVEMENT = CashMovement(2L, 0L, "", Date(), 0L, 0L, 0L,0L, 0.0, "")
     }
 
     private fun CashMovement.toRepresentation(): CashMovementRepresentation {
-        return CashMovementRepresentation(id, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, paymentMethodId, cardId, userId, amount, detail)
     }
 }

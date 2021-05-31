@@ -10,6 +10,8 @@ import javax.persistence.*
 data class CashMovementRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
                                       @Column(name = "ID")
                                       val id: Long,
+                                      @Column(name = "CASH_START_END_ID")
+                                      val cashStartEndId: Long,
                                       @Column(name = "MOVEMENT_ID")
                                       val movementType: String,
                                       @Column(name = "DATE_TIME")
