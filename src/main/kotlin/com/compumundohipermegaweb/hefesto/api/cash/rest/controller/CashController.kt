@@ -7,6 +7,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashResponse
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashStarEndIdResponse
+import com.compumundohipermegaweb.hefesto.api.cash.rest.response.FindAllCashResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -43,8 +44,9 @@ class CashController(private val openCash: OpenCash,
 
     @GetMapping
     @RequestMapping("/all")
-    fun getAllRegisterCash(): ResponseEntity<List<CashResponse>> {
-        return ResponseEntity.ok(getAllRegisterCash.invoke().map { it.toResponse() })
+    fun getAllRegisterCash(): ResponseEntity<FindAllCashResponse> {
+        val cashRegisters = getAllRegisterCash.invoke().map { it.toResponse() }
+        return ResponseEntity.ok(FindAllCashResponse(cashRegisters))
     }
 
     @GetMapping
@@ -53,9 +55,8 @@ class CashController(private val openCash: OpenCash,
         return ResponseEntity.ok(CashStarEndIdResponse(getCashByUserId.invoke(userId)))
     }
 
-    private fun Cash.toResponse(): CashResponse {
-        return CashResponse(id, branchId, pointOfSale, status)
-    }
+    private fun Cash.toResponse() = CashResponse(id, branchId, pointOfSale, status)
+
 }
 
 
