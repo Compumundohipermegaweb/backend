@@ -5,6 +5,8 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovemen
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.*
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -39,6 +41,11 @@ class CashConfig {
     @Bean
     fun getAllCashMovements(cashMovementRepository: CashMovementRepository): GetAllCashMovements {
         return GetAllCashMovements(cashMovementRepository)
+    }
+
+    @Bean
+    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository): GetAllIncomes {
+        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository)
     }
 
     @Bean

@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
@@ -18,13 +19,14 @@ class CashController(private val openCash: OpenCash,
                      private val closeCash: CloseCash,
                      private val getAllRegisterCash: GetAllRegisterCash,
                      private val getCashByUserId: GetCashByUserId,
-                     private val getAllCashMovements: GetAllCashMovements) {
+                     private val getAllCashMovements: GetAllCashMovements,
+                     private val getAllIncomes: GetAllIncomes) {
 
     @PostMapping
     @RequestMapping("/start")
     fun openCash(@RequestBody openRequest: OpenRequest): ResponseEntity<CashResponse?> {
         val openedCash = openCash.invoke(openRequest)
-        if(openedCash != null) {
+        if (openedCash != null) {
             return ResponseEntity.ok(openedCash.toResponse())
         }
         return ResponseEntity.ok(null)
@@ -58,9 +60,16 @@ class CashController(private val openCash: OpenCash,
     @GetMapping
     @RequestMapping("transaction/all")
     fun getAllCashMovement(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<TransactionsResponse> {
-        val transactions = getAllCashMovements.invoke(cashStartEndId).map { it.toTransaction()}
+        val transactions = getAllCashMovements.invoke(cashStartEndId).map { it.toTransaction() }
         return ResponseEntity.ok(TransactionsResponse(transactions))
     }
+
+    @GetMapping
+    @RequestMapping(" cash/income")
+    fun getAllCashIncomes(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<IncomesResponse> {
+        return ResponseEntity.ok(IncomesResponse(getAllIncomes.invoke(cashStartEndId).map { it.toIncomeResponse() }))
+    }
+
 
     private fun Cash.toResponse(): CashResponse {
         return CashResponse(id, branchId, pointOfSale, status)
@@ -68,5 +77,9 @@ class CashController(private val openCash: OpenCash,
 
     private fun CashMovement.toTransaction(): TransactionResponse {
         return TransactionResponse(transactionId, id, transactionDescription, "ACTIVO")
+    }
+
+    private fun Income.toIncomeResponse(): IncomeResponse {
+        return IncomeResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
     }
 }

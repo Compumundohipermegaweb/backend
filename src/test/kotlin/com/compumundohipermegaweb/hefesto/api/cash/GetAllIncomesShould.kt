@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.cash
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.GetAllIncomes
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
-import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Transaction
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
@@ -22,7 +22,7 @@ class GetAllIncomesShould {
     private lateinit var salePaymentRepository: SalePaymentRepository
     private lateinit var getAllIncomes: GetAllIncomes
 
-    private lateinit var transactions: List<Transaction>
+    private lateinit var expens: List<Income>
 
     @Test
     fun `get all incomes`() {
@@ -57,14 +57,14 @@ class GetAllIncomesShould {
     }
 
     private fun whenGettingAllIncomes() {
-        transactions = getAllIncomes.invoke(0L)
+        expens = getAllIncomes.invoke(0L)
     }
 
     private fun thenAllIncomesAreGet() {
         verify(cashMovementRepository).findByCashStartEndId(0L)
         verify(saleRepository, times(2)).findById(0L)
         verify(salePaymentRepository, times(2)).findBySaleId(0L)
-        then(transactions).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
+        then(expens).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
     }
 
     private companion object {
@@ -73,8 +73,8 @@ class GetAllIncomesShould {
         private val ANOTHER_CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0L, 0.0, "")
         private val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
-        private val TRANSACTION = Transaction(0L, DATE, "VENTA", "", "", 0.0)
-        private val ANOTHER_TRANSACTION = Transaction(0L, DATE, "VENTA", "", "", 0.0)
+        private val TRANSACTION = Income(0L, DATE, "VENTA", "", "", 0.0)
+        private val ANOTHER_TRANSACTION = Income(0L, DATE, "VENTA", "", "", 0.0)
 
     }
 }
