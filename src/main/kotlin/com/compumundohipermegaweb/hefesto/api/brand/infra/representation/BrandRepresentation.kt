@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name ="BRAND")
 @Audited
-class BrandDao(
+class BrandRepresentation(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "ID")
