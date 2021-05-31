@@ -21,9 +21,14 @@ class JpaBrandRepository(private val brandDao: BrandDao): BrandRepository {
         brandDao.deleteById(brandId)
     }
 
-    override fun save(brandToSave: Brand): Brand {
-        val brand = brandToSave.toRepresentation()
-        return brandDao.save(brand).toBrand()
+    override fun save(brand: Brand): Brand {
+        val brandRepresentation = brand.toRepresentation()
+        return brandDao.save(brandRepresentation).toBrand()
+    }
+
+    override fun update(brand: Brand): Brand {
+        val brandRepresentation = brand.toRepresentation()
+        return brandDao.save(brandRepresentation).toBrand()
     }
 
     private fun Brand.toRepresentation() = BrandRepresentation(id, name)

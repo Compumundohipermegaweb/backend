@@ -6,5 +6,6 @@ interface BrandRepository {
     fun findById(id: Long): Brand?
     fun findAll(): List<Brand>
     fun delete(brandId: Long)
-    fun save(brandToSave: Brand): Brand
+    fun save(brand: Brand): Brand
+    fun update(brand: Brand): Brand
 }

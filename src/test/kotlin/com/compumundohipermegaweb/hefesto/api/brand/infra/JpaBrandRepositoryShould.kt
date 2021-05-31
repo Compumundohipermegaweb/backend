@@ -21,6 +21,7 @@ class JpaBrandRepositoryShould {
     private var brandFound: Brand? = null
     private lateinit var brandsFound: List<Brand>
     private lateinit var brandCreated: Brand
+    private lateinit var brandUpdated: Brand
 
     @Test
     fun `find by id`() {
@@ -59,13 +60,23 @@ class JpaBrandRepositoryShould {
 
         whenCreatingBrand()
 
-        thenBrandWasCreated()
+        thenBrandWasSaved()
+    }
+
+    @Test
+    fun `update a brand`() {
+        givenBrandDao()
+        givenBrandRepository()
+
+        whenUpdatingBrand()
+
+        thenBrandWasSaved()
     }
 
     private fun givenBrandDao() {
         brandDao = mock()
+        `when`(brandDao.save(any())).thenReturn(BRAND_REPRESENTATION)
         `when`(brandDao.findById(BRAND_ID)).thenReturn(BRAND_DAO)
-        `when`(brandDao.save(any())).thenReturn(BRAND_REPRESENTATION_TO_CREATE)
     }
 
     private fun givenBrandRepository() {
@@ -85,7 +96,11 @@ class JpaBrandRepositoryShould {
     }
 
     private fun whenCreatingBrand() {
-        brandCreated = brandRepository.save(BRAND_TO_CREATE)
+        brandCreated = brandRepository.save(BRAND)
+    }
+
+    private fun whenUpdatingBrand() {
+        brandUpdated = brandRepository.update(BRAND)
     }
 
     private fun thenBrandFound() {
@@ -100,7 +115,7 @@ class JpaBrandRepositoryShould {
         verify(brandDao).deleteById(1L)
     }
 
-    private fun thenBrandWasCreated() {
+    private fun thenBrandWasSaved() {
         verify(brandDao).save(any())
     }
 
@@ -108,7 +123,7 @@ class JpaBrandRepositoryShould {
         const val BRAND_ID = 1L
         val BRAND_DAO = Optional.of(BrandRepresentation(BRAND_ID, "name"))
         val EXPECTED_BRAND = Brand(BRAND_ID, "name")
-        val BRAND_TO_CREATE = Brand(0L, "Name")
-        val BRAND_REPRESENTATION_TO_CREATE = BrandRepresentation(BRAND_TO_CREATE.id, BRAND_TO_CREATE.name)
+        val BRAND = Brand(0L, "Name")
+        val BRAND_REPRESENTATION = BrandRepresentation(BRAND.id, BRAND.name)
     }
 }
