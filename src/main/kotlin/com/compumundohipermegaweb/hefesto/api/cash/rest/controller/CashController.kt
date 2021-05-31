@@ -1,27 +1,23 @@
 package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 
-import com.compumundohipermegaweb.hefesto.api.cash.domain.action.CloseCash
-import com.compumundohipermegaweb.hefesto.api.cash.domain.action.GetAllRegisterCash
-import com.compumundohipermegaweb.hefesto.api.cash.domain.action.OpenCash
-import com.compumundohipermegaweb.hefesto.api.cash.domain.action.RegisterCash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashResponse
+import com.compumundohipermegaweb.hefesto.api.cash.rest.response.CashStarEndIdResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/api/cash")
 class CashController(private val openCash: OpenCash,
                      private val registerCash: RegisterCash,
                      private val closeCash: CloseCash,
-                     private val getAllRegisterCash: GetAllRegisterCash) {
+                     private val getAllRegisterCash: GetAllRegisterCash,
+                     private val getCashByUserId: GetCashByUserId) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -49,6 +45,12 @@ class CashController(private val openCash: OpenCash,
     @RequestMapping("/all")
     fun getAllRegisterCash(): ResponseEntity<List<CashResponse>> {
         return ResponseEntity.ok(getAllRegisterCash.invoke().map { it.toResponse() })
+    }
+
+    @GetMapping
+    @RequestMapping("/start-end")
+    fun getCashByUserId(@RequestParam("user_id") userId: Long): ResponseEntity<CashStarEndIdResponse> {
+        return ResponseEntity.ok(CashStarEndIdResponse(getCashByUserId.invoke(userId)))
     }
 
     private fun Cash.toResponse(): CashResponse {

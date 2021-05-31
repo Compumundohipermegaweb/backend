@@ -10,6 +10,6 @@ class RegisterCash(private val cashRepository: CashRepository) {
     }
 
     private fun CashRequest.toCash(): Cash {
-        return Cash(id, branchId, pointOfSale, status)
+        return Cash(0L, branchId, branchId ,"CLOSE")
     }
 }

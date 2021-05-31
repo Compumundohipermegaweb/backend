@@ -18,6 +18,7 @@ class JpaCashStartEndRepositoryShould {
 
     private lateinit var savedCashStartEnd: CashStartEnd
     private lateinit var cashStartEndNotClosedFound: CashStartEnd
+    private lateinit var cashStartEndNotClosedFoundByUser: List<CashStartEnd>
 
     @Test
     fun `save a cash start-end`() {
@@ -39,11 +40,21 @@ class JpaCashStartEndRepositoryShould {
         thenTheCashStartNotCloseIsSuccessfullyFound()
     }
 
+    @Test
+    fun `find a cash start by user id`() {
+        givenSpringCashStartEndDao()
+        givenCashStartEndRepository()
+
+        whenFindingACashStarByUserId()
+
+        thenTheCashStartByUserIdIsSuccessfullyFound()
+    }
+
     private fun givenSpringCashStartEndDao() {
         springCashStartEndDao = mock()
         `when`(springCashStartEndDao.save(CASH_START_END.toRepresentation())).thenReturn(CASH_START_END.toRepresentation())
         `when`(springCashStartEndDao.findByCashIdAndEndDate(0L)).thenReturn(CASH_START_NOT_CLOSED.toRepresentation())
-
+        `when`(springCashStartEndDao.findByUserId(0L)).thenReturn(listOf(CASH_START_NOT_CLOSED.toRepresentation(), CASH_START_NOT_CLOSED.toRepresentation()))
     }
 
     private fun givenCashStartEndRepository() {
@@ -59,6 +70,10 @@ class JpaCashStartEndRepositoryShould {
         CASH_START_NOT_CLOSED.closeDate = cashStartEndNotClosedFound.closeDate
     }
 
+    private fun whenFindingACashStarByUserId() {
+        cashStartEndNotClosedFoundByUser = cashStartEndRepository.findByUserId(0L)
+    }
+
     private fun thenTheCashStartEndIsSuccessfullySaved() {
         verify(springCashStartEndDao).save(CASH_START_END.toRepresentation())
         then(savedCashStartEnd).isEqualTo(CASH_START_END)
@@ -67,6 +82,11 @@ class JpaCashStartEndRepositoryShould {
     private fun thenTheCashStartNotCloseIsSuccessfullyFound() {
         verify(springCashStartEndDao).findByCashIdAndEndDate(0L)
         then(cashStartEndNotClosedFound).isEqualTo(CASH_START_NOT_CLOSED)
+    }
+
+    private fun thenTheCashStartByUserIdIsSuccessfullyFound() {
+        verify(springCashStartEndDao).findByUserId(0L)
+        then(cashStartEndNotClosedFoundByUser).isEqualTo(listOf(CASH_START_NOT_CLOSED, CASH_START_END))
     }
 
     private companion object {

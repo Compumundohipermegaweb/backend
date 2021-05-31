@@ -46,7 +46,7 @@ class RegisterCashShould {
     }
 
     private companion object {
-        private val CASH_REQUEST =  CashRequest(0L, 0L, 0L, "CLOSE")
+        private val CASH_REQUEST =  CashRequest(0L)
         private val CASH_TO_REGISTER =  Cash(0L, 0L, 0L, "CLOSE")
     }
 }

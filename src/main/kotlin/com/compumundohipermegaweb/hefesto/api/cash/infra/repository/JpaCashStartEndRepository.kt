@@ -14,6 +14,10 @@ class JpaCashStartEndRepository(private val springCashStartEndDao: SpringCashSta
         return springCashStartEndDao.findByCashIdAndEndDate(cashId).toCashStartEnd()
     }
 
+    override fun findByUserId(userId: Long): List<CashStartEnd> {
+        return springCashStartEndDao.findByUserId(userId).map { it.toCashStartEnd() }
+    }
+
     private fun CashStartEnd.toRepresentation(): CashStartEndRepresentation {
         return CashStartEndRepresentation(id, cashId, openDate, openingBalance, userId, closeDate, realBalance, theoreticalBalance, date)
     }
