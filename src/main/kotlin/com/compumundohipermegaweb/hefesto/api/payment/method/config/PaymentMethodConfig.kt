@@ -2,10 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.payment.method.config
 
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.FindAllPaymentMethods
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.GetPaymentMethodsByClient
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RegisterPaymentMethod
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RemovePaymentMethod
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.DefaultPaymentMethodService
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
@@ -42,6 +39,11 @@ class PaymentMethodConfig {
     @Bean
     fun removePaymentMethod(paymentMethodRepository: PaymentMethodRepository): RemovePaymentMethod {
         return RemovePaymentMethod(paymentMethodRepository)
+    }
+
+    @Bean
+    fun updatePaymentMethod(paymentMethodRepository: PaymentMethodRepository): UpdatePaymentMethod {
+        return UpdatePaymentMethod(paymentMethodRepository)
     }
 
     @Bean

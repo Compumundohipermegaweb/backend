@@ -1,11 +1,9 @@
 package com.compumundohipermegaweb.hefesto.api.payment.method.rest.controller
 
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.FindAllPaymentMethods
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.GetPaymentMethodsByClient
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RegisterPaymentMethod
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RemovePaymentMethod
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PostPaymentMethodRequest
+import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PutPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.GetAllPaymentMethodResponse
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.PaymentMethodResponse
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.PaymentMethodsResponse
@@ -18,7 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 class PaymentMethodController (private val registerPaymentMethod: RegisterPaymentMethod,
                                private val getPaymentMethodsByClient: GetPaymentMethodsByClient,
                                private val findAllPaymentMethods: FindAllPaymentMethods,
-                               private val removePaymentMethod: RemovePaymentMethod){
+                               private val removePaymentMethod: RemovePaymentMethod,
+                               private val updatePaymentMethod: UpdatePaymentMethod){
 
     @GetMapping("/payment-methods")
     fun getAllPaymentMethods(): ResponseEntity<PaymentMethodsResponse> {
@@ -47,6 +46,13 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
         val actionData = RemovePaymentMethod.ActionData(id)
         removePaymentMethod(actionData)
         return ResponseEntity.noContent().build()
+    }
+
+    @PutMapping("/payment-methods")
+    fun update(@RequestBody request: PutPaymentMethodRequest): ResponseEntity<PaymentMethodResponse> {
+        val actionData = UpdatePaymentMethod.ActionData(request.id, request.type, request.description, request.state)
+        val paymentMethod = updatePaymentMethod(actionData)
+        return ResponseEntity.ok(paymentMethod.toPaymentMethodResponse())
     }
 
     private fun PaymentMethod.toPaymentMethodResponse(): PaymentMethodResponse {
