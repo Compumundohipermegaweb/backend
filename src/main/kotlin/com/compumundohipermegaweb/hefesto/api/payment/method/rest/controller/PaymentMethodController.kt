@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.Paymen
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PostPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PutPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.GetAllPaymentMethodResponse
+import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.GetAllPaymentMethodTypesResponse
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.PaymentMethodResponse
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.PaymentMethodsResponse
 import org.springframework.http.ResponseEntity
@@ -17,7 +18,8 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
                                private val getPaymentMethodsByClient: GetPaymentMethodsByClient,
                                private val findAllPaymentMethods: FindAllPaymentMethods,
                                private val removePaymentMethod: RemovePaymentMethod,
-                               private val updatePaymentMethod: UpdatePaymentMethod){
+                               private val updatePaymentMethod: UpdatePaymentMethod,
+                               private val findAllPaymentMethodTypes: FindAllPaymentMethodTypes){
 
     @GetMapping("/payment-methods")
     fun getAllPaymentMethods(): ResponseEntity<PaymentMethodsResponse> {
@@ -53,6 +55,12 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
         val actionData = UpdatePaymentMethod.ActionData(request.id, request.type, request.description, request.state)
         val paymentMethod = updatePaymentMethod(actionData)
         return ResponseEntity.ok(paymentMethod.toPaymentMethodResponse())
+    }
+
+    @GetMapping("/payment-methods/types")
+    fun getAllPaymentMethodTypes(): ResponseEntity<GetAllPaymentMethodTypesResponse> {
+        val types = findAllPaymentMethodTypes().map { it.toString() }
+        return ResponseEntity.ok(GetAllPaymentMethodTypesResponse(types))
     }
 
     private fun PaymentMethod.toPaymentMethodResponse(): PaymentMethodResponse {

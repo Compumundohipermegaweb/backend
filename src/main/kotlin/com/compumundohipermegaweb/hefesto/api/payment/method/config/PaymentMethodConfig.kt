@@ -47,6 +47,11 @@ class PaymentMethodConfig {
     }
 
     @Bean
+    fun findAllPaymentMethodTypes(): FindAllPaymentMethodTypes {
+        return FindAllPaymentMethodTypes()
+    }
+
+    @Bean
     fun paymentMethodRepository(paymentMethodDao: PaymentMethodDao): PaymentMethodRepository {
         return JpaPaymentMethodRepository(paymentMethodDao)
     }
