@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table (name = "PAYMENT_METHOD")
 @Audited
-data class PaymentMethodDao (
+data class PaymentMethodRepresentation (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
     @Column(name = "TYPE") val type: String,
     @Column(name = "DESCRIPTION") val description: String,

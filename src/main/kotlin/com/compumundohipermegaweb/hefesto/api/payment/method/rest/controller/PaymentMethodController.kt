@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.payment.method.rest.controller
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.FindAllPaymentMethods
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.GetPaymentMethodsByClient
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RegisterPaymentMethod
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.RemovePaymentMethod
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PostPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.payment.method.rest.response.GetAllPaymentMethodResponse
@@ -16,7 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 @RequestMapping("/api")
 class PaymentMethodController (private val registerPaymentMethod: RegisterPaymentMethod,
                                private val getPaymentMethodsByClient: GetPaymentMethodsByClient,
-                               private val findAllPaymentMethods: FindAllPaymentMethods){
+                               private val findAllPaymentMethods: FindAllPaymentMethods,
+                               private val removePaymentMethod: RemovePaymentMethod){
 
     @GetMapping("/payment-methods")
     fun getAllPaymentMethods(): ResponseEntity<PaymentMethodsResponse> {
@@ -38,6 +40,13 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
     fun paymentMethodByClient(@PathVariable(name = "CLIENT_ID") clientId: Long): ResponseEntity<PaymentMethodsResponse> {
         val paymentMethods = getPaymentMethodsByClient.invoke(clientId)
         return ResponseEntity.ok(PaymentMethodsResponse(paymentMethods.map { it.toPaymentMethodResponse() }))
+    }
+
+    @DeleteMapping("/payment-methods/{id}")
+    fun deletePaymentMethod(@PathVariable("id") id: Long): ResponseEntity<Any> {
+        val actionData = RemovePaymentMethod.ActionData(id)
+        removePaymentMethod(actionData)
+        return ResponseEntity.noContent().build()
     }
 
     private fun PaymentMethod.toPaymentMethodResponse(): PaymentMethodResponse {
