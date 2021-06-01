@@ -27,9 +27,9 @@ class PaymentMethodController (private val registerPaymentMethod: RegisterPaymen
         return ResponseEntity.ok(PaymentMethodsResponse(paymentMethods))
     }
 
-    @PostMapping
+    @PostMapping("/payment-methods")
     fun postPaymentMethod(@RequestBody body: PostPaymentMethodRequest): ResponseEntity<PaymentMethod>{
-        val paymentMethod = registerPaymentMethod(PaymentMethod(0L,body.paymentMethod,body.state, body.type))
+        val paymentMethod = registerPaymentMethod(PaymentMethod(id = 0L, description = body.paymentMethod, state = body.state, type = body.type))
 
         return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(paymentMethod.id).toUri())
