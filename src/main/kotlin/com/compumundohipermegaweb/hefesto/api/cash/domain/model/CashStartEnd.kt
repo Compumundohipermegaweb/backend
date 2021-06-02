@@ -9,6 +9,6 @@ data class CashStartEnd(
     val openingBalance: Double,
     val userId: Long,
     var closeDate: Date?,
-    val realBalance: Double,
-    val theoreticalBalance: Double,
+    var realBalance: Double,
+    var theoreticalBalance: Double,
     val date: Date)
