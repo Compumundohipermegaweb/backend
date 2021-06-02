@@ -37,12 +37,16 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
         acceptedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest
         rejectedItems = ArrayList()
 
-        val client: Client? = clientService.findByDocument(onlineSaleRequest.clientRequest.documentNumber)
+        var client: Client? = clientService.findByDocument(onlineSaleRequest.clientRequest.documentNumber)
         if(client == null) {
-            clientService.save(onlineSaleRequest.clientRequest.toClient())
+            client = clientService.save(onlineSaleRequest.clientRequest.toClient())
+        } else {
+            if(client.address.isNullOrEmpty()) {
+                client.address = onlineSaleRequest.clientRequest.address
+            }
         }
 
-        if(client!!.isValid()) {
+        if(client.isValid()) {
             validatePriceOfSaleItemsRequest(onlineSaleRequest)
 
             if(acceptedItems.isNotEmpty()){
