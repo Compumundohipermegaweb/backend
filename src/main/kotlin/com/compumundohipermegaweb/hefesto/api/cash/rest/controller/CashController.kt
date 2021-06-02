@@ -65,7 +65,7 @@ class CashController(private val openCash: OpenCash,
     }
 
     @GetMapping
-    @RequestMapping(" cash/income")
+    @RequestMapping("cash/income")
     fun getAllCashIncomes(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<IncomesResponse> {
         return ResponseEntity.ok(IncomesResponse(getAllIncomes.invoke(cashStartEndId).map { it.toIncomeResponse() }))
     }
