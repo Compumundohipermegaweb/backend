@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration
 class CashConfig {
 
     @Bean
-    fun openCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository): OpenCash {
-        return OpenCash(cashRepository, cashStartEndRepository)
+    fun openCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository, cashMovementRepository: CashMovementRepository): OpenCash {
+        return OpenCash(cashRepository, cashStartEndRepository, cashMovementRepository)
     }
 
     @Bean
@@ -45,8 +45,8 @@ class CashConfig {
     }
 
     @Bean
-    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository): GetAllIncomes {
-        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository)
+    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository, paymentMethodRepository: PaymentMethodRepository): GetAllIncomes {
+        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository, paymentMethodRepository)
     }
 
     @Bean

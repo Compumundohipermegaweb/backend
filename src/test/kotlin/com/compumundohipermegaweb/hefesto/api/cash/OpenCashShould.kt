@@ -2,7 +2,9 @@ package com.compumundohipermegaweb.hefesto.api.cash
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.OpenCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashStartEnd
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
@@ -17,6 +19,7 @@ import java.util.*
 class OpenCashShould {
     private lateinit var cashRepository: CashRepository
     private lateinit var cashStartEndRepository: CashStartEndRepository
+    private lateinit var cashMovementRepository: CashMovementRepository
 
     private lateinit var openCash: OpenCash
 
@@ -26,6 +29,7 @@ class OpenCashShould {
     fun `open a cash`() {
         givenCashRepository()
         givenCashStartEndRepository()
+        givenCashMovementRepository()
         givenOpenCash()
 
         whenOpeningACash()
@@ -37,6 +41,7 @@ class OpenCashShould {
     fun `not open a cash already open`() {
         givenCashRepository()
         givenCashStartEndRepository()
+        givenCashMovementRepository()
         givenOpenCash()
 
         whenOpeningACashAlreadyOpen()
@@ -48,6 +53,7 @@ class OpenCashShould {
     fun `return null if try open a nonexist cash`() {
         givenCashRepository()
         givenCashStartEndRepository()
+        givenCashMovementRepository()
         givenOpenCash()
 
         whenOpeningNonExistsCash()
@@ -63,13 +69,19 @@ class OpenCashShould {
         `when`(cashRepository.save(CASH_TO_OPEN)).thenReturn(CASH_TO_OPEN)
     }
 
+    private fun givenCashMovementRepository() {
+        cashMovementRepository = mock()
+        `when`(cashMovementRepository.save(CASH_MOVEMENT, 0L)).thenReturn(CASH_MOVEMENT)
+    }
+
+
     private fun givenCashStartEndRepository() {
         cashStartEndRepository = mock()
         `when`(cashStartEndRepository.save(any())).thenReturn(CASH_START_END)
     }
 
     private fun givenOpenCash() {
-        openCash = OpenCash(cashRepository, cashStartEndRepository)
+        openCash = OpenCash(cashRepository, cashStartEndRepository, cashMovementRepository)
     }
 
     private fun whenOpeningACash() {
@@ -88,6 +100,7 @@ class OpenCashShould {
         verify(cashRepository).findById(0L)
         verify(cashRepository).save(CASH_TO_OPEN)
         verify(cashStartEndRepository).save(any())
+        verify(cashMovementRepository).save(CASH_MOVEMENT, 0L)
         then(openedCash).isEqualTo(OPENED_CASH)
     }
 
@@ -100,12 +113,14 @@ class OpenCashShould {
     }
 
     private companion object {
+        private val DATE = Date()
         private val OPEN_REQUEST = OpenRequest(0L, 0L, 0.0)
         private val ALREADY_OPEN_REQUEST = OpenRequest(1L, 1L, 0.0)
         private val NONEXISTENT_OPEN_REQUEST = OpenRequest(2L, 2L, 0.0)
         private val CASH_TO_OPEN =  Cash(0L, 0L, 0L, "CLOSE")
         private val OPENED_CASH =  Cash(0L, 0L, 0L, "OPEN")
         private val ALREADY_OPENED_CASH =  Cash(1L, 1L, 1L, "OPEN")
-        private val CASH_START_END = CashStartEnd(0L, 0L, Date(), 0.0, 0L, null, 0.0, 0.0, Date())
+        private val CASH_START_END = CashStartEnd(0L, 0L, DATE, 0.0, 0L, null, 0.0, 0.0, DATE)
+        private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "APERTURA", 0L, 0L, 0L, 0.0, "APERTURA DE CAJA")
     }
 }
