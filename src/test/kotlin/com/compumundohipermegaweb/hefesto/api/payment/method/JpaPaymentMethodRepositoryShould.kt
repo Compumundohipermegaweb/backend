@@ -10,6 +10,7 @@ import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import java.util.*
 
 class JpaPaymentMethodRepositoryShould {
     private lateinit var paymentMethodDao: PaymentMethodDao
@@ -17,7 +18,7 @@ class JpaPaymentMethodRepositoryShould {
 
     private lateinit var savedPaymentMethod: PaymentMethod
     private lateinit var foundPaymentMethods: List<PaymentMethod>
-
+    private var foundPaymentMethod: PaymentMethod? = null
 
     @Test
     fun `save the input`(){
@@ -59,11 +60,21 @@ class JpaPaymentMethodRepositoryShould {
         thenPaymentMethodHasBeenDeleted()
     }
 
+    @Test
+    fun `find payment method by id`() {
+        paymentMethodDao()
+        givenPaymentMethodRepository()
+
+        whenFindingPaymentMethodById()
+
+        thenPaymentMethodHasBeenFoundByID()
+    }
+
     private fun paymentMethodDao() {
         paymentMethodDao = mock()
         `when`(paymentMethodDao.save(PAYMENT_METHOD_DAO)).thenReturn(PAYMENT_METHOD_DAO)
         `when`(paymentMethodDao.findAll()).thenReturn(listOf(PAYMENT_METHOD_DAO, ANOTHER_PAYMENT_METHOD_DAO))
-
+        `when`(paymentMethodDao.findById(0L)).thenReturn(Optional.of(PAYMENT_METHOD_DAO))
     }
 
     private fun givenPaymentMethodRepository() {
@@ -82,6 +93,10 @@ class JpaPaymentMethodRepositoryShould {
         paymentMethodRepository.deleteById(1L)
     }
 
+    private fun whenFindingPaymentMethodById() {
+        foundPaymentMethod = paymentMethodRepository.findById(0L)
+    }
+
     private fun thenThePaymentMethodISuccessfullySaved(){
         verify(paymentMethodDao).save(PAYMENT_METHOD_DAO)
         then(savedPaymentMethod).isNotNull
@@ -97,6 +112,11 @@ class JpaPaymentMethodRepositoryShould {
 
     private fun thenPaymentMethodHasBeenDeleted() {
         verify(paymentMethodDao).deleteById(1L)
+    }
+
+    private fun thenPaymentMethodHasBeenFoundByID() {
+        verify(paymentMethodDao).findById(0L)
+        then(foundPaymentMethod).isEqualTo(PAYMENT_METHOD)
     }
 
     private companion object{

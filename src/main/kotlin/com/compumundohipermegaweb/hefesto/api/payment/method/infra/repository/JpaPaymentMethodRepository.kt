@@ -18,6 +18,14 @@ class JpaPaymentMethodRepository (private val paymentMethodDao: PaymentMethodDao
         paymentMethodDao.deleteById(id)
     }
 
+    override fun findById(id: Long): PaymentMethod? {
+        val paymentMethod = paymentMethodDao.findById(id)
+        if(paymentMethod.isPresent) {
+            return paymentMethod.get().toPaymentMethod()
+        }
+        return null
+    }
+
     private fun PaymentMethod.toPaymentMethodDao(): PaymentMethodRepresentation {
         return PaymentMethodRepresentation(id, type, description, state)
     }

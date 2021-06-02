@@ -22,7 +22,7 @@ class GetAllIncomesShould {
     private lateinit var salePaymentRepository: SalePaymentRepository
     private lateinit var getAllIncomes: GetAllIncomes
 
-    private lateinit var expens: List<Income>
+    private lateinit var incomes: List<Income>
 
     @Test
     fun `get all incomes`() {
@@ -57,24 +57,24 @@ class GetAllIncomesShould {
     }
 
     private fun whenGettingAllIncomes() {
-        expens = getAllIncomes.invoke(0L)
+        incomes = getAllIncomes.invoke(0L)
     }
 
     private fun thenAllIncomesAreGet() {
         verify(cashMovementRepository).findByCashStartEndId(0L)
         verify(saleRepository, times(2)).findById(0L)
         verify(salePaymentRepository, times(2)).findBySaleId(0L)
-        then(expens).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
+        then(incomes).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
     }
 
     private companion object {
         private val DATE = Date()
         private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
-        private val ANOTHER_CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
+        private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0L, 0.0, "")
         private val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
         private val TRANSACTION = Income(0L, DATE, "VENTA", "", "", 0.0)
-        private val ANOTHER_TRANSACTION = Income(0L, DATE, "VENTA", "", "", 0.0)
+        private val ANOTHER_TRANSACTION = Income(1L, DATE, "VENTA", "", "", 0.0)
 
     }
 }

@@ -6,4 +6,5 @@ interface PaymentMethodRepository {
     fun save (paymentMethod : PaymentMethod) : PaymentMethod
     fun findAllPaymentMethod(): List<PaymentMethod>
     fun deleteById(id: Long)
+    fun findById(id: Long): PaymentMethod?
 }
