@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Expense
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
@@ -20,7 +21,8 @@ class CashController(private val openCash: OpenCash,
                      private val getAllRegisterCash: GetAllRegisterCash,
                      private val getCashByUserId: GetCashByUserId,
                      private val getAllCashMovements: GetAllCashMovements,
-                     private val getAllIncomes: GetAllIncomes) {
+                     private val getAllIncomes: GetAllIncomes,
+                     private val getAllExpenses: GetAllExpenses) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -70,6 +72,11 @@ class CashController(private val openCash: OpenCash,
         return ResponseEntity.ok(IncomesResponse(getAllIncomes.invoke(cashStartEndId).map { it.toIncomeResponse() }))
     }
 
+    @GetMapping
+    @RequestMapping("cash/expense")
+    fun getAllCashExpense(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<ExpensesResponse> {
+        return ResponseEntity.ok(ExpensesResponse(getAllExpenses.invoke(cashStartEndId).map { it.toExpenseResponse() }))
+    }
 
     private fun Cash.toResponse(): CashResponse {
         return CashResponse(id, branchId, pointOfSale, status)
@@ -82,4 +89,9 @@ class CashController(private val openCash: OpenCash,
     private fun Income.toIncomeResponse(): IncomeResponse {
         return IncomeResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
     }
+
+    private fun Expense.toExpenseResponse(): ExpenseResponse {
+        return ExpenseResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
+    }
+
 }
