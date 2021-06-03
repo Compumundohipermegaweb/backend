@@ -34,10 +34,10 @@ class InvoiceSale(private val saleService: SaleService,
             }
         }
 
-        val invoice = invoiceService.invoiceSale(sale)
+        val invoice = invoiceService.invoiceSale(sale, saleRequest)
         invoice.saleId = saleService.save(sale, invoice.id).id
 
-        return invoice
+        return invoiceService.updateInvoice(invoice)
     }
 
     private fun SaleRequest.toSale(): Sale {
@@ -60,7 +60,6 @@ class InvoiceSale(private val saleService: SaleService,
             if(item != null) {
                 it.sku = item.sku
             }
-            //it.id = 0L
         }
         return saleDetails
     }

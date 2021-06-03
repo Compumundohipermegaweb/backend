@@ -91,7 +91,8 @@ class InvoiceSaleShould {
 
     private fun givenInvoiceService() {
         invoiceService = mock()
-        `when`(invoiceService.invoiceSale(any())).thenReturn(SAVED_INVOICE_TYPE_A)
+        `when`(invoiceService.invoiceSale(any(), any())).thenReturn(SAVED_INVOICE_TYPE_A)
+        `when`(invoiceService.updateInvoice(SAVED_INVOICE_TYPE_A)).thenReturn(SAVED_INVOICE_TYPE_A)
     }
 
     private fun givenStockService() {
@@ -113,7 +114,7 @@ class InvoiceSaleShould {
     }
 
     private fun whenInvoiceSale(saleRequest: SaleRequest) {
-        generatedInvoice = invoiceSale(saleRequest)
+        generatedInvoice = invoiceSale.invoke(saleRequest)
     }
 
     private fun thenTheInvoiceIsGenerated() {

@@ -4,10 +4,10 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.repository.InvoiceRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.infra.representation.InvoiceDao
 
-class JpaInvoiceRepository(private val springDataInvoiceClient: SpringDataInvoiceClient): InvoiceRepository  {
+class JpaInvoiceRepository(private val springDataInvoiceDao: SpringDataInvoiceDao): InvoiceRepository  {
     override fun save(invoice: Invoice): Invoice {
-        val invoiceSaved = springDataInvoiceClient.save(invoice.toInvoiceDao())
-        return springDataInvoiceClient.save(buildVoucherNumber(invoiceSaved)).toInvoice(invoice, invoiceSaved.voucherNumber)
+        val invoiceSaved = springDataInvoiceDao.save(invoice.toInvoiceDao())
+        return springDataInvoiceDao.save(buildVoucherNumber(invoiceSaved)).toInvoice(invoice, invoiceSaved.voucherNumber)
     }
 
     private fun buildVoucherNumber(invoiceDao: InvoiceDao): InvoiceDao {
