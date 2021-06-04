@@ -83,8 +83,8 @@ class GetAllIncomesShould {
         private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0L, 0.0, "")
         private val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
-        private val TRANSACTION = Income(0L, DATE, "VENTA", "", "", 0.0)
-        private val ANOTHER_TRANSACTION = Income(1L, DATE, "VENTA", "", "", 0.0)
+        private val TRANSACTION = Income(0L, DATE, 0L, "VENTA", "", "", 0.0)
+        private val ANOTHER_TRANSACTION = Income(1L, DATE, 0L, "VENTA", "", "", 0.0)
         private val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVE")
     }
 }

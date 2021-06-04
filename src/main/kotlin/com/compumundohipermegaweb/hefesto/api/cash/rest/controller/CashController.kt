@@ -87,7 +87,7 @@ class CashController(private val openCash: OpenCash,
     }
 
     private fun Income.toIncomeResponse(): IncomeResponse {
-        return IncomeResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
+        return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount)
     }
 
     private fun Expense.toExpenseResponse(): ExpenseResponse {
