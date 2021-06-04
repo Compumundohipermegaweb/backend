@@ -77,6 +77,7 @@ class GetAllIncomesShould {
         then(incomes.size).isEqualTo(2)
         then(incomes[0]).isNotNull
         then(incomes[1]).isNotNull
+        then(incomes).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
     }
 
     private companion object {

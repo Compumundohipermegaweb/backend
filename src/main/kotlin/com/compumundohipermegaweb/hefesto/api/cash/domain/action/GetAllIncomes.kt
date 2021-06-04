@@ -21,7 +21,7 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     val paymentType = mutableListOf<String>()
                     val payments = salePaymentRepository.findBySaleId(income.id)
                     for(payment in payments) {
-                        paymentType+payment.type
+                        paymentType += payment.type
                     }
                     transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", paymentType, it.amount)
                 }
