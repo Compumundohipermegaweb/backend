@@ -1,3 +1,4 @@
+INSERT INTO BRANCH(ID, BRANCH, ADDRESS, POSTAL_CODE, EMAIL, CONTACT_NUMBER, ATTENTION_SCHEDULE) VALUES(1, 'Mitre', 'Av. Dr. Ricardo Balbín 1052', '1663', 'mitre@ferreteria.com', '1169140099', 'Lu. a Sa. de 08:00 - 18:00');
 INSERT INTO payment_method(ID, TYPE, DESCRIPTION ,STATE, DELETED )VALUES (1 , 'TARJETA', 'Tarjeta de crédito', 'ACTIVE', false);
 INSERT INTO payment_method(ID, TYPE ,DESCRIPTION ,STATE, DELETED )VALUES (2 , 'TARJETA', 'Tarjeta de débito', 'ACTIVE', false);
 INSERT INTO payment_method(ID, TYPE ,DESCRIPTION ,STATE, DELETED )VALUES (3 , 'EFECTIVO', 'Efectivo', 'ACTIVE', false);

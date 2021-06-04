@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.branch.rest.controller
 
+import com.compumundohipermegaweb.hefesto.api.branch.domain.action.FindAllBranches
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.FindStockedItems
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.GetStockAvailable
 import com.compumundohipermegaweb.hefesto.api.branch.domain.action.RegisterBranch
@@ -13,13 +14,15 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.model.ItemStock
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import javax.xml.ws.Response
 
 
 @RestController
 @RequestMapping("/api/branches")
 class BranchController (private val registerBranch: RegisterBranch,
                         private val findStockedItems: FindStockedItems,
-                        private val getStockAvailable: GetStockAvailable) {
+                        private val getStockAvailable: GetStockAvailable,
+                        private val findAllBranches: FindAllBranches) {
     @PostMapping
     fun postBranch (@RequestBody body: PostBranchRequest) : ResponseEntity <Branch> {
         val branch = registerBranch((Branch(0L,body.branch, body.address, body.postalCode,body.email,body.contactNumber,body.attentionSchedule)))
@@ -41,8 +44,10 @@ class BranchController (private val registerBranch: RegisterBranch,
         return ResponseEntity.ok(StockResponse(itemResponse))
     }
 
-    private fun ItemStock.toItemStockResponse(): ItemStockResponse {
-        return ItemStockResponse(id, sku, shortDescription, longDescription, brandName, price, availableStock, imported)
+    @GetMapping
+    fun getAll(): ResponseEntity<GetAllBranchesResponse> {
+        val branches = findAllBranches().map { it.toResponse() }
+        return ResponseEntity.ok(GetAllBranchesResponse(branches))
     }
 
     @GetMapping("/{BRANCH_ID}/stock/{SKU}")
@@ -53,6 +58,12 @@ class BranchController (private val registerBranch: RegisterBranch,
             return ResponseEntity.ok(StockAvailableResponse(stock.sku, stock.stockTotal))
         }
         return  ResponseEntity.ok(StockAvailableResponse(sku,0))
+    }
+
+    private fun Branch.toResponse() = BranchResponse(id, branch, address, postalCode, email, contactNumber, attentionSchedule)
+
+    private fun ItemStock.toItemStockResponse(): ItemStockResponse {
+        return ItemStockResponse(id, sku, shortDescription, longDescription, brandName, price, availableStock, imported)
     }
 
 
