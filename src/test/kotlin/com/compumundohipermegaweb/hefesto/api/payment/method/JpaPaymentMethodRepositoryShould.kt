@@ -31,7 +31,7 @@ class JpaPaymentMethodRepositoryShould {
     }
 
     @Test
-    fun `find all payment method`(){
+    fun `find all payment method that are not deleted`(){
         paymentMethodDao()
         givenPaymentMethodRepository()
 
@@ -41,17 +41,7 @@ class JpaPaymentMethodRepositoryShould {
     }
 
     @Test
-    fun `return all payment method founded`(){
-        paymentMethodDao()
-        givenPaymentMethodRepository()
-
-        whenFindingThePaymentMethods()
-
-        thenThePaymentMethodISuccessfullyReturner()
-    }
-
-    @Test
-    fun `delete a payment method by its ID`() {
+    fun `logic delete a payment method by its ID`() {
         paymentMethodDao()
         givenPaymentMethodRepository()
 
@@ -73,7 +63,6 @@ class JpaPaymentMethodRepositoryShould {
     private fun paymentMethodDao() {
         paymentMethodDao = mock()
         `when`(paymentMethodDao.save(PAYMENT_METHOD_DAO)).thenReturn(PAYMENT_METHOD_DAO)
-        `when`(paymentMethodDao.findAll()).thenReturn(listOf(PAYMENT_METHOD_DAO, ANOTHER_PAYMENT_METHOD_DAO))
         `when`(paymentMethodDao.findById(0L)).thenReturn(Optional.of(PAYMENT_METHOD_DAO))
     }
 
@@ -103,15 +92,11 @@ class JpaPaymentMethodRepositoryShould {
     }
 
     private fun thenThePaymentMethodISuccessfullyFound(){
-        verify(paymentMethodDao).findAll()
-    }
-
-    private fun thenThePaymentMethodISuccessfullyReturner(){
-        then(foundPaymentMethods).isEqualTo(listOf(PAYMENT_METHOD, ANOTHER_PAYMENT_METHOD))
+        verify(paymentMethodDao).findAllByDeleted(false)
     }
 
     private fun thenPaymentMethodHasBeenDeleted() {
-        verify(paymentMethodDao).deleteById(1L)
+        verify(paymentMethodDao).updateDeletedById(1L)
     }
 
     private fun thenPaymentMethodHasBeenFoundByID() {
@@ -120,9 +105,7 @@ class JpaPaymentMethodRepositoryShould {
     }
 
     private companion object{
-        val PAYMENT_METHOD_DAO = PaymentMethodRepresentation(0L, "EFECTIVO","EFECTIVO", "ACTIVE")
-        val ANOTHER_PAYMENT_METHOD_DAO = PaymentMethodRepresentation(1L,"CUENTA_CORRIENTE", "CUENTA_CORRIENTE", "ACTIVE")
+        val PAYMENT_METHOD_DAO = PaymentMethodRepresentation(0L, "EFECTIVO","EFECTIVO", "ACTIVE", false)
         val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVE")
-        val ANOTHER_PAYMENT_METHOD = PaymentMethod(1L,"CUENTA_CORRIENTE", "CUENTA_CORRIENTE", "ACTIVE")
     }
 }

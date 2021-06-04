@@ -7,8 +7,19 @@ import javax.persistence.*
 @Table (name = "PAYMENT_METHOD")
 @Audited
 data class PaymentMethodRepresentation (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
-    @Column(name = "TYPE") val type: String,
-    @Column(name = "DESCRIPTION") val description: String,
-    @Column(name = "STATE") val state: String
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID") val id: Long,
+
+    @Column(name = "TYPE")
+    val type: String,
+
+    @Column(name = "DESCRIPTION")
+    val description: String,
+
+    @Column(name = "STATE")
+    val state: String,
+
+    @Column(name = "DELETED")
+    val deleted: Boolean
 )

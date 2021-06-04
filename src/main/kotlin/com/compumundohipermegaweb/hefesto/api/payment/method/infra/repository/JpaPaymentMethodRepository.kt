@@ -11,11 +11,11 @@ class JpaPaymentMethodRepository (private val paymentMethodDao: PaymentMethodDao
     }
 
     override fun findAllPaymentMethod(): List<PaymentMethod> {
-        return paymentMethodDao.findAll().map { it.toPaymentMethod() }
+        return paymentMethodDao.findAllByDeleted(false).map { it.toPaymentMethod() }
     }
 
     override fun deleteById(id: Long) {
-        paymentMethodDao.deleteById(id)
+        paymentMethodDao.updateDeletedById(id)
     }
 
     override fun findById(id: Long): PaymentMethod? {
@@ -27,7 +27,7 @@ class JpaPaymentMethodRepository (private val paymentMethodDao: PaymentMethodDao
     }
 
     private fun PaymentMethod.toPaymentMethodDao(): PaymentMethodRepresentation {
-        return PaymentMethodRepresentation(id, type, description, state)
+        return PaymentMethodRepresentation(id, type, description, state, false)
     }
 
     private fun PaymentMethodRepresentation.toPaymentMethod(): PaymentMethod {
