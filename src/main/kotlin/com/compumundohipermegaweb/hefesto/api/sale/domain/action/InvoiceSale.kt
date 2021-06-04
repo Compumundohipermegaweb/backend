@@ -34,10 +34,11 @@ class InvoiceSale(private val saleService: SaleService,
             }
         }
 
-        val invoice = invoiceService.invoiceSale(sale, saleRequest)
-        invoice.saleId = saleService.save(sale, invoice.id).id
+        val savedSale = saleService.save(sale, 0L)
+        val invoice = invoiceService.invoiceSale(savedSale, saleRequest)
+        saleService.save(sale, invoice.id)
 
-        return invoiceService.updateInvoice(invoice)
+        return invoice
     }
 
     private fun SaleRequest.toSale(): Sale {

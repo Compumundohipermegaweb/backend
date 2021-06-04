@@ -20,6 +20,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
@@ -63,7 +64,7 @@ class InvoiceSaleShould {
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
 
-        verify(saleService).save(any(), any())
+        verify(saleService, times(2)).save(any(), any())
     }
 
     @Test
