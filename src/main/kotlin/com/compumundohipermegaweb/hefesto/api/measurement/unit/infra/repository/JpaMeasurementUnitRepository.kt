@@ -7,14 +7,21 @@ import com.compumundohipermegaweb.hefesto.api.measurement.unit.infra.representat
 class JpaMeasurementUnitRepository(private val measurementUnitDao: MeasurementUnitDao): MeasurementUnitRepository {
 
     override fun findAll(): List<MeasurementUnit> {
-        val measurements = measurementUnitDao.findAll()
+        val measurements = measurementUnitDao.findAllByDeleted(false)
         return measurements.map { it.toMeasurementUnit() }
     }
 
+    override fun save(measurementUnit: MeasurementUnit): MeasurementUnit {
+        val measurementUnitRepresentation = measurementUnit.toRepresentation()
+        return measurementUnitDao.save(measurementUnitRepresentation).toMeasurementUnit()
+    }
 
-    private fun MeasurementUnitRepresentation.toMeasurementUnit() =
-            MeasurementUnit(
-                    id = id,
-                    name = name,
-                    description = description)
+    override fun logicDelete(id: Long) {
+        measurementUnitDao.updateDeletedById(id)
+    }
+
+
+    private fun MeasurementUnitRepresentation.toMeasurementUnit() = MeasurementUnit(id, name, description)
+
+    private fun MeasurementUnit.toRepresentation() = MeasurementUnitRepresentation(id, name, description, false)
 }
