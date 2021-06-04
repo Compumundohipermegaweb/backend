@@ -15,5 +15,8 @@ data class CategoryRepresentation(
         val name: String,
 
         @Column(name = "DESCRIPTION")
-        val description: String)
+        val description: String,
+
+        @Column(name = "DELETED")
+        val deleted: Boolean)
 

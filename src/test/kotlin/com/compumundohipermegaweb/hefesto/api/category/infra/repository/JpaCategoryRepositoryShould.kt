@@ -27,7 +27,7 @@ class JpaCategoryRepositoryShould {
     }
 
     @Test
-    fun `find all the categories`() {
+    fun `find all the categories that are not deleted`() {
         givenCategoryDao()
         givenCategoryRepository()
 
@@ -37,7 +37,7 @@ class JpaCategoryRepositoryShould {
     }
 
     @Test
-    fun `delete a category by id`() {
+    fun `logic delete a category by id`() {
         givenCategoryDao()
         givenCategoryRepository()
 
@@ -87,11 +87,11 @@ class JpaCategoryRepositoryShould {
     }
 
     private fun thenCategoriesWhereFound() {
-        verify(categoryDao).findAll()
+        verify(categoryDao).findAllByDeleted(false)
     }
 
     private fun thenCategoryWasDeleted() {
-        verify(categoryDao).deleteById(1L)
+        verify(categoryDao).logicDeleteById(1L)
     }
 
     private fun thenCategoryHasBeenUpdated() {
@@ -100,8 +100,8 @@ class JpaCategoryRepositoryShould {
 
     private companion object {
         val CATEGORY_TO_SAVE = Category(0L, "", "")
-        val CATEGORY_REPRESENTATION_TO_SAVE = CategoryRepresentation(CATEGORY_TO_SAVE.id, CATEGORY_TO_SAVE.name, CATEGORY_TO_SAVE.description)
+        val CATEGORY_REPRESENTATION_TO_SAVE = CategoryRepresentation(CATEGORY_TO_SAVE.id, CATEGORY_TO_SAVE.name, CATEGORY_TO_SAVE.description, false)
         val CATEGORY_TO_UPDATE = Category(1L, "new name", "new description")
-        val CATEGORY_REPRESENTATION_TO_UPDATE = CategoryRepresentation(CATEGORY_TO_UPDATE.id, CATEGORY_TO_UPDATE.name, CATEGORY_TO_UPDATE.description)
+        val CATEGORY_REPRESENTATION_TO_UPDATE = CategoryRepresentation(CATEGORY_TO_UPDATE.id, CATEGORY_TO_UPDATE.name, CATEGORY_TO_UPDATE.description, false)
     }
 }

@@ -12,14 +12,14 @@ class JpaCategoryRepository(private val categoryDao: CategoryDao): CategoryRepos
     }
 
     override fun findAll(): List<Category> {
-        return categoryDao.findAll().map { it.toCategory() }
+        return categoryDao.findAllByDeleted(false).map { it.toCategory() }
     }
 
     override fun delete(categoryId: Long) {
-        categoryDao.deleteById(categoryId)
+        categoryDao.logicDeleteById(categoryId)
     }
 
-    private fun Category.toRepresentation() = CategoryRepresentation(id, name, description)
+    private fun Category.toRepresentation() = CategoryRepresentation(id, name, description, false)
 
     private fun CategoryRepresentation.toCategory() = Category(id, name, description)
 }
