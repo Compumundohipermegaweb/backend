@@ -10,7 +10,7 @@ data class IncomeResponse(@JsonProperty("id_movement") val movementId: Long,
                           @JsonProperty("transaction_id") val transactionId: Long,
                           @JsonProperty("transaction") val transactionDescription: String,
                           @JsonProperty("detail") val detail: String,
-                          @JsonProperty("payment") val payments: List<String>,
+                          @JsonProperty("payments") val payments: List<String>,
                           @JsonProperty("amount") val amount: Double)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
