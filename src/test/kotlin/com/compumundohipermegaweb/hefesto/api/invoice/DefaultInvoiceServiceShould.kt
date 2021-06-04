@@ -71,7 +71,7 @@ class DefaultInvoiceServiceShould {
 
     private fun thenTheInvoiceIsInvoiced() {
         verify(cashStartEndRepository).findByCashIdAndEndDate(SALE_REQUEST.branchId)
-        verify(cashMovementRepository).save(CASH_MOVEMENT, 0L)
+        verify(cashMovementRepository).save(any(), any())
         verify(invoiceRepository).save(any())
         then(invoicedSale).isNotNull
     }

@@ -21,7 +21,9 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     val payment = salePaymentRepository.findBySaleId(income.id)
                     var paymentType = ""
                     if(payment != null) {
-                        paymentType = payment[0].type
+                        if(payment.isNotEmpty()) {
+                            paymentType = payment[0].type
+                        }
                     }
                     transactions+=Income(it.id, it.dateTime, it.transactionDescription, "", paymentType, it.amount)
                 }
