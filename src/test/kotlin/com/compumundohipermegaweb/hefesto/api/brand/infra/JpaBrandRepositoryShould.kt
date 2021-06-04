@@ -44,7 +44,7 @@ class JpaBrandRepositoryShould {
     }
 
     @Test
-    fun `delete by id`() {
+    fun `logic delete by id`() {
         givenBrandDao()
         givenBrandRepository()
 
@@ -108,11 +108,11 @@ class JpaBrandRepositoryShould {
     }
 
     private fun thenBrandsWhereFound() {
-        verify(brandDao).findAll()
+        verify(brandDao).findAllByDeleted(false)
     }
 
     private fun thenBrandWasDeleted() {
-        verify(brandDao).deleteById(1L)
+        verify(brandDao).updateDeletedById(1L)
     }
 
     private fun thenBrandWasSaved() {
@@ -121,9 +121,9 @@ class JpaBrandRepositoryShould {
 
     private companion object {
         const val BRAND_ID = 1L
-        val BRAND_DAO = Optional.of(BrandRepresentation(BRAND_ID, "name"))
+        val BRAND_DAO = Optional.of(BrandRepresentation(BRAND_ID, "name", false))
         val EXPECTED_BRAND = Brand(BRAND_ID, "name")
         val BRAND = Brand(0L, "Name")
-        val BRAND_REPRESENTATION = BrandRepresentation(BRAND.id, BRAND.name)
+        val BRAND_REPRESENTATION = BrandRepresentation(BRAND.id, BRAND.name, false)
     }
 }

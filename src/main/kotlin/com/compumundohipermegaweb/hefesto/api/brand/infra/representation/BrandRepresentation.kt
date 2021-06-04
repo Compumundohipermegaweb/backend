@@ -13,5 +13,8 @@ class BrandRepresentation(
         val id: Long,
 
         @Column(name = "NAME", nullable = false)
-        val name: String
+        val name: String,
+
+        @Column(name = "DELETED")
+        val deleted: Boolean
 )

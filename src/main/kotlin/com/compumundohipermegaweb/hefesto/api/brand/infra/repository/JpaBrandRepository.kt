@@ -13,12 +13,12 @@ class JpaBrandRepository(private val brandDao: BrandDao): BrandRepository {
     }
 
     override fun findAll(): List<Brand> {
-        val brandsRepresentation = brandDao.findAll()
+        val brandsRepresentation = brandDao.findAllByDeleted(false)
         return brandsRepresentation.map { it.toBrand() }
     }
 
     override fun delete(brandId: Long) {
-        brandDao.deleteById(brandId)
+        brandDao.updateDeletedById(brandId)
     }
 
     override fun save(brand: Brand): Brand {
@@ -31,7 +31,7 @@ class JpaBrandRepository(private val brandDao: BrandDao): BrandRepository {
         return brandDao.save(brandRepresentation).toBrand()
     }
 
-    private fun Brand.toRepresentation() = BrandRepresentation(id, name)
+    private fun Brand.toRepresentation() = BrandRepresentation(id, name, false)
 
     private fun BrandRepresentation.toBrand()= Brand(id, name)
 }
