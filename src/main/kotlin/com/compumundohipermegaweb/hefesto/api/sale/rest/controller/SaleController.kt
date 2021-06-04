@@ -5,7 +5,9 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientRespons
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.GetClientBySaleId
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
+import com.compumundohipermegaweb.hefesto.api.sale.domain.action.PaySale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaySaleRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.response.InvoiceResponse
 import com.compumundohipermegaweb.hefesto.api.sale.rest.response.SaleDetailsResponse
@@ -17,7 +19,8 @@ import java.text.SimpleDateFormat
 @RestController
 @RequestMapping("/api/sales")
 class SaleController(private val invoiceSale: InvoiceSale,
-                     private val getClientBySaleId: GetClientBySaleId) {
+                     private val getClientBySaleId: GetClientBySaleId,
+                     private val paySale: PaySale) {
 
     @PostMapping
     fun invoiceSale(@RequestBody sale: SaleRequest): ResponseEntity<InvoiceResponse> {
@@ -32,6 +35,13 @@ class SaleController(private val invoiceSale: InvoiceSale,
             return ResponseEntity.ok(client.toClientResponse())
         }
         return ResponseEntity.ok(null)
+    }
+
+    @PostMapping
+    @RequestMapping("/pay")
+    fun paySale(@RequestBody paySaleRequest: PaySaleRequest): ResponseEntity<Boolean> {
+        paySale.invoke(paySaleRequest)
+        return ResponseEntity.ok(true)
     }
 
     private fun Invoice.toInvoiceResponse() = InvoiceResponse(voucherNumber, SimpleDateFormat("dd/MM/yyyy").format(billingDate), type, client.toClientResponse(), branchAddress, branchContact, cuit, activitySince, saleDetails.toSaleDetailsResponse(), subTotal, ivaSubTotal, total)

@@ -9,7 +9,7 @@ data class CashMovement(
     val dateTime: Date,
     val transactionId: Long,
     val transactionDescription: String,
-    val paymentMethodId: Long,
+    var paymentMethodId: Long,
     val cardId: Long,
     val userId: Long,
     val amount: Double,

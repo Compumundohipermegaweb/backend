@@ -1,11 +1,13 @@
 package com.compumundohipermegaweb.hefesto.api.sale.config
 
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.DefaultInvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.DefaultItemService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.GetClientBySaleId
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
+import com.compumundohipermegaweb.hefesto.api.sale.domain.action.PaySale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleDetailRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
@@ -35,6 +37,11 @@ class SaleConfig {
     @Bean
     fun saleService(saleRepository: SaleRepository, saleDetailRepository: SaleDetailRepository, salePaymentRepository: SalePaymentRepository): DefaultSaleService {
         return DefaultSaleService(saleRepository, saleDetailRepository, salePaymentRepository)
+    }
+
+    @Bean
+    fun paySale(cashMovementRepository: CashMovementRepository, salePaymentRepository: SalePaymentRepository): PaySale {
+        return PaySale(cashMovementRepository, salePaymentRepository)
     }
 
     @Bean
