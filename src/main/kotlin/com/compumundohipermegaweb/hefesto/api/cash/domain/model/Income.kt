@@ -7,5 +7,5 @@ data class Income(val movement_id: Long,
                   val transactionId: Long,
                   val transactionDescription: String,
                   val detail: String,
-                  val payments: String,
+                  val payments: List<String>,
                   val amount: Double)

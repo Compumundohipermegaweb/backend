@@ -74,17 +74,20 @@ class GetAllIncomesShould {
         verify(cashMovementRepository).findByCashStartEndId(0L)
         verify(saleRepository, times(2)).findById(0L)
         verify(salePaymentRepository, times(2)).findBySaleId(0L)
-        then(incomes).isEqualTo(listOf(TRANSACTION, ANOTHER_TRANSACTION))
+        then(incomes.size).isEqualTo(2)
+        then(incomes[0]).isNotNull
+        then(incomes[1]).isNotNull
     }
 
     private companion object {
         private val DATE = Date()
+        private val LIST_OF_PAYMENTS = listOf("")
         private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0L, 0.0, "")
         private val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
-        private val TRANSACTION = Income(0L, DATE, 0L, "VENTA", "", "", 0.0)
-        private val ANOTHER_TRANSACTION = Income(1L, DATE, 0L, "VENTA", "", "", 0.0)
+        private val TRANSACTION = Income(0L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0)
+        private val ANOTHER_TRANSACTION = Income(1L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0)
         private val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVE")
     }
 }
