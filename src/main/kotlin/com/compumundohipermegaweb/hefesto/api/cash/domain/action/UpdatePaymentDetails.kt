@@ -15,12 +15,12 @@ class UpdatePaymentDetails(private val cashMovementRepository: CashMovementRepos
             if(movement.sourceDescription == "VENTA") {
                 val payments = salePaymentRepository.findBySaleId(movement.sourceId)
                 payments.forEach { salePaymentRepository.delete(it, movement.sourceId) }
-                paymentRequest.forEach { salePaymentRepository.save(it.toSaleDetail(), movement.sourceId) }
+                paymentRequest.forEach { salePaymentRepository.save(it.toSalePayment(), movement.sourceId) }
             }
         }
     }
 
-    private fun PaymentRequest.toSaleDetail(): SalePayment {
+    private fun PaymentRequest.toSalePayment(): SalePayment {
         return SalePayment(0L, type, subTotal)
     }
 }

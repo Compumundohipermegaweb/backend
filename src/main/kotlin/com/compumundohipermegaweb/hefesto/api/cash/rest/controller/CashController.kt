@@ -11,6 +11,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.*
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -24,7 +25,8 @@ class CashController(private val openCash: OpenCash,
                      private val getCashByUserId: GetCashByUserId,
                      private val getAllCashMovements: GetAllCashMovements,
                      private val getAllIncomes: GetAllIncomes,
-                     private val getAllExpenses: GetAllExpenses) {
+                     private val getAllExpenses: GetAllExpenses,
+                     private val updatePaymentDetails: UpdatePaymentDetails) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -78,6 +80,13 @@ class CashController(private val openCash: OpenCash,
     @RequestMapping("cash/expense")
     fun getAllCashExpense(@RequestParam("cash_start_end_id") cashStartEndId: Long): ResponseEntity<ExpensesResponse> {
         return ResponseEntity.ok(ExpensesResponse(getAllExpenses.invoke(cashStartEndId).map { it.toExpenseResponse() }))
+    }
+
+    @PostMapping
+    @RequestMapping("/payment-details/update")
+    fun updateSalePayment(@RequestParam("movement_id") movementId: Long, @RequestBody paymentDetails: List<PaymentRequest>): ResponseEntity<Boolean> {
+        updatePaymentDetails.invoke(movementId, paymentDetails)
+        return ResponseEntity.ok(true)
     }
 
     private fun Cash.toResponse(): CashResponse {

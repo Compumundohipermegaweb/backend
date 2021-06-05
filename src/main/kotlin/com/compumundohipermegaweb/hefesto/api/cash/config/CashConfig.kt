@@ -56,6 +56,11 @@ class CashConfig {
     }
 
     @Bean
+    fun updatePaymentDetails(cashMovementRepository: CashMovementRepository, salePaymentRepository: SalePaymentRepository): UpdatePaymentDetails {
+        return UpdatePaymentDetails(cashMovementRepository, salePaymentRepository)
+    }
+
+    @Bean
     fun cashRepository(springCashDao: SpringCashDao): CashRepository {
         return JpaCashRepository(springCashDao)
     }
