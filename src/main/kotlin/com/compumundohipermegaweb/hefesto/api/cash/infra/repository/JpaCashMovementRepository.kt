@@ -13,6 +13,14 @@ class JpaCashMovementRepository(private val springCashMovementDao: SpringCashMov
         return springCashMovementDao.findBycashStartEndId(cashStartEndId).map { it.toCashMovement() }
     }
 
+    override fun findById(movementId: Long): CashMovement? {
+        val cashMovement = springCashMovementDao.findById(movementId)
+        if(cashMovement.isPresent) {
+            return cashMovement.get().toCashMovement()
+        }
+        return null
+    }
+
     private fun CashMovement.toRepresentation(cashStartEndId: Long): CashMovementRepresentation {
         return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
     }

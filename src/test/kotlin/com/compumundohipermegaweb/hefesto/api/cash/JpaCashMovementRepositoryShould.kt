@@ -19,6 +19,7 @@ class JpaCashMovementRepositoryShould {
 
     private lateinit var savedCashMovement: CashMovement
     private lateinit var cashMovements: List<CashMovement>
+    private var cashMovementFound: CashMovement? = null
 
     @Test
     fun `save a cash movement`() {
@@ -40,10 +41,32 @@ class JpaCashMovementRepositoryShould {
         thenTheCashMovementByCashStartEndIdAreSuccessfullyFound()
     }
 
+    @Test
+    fun `find by id`() {
+        givenSpringCashMovementDao()
+        givenCashMovementRepository()
+
+        whenFindingByCashMovementId(0L)
+
+        thenTheCashMovementIsSuccessfullyFound()
+    }
+
+    @Test
+    fun `not find by id`() {
+        givenSpringCashMovementDao()
+        givenCashMovementRepository()
+
+        whenFindingByCashMovementId(4L)
+
+        thenTheCashMovementIsNotFound()
+    }
+
     private fun givenSpringCashMovementDao() {
         springCashMovementDao = mock()
         `when`(springCashMovementDao.save(CASH_MOVEMENT.toRepresentation())).thenReturn(CASH_MOVEMENT.toRepresentation())
         `when`(springCashMovementDao.findBycashStartEndId(0L)).thenReturn(listOf(CASH_MOVEMENT, ANOTHER_CASH_MOVEMENT, AND_ANOTHER_CASH_MOVEMENT).map { it.toRepresentation() })
+        `when`(springCashMovementDao.findById(0L)).thenReturn(Optional.of(CASH_MOVEMENT.toRepresentation()))
+        `when`(springCashMovementDao.findById(4L)).thenReturn(Optional.empty())
     }
 
     private fun givenCashMovementRepository() {
@@ -58,6 +81,10 @@ class JpaCashMovementRepositoryShould {
         cashMovements = cashMovementRepository.findByCashStartEndId(0L)
     }
 
+    private fun whenFindingByCashMovementId(cashMovementId: Long) {
+        cashMovementFound = cashMovementRepository.findById(cashMovementId)
+    }
+
     private fun thenTheCashMovementIsSuccessfullySaved() {
         verify(springCashMovementDao).save(CASH_MOVEMENT.toRepresentation())
         then(savedCashMovement).isNotNull
@@ -66,6 +93,16 @@ class JpaCashMovementRepositoryShould {
     private fun thenTheCashMovementByCashStartEndIdAreSuccessfullyFound() {
         verify(springCashMovementDao).findBycashStartEndId(0L)
         then(cashMovements).isEqualTo(listOf(CASH_MOVEMENT, ANOTHER_CASH_MOVEMENT, AND_ANOTHER_CASH_MOVEMENT))
+    }
+
+    private fun thenTheCashMovementIsSuccessfullyFound() {
+        verify(springCashMovementDao).findById(0L)
+        then(cashMovementFound).isEqualTo(CASH_MOVEMENT)
+    }
+
+    private fun thenTheCashMovementIsNotFound() {
+        verify(springCashMovementDao).findById(4L)
+        then(cashMovementFound).isEqualTo(null)
     }
 
     private companion object {
