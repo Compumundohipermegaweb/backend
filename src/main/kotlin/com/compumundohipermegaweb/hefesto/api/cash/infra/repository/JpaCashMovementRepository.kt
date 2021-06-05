@@ -18,7 +18,7 @@ class JpaCashMovementRepository(private val springCashMovementDao: SpringCashMov
     }
 
     private fun CashMovementRepresentation.toCashMovement(): CashMovement {
-        return CashMovement(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovement(id, cashStartEndId, movementType, dateTime, sourceId, sourceDescription, paymentMethodId, cardId, userId, amount, detail)
     }
 }
 

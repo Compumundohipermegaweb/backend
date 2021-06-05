@@ -7,7 +7,7 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ExpenseResponse(@JsonProperty("id_movement") val movement_id: Long,
                            @JsonProperty("datetime") val datetime: Date,
-                           @JsonProperty("transaction") val transactionDescription: String,
+                           @JsonProperty("source_description") val sourceDescription: String,
                            @JsonProperty("detail") val detail: String,
                            @JsonProperty("payment") val payments: String,
                            @JsonProperty("amount") val amount: Double)
