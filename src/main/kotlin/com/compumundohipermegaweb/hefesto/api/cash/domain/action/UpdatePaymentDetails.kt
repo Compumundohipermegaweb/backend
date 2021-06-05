@@ -10,10 +10,10 @@ class UpdatePaymentDetails(private val cashMovementRepository: CashMovementRepos
 ) {
 
     operator fun invoke(movementId: Long, paymentRequest: List<PaymentRequest>) {
-        var movement = cashMovementRepository.findById(movementId)
+        val movement = cashMovementRepository.findById(movementId)
         if(movement != null) {
             if(movement.sourceDescription == "VENTA") {
-                var payments = salePaymentRepository.findBySaleId(movement.sourceId)
+                val payments = salePaymentRepository.findBySaleId(movement.sourceId)
                 payments.forEach { salePaymentRepository.delete(it, movement.sourceId) }
                 paymentRequest.forEach { salePaymentRepository.save(it.toSaleDetail(), movement.sourceId) }
             }
