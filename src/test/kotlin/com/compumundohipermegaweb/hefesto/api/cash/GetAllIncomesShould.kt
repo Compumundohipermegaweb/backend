@@ -4,8 +4,6 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.action.GetAllIncomes
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
@@ -22,7 +20,6 @@ class GetAllIncomesShould {
     private lateinit var cashMovementRepository: CashMovementRepository
     private lateinit var saleRepository: SaleRepository
     private lateinit var salePaymentRepository: SalePaymentRepository
-    private lateinit var paymentMethodRepository: PaymentMethodRepository
     private lateinit var getAllIncomes: GetAllIncomes
 
     private lateinit var incomes: List<Income>
@@ -32,7 +29,6 @@ class GetAllIncomesShould {
         givenCashMovementRepository()
         givenSaleRepository()
         givenSalePaymentRepository()
-        givenPaymentMethodRepository()
         givenGetAllIncomes()
 
         whenGettingAllIncomes()
@@ -56,14 +52,8 @@ class GetAllIncomesShould {
         `when`(salePaymentRepository.findBySaleId(0L)).thenReturn(listOf(SALE_PAYMENT_DETAIL))
     }
 
-    private fun givenPaymentMethodRepository() {
-        paymentMethodRepository = mock()
-        `when`(paymentMethodRepository.findById(0L)).thenReturn(PAYMENT_METHOD)
-
-    }
-
     private fun givenGetAllIncomes() {
-        getAllIncomes = GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository, paymentMethodRepository)
+        getAllIncomes = GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository)
     }
 
     private fun whenGettingAllIncomes() {
@@ -82,13 +72,12 @@ class GetAllIncomesShould {
 
     private companion object {
         private val DATE = Date()
-        private val LIST_OF_PAYMENTS = listOf("")
         private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val ANOTHER_CASH_MOVEMENT = CashMovement(1L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
         private val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, 0L, 0.0, "")
         private val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
-        private val TRANSACTION = Income(0L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0)
-        private val ANOTHER_TRANSACTION = Income(1L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0)
-        private val PAYMENT_METHOD = PaymentMethod(0L,"EFECTIVO", "EFECTIVO", "ACTIVE")
+        private val LIST_OF_PAYMENTS = listOf(SALE_PAYMENT_DETAIL)
+        private val TRANSACTION = Income(0L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0, 0L)
+        private val ANOTHER_TRANSACTION = Income(1L, DATE, 0L, "VENTA", "", LIST_OF_PAYMENTS, 0.0, 0L)
     }
 }

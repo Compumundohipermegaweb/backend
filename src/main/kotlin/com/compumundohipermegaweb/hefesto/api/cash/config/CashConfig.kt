@@ -45,8 +45,8 @@ class CashConfig {
     }
 
     @Bean
-    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository, paymentMethodRepository: PaymentMethodRepository): GetAllIncomes {
-        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository, paymentMethodRepository)
+    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository): GetAllIncomes {
+        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository)
     }
 
     @Bean

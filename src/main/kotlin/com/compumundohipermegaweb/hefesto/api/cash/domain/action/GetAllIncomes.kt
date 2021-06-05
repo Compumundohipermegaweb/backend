@@ -2,14 +2,12 @@ package com.compumundohipermegaweb.hefesto.api.cash.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 
 class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     private val saleRepository: SaleRepository,
-                    private val salePaymentRepository: SalePaymentRepository,
-                    private val paymentMethodRepository: PaymentMethodRepository) {
+                    private val salePaymentRepository: SalePaymentRepository) {
     operator fun invoke(cashStartEndId: Long): List<Income> {
         val transactions = mutableListOf<Income>()
         val movements = cashMovementRepository.findByCashStartEndId(cashStartEndId).filter { it.movementType == "INGRESO" }
@@ -23,15 +21,10 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     for(payment in payments) {
                         paymentType += payment.type
                     }
-                    transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", paymentType, it.amount)
+                    transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", payments, it.amount, it.userId)
                 }
             } else {
-                var paymentDescription = ""
-                val paymentMethod = paymentMethodRepository.findById(it.paymentMethodId)
-                if(paymentMethod != null) {
-                    paymentDescription = paymentMethod.description
-                }
-                transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", listOf(paymentDescription), it.amount)
+                transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", emptyList(), it.amount, it.userId)
             }
         }
         return transactions
