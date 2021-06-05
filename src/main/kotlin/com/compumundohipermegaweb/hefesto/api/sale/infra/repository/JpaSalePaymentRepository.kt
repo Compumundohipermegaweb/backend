@@ -18,6 +18,10 @@ class JpaSalePaymentRepository(private val springDataSalePaymentClient: SpringDa
         return springDataSalePaymentClient.findBySaleId(saleID).map { it.toPaymentDetail() }
     }
 
+    override fun delete(salePayment: SalePayment, saleId: Long) {
+        springDataSalePaymentClient.delete(salePayment.toPaymentDetailDao(saleId))
+    }
+
     private fun SalePayment.toPaymentDetailDao(saleId: Long): SalePaymentDao {
         return SalePaymentDao(id, saleId, type, subTotal)
     }

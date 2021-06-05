@@ -37,11 +37,21 @@ class JpaSalePaymentRepositoryShould {
         thenInputFound()
     }
 
+    @Test
+    fun `delete a sale payment`() {
+        givenSalePaymentDetailCrudRepository()
+        givenSalePaymentDetailRepository()
+
+        whenDeletingTheSalePayments()
+
+        thenInputIsDelete()
+    }
+
     private fun givenSalePaymentDetailCrudRepository() {
         springDataSalePaymentClient = Mockito.mock(SpringDataSalePaymentClient::class.java)
         `when`(springDataSalePaymentClient.save(SALE_PAYMENT_DETAIL_DAO)).thenReturn(SALE_PAYMENT_DETAIL_DAO)
         `when`(springDataSalePaymentClient.findBySaleId(0L)).thenReturn(listOf(SALE_PAYMENT_DETAIL_DAO))
-
+        `when`(springDataSalePaymentClient.delete(SALE_PAYMENT_DETAIL_DAO)).then{ }
     }
 
     private fun givenSalePaymentDetailRepository() {
@@ -56,6 +66,10 @@ class JpaSalePaymentRepositoryShould {
         foundSalePayments = salePaymentRepository.findBySaleId(0L)
     }
 
+    private fun whenDeletingTheSalePayments() {
+        salePaymentRepository.delete(SALE_PAYMENT_DETAIL, 0L)
+    }
+
     private fun thenInputSaved() {
         verify(springDataSalePaymentClient).save(SALE_PAYMENT_DETAIL_DAO)
         then(savedSalePayment).isNotNull
@@ -64,6 +78,10 @@ class JpaSalePaymentRepositoryShould {
     private fun thenInputFound() {
         verify(springDataSalePaymentClient).findBySaleId(0L)
         then(foundSalePayments).isEqualTo(listOf(SALE_PAYMENT_DETAIL))
+    }
+
+    private fun thenInputIsDelete() {
+        verify(springDataSalePaymentClient).delete(SALE_PAYMENT_DETAIL_DAO)
     }
 
     private companion object {

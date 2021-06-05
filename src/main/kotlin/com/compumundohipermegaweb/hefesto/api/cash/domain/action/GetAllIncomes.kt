@@ -16,8 +16,8 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
 
         movements.forEach {
 
-            if(it.transactionDescription.contains("VENTA")) {
-                val income = saleRepository.findById(it.transactionId)
+            if(it.sourceDescription.contains("VENTA")) {
+                val income = saleRepository.findById(it.sourceId)
                 if(income != null) {
                     val client = clientRepository.findById(income.clientId)
                     val paymentType = mutableListOf<String>()
@@ -25,10 +25,10 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     for(payment in payments) {
                         paymentType += payment.type
                     }
-                    transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", payments, it.amount, it.userId, client)
+                    transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", payments, it.amount, it.userId, client)
                 }
             } else {
-                transactions+=Income(it.id, it.dateTime, it.transactionId, it.transactionDescription, "", emptyList(), it.amount, it.userId, null)
+                transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", emptyList(), it.amount, it.userId, null)
             }
         }
         return transactions

@@ -38,7 +38,7 @@ class PaySaleShould {
 
     private fun givenSalePaymentRepository() {
         salePaymentRepository = mock()
-        `when`(salePaymentRepository.save(SALE_PAYMENT, CASH_MOVEMENT.transactionId)).thenReturn(SALE_PAYMENT)
+        `when`(salePaymentRepository.save(SALE_PAYMENT, CASH_MOVEMENT.sourceId)).thenReturn(SALE_PAYMENT)
     }
 
     private fun givenPaySale() {
@@ -50,8 +50,8 @@ class PaySaleShould {
     }
 
     private fun thenTheSaleIsPaid() {
-        verify(salePaymentRepository).save(SALE_PAYMENT, CASH_MOVEMENT.transactionId)
-        verify(cashMovementRepository).save(CASH_MOVEMENT, CASH_MOVEMENT.transactionId)
+        verify(salePaymentRepository).save(SALE_PAYMENT, CASH_MOVEMENT.sourceId)
+        verify(cashMovementRepository).save(CASH_MOVEMENT, CASH_MOVEMENT.sourceId)
     }
 
     private companion object {

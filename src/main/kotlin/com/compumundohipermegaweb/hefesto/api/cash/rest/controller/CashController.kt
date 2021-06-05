@@ -85,7 +85,7 @@ class CashController(private val openCash: OpenCash,
     }
 
     private fun CashMovement.toTransaction(): TransactionResponse {
-        return TransactionResponse(transactionId, id, transactionDescription, "ACTIVO")
+        return TransactionResponse(sourceId, id, sourceDescription, "ACTIVO")
     }
 
     private fun Income.toIncomeResponse(): IncomeResponse {

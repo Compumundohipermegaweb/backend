@@ -112,6 +112,6 @@ class JpaCashMovementRepositoryShould {
     }
 
     private fun CashMovement.toRepresentation(): CashMovementRepresentation {
-        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, transactionId, transactionDescription, paymentMethodId, cardId, userId, amount, detail)
+        return CashMovementRepresentation(id, cashStartEndId, movementType, dateTime, sourceId, sourceDescription, paymentMethodId, cardId, userId, amount, detail)
     }
 }

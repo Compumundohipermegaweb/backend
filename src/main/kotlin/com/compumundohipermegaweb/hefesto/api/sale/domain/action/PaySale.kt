@@ -12,7 +12,7 @@ class PaySale(private val cashMovementRepository: CashMovementRepository,
     operator fun invoke(paySaleRequest: PaySaleRequest) {
         val paymentDetails = paySaleRequest.paymentDetails
         val movement = paySaleRequest.cashMovement
-        val savedPayment = paymentDetails.map { salePaymentRepository.save(it.toSalePayment(), movement.transactionId) }
+        val savedPayment = paymentDetails.map { salePaymentRepository.save(it.toSalePayment(), movement.sourceId) }
         movement.paymentMethodId = savedPayment[0].id
         cashMovementRepository.save(movement, movement.cashStartEndId)
     }

@@ -6,4 +6,5 @@ interface SalePaymentRepository {
     fun save(payments: SalePayment, saleId: Long): SalePayment
     fun saveAll(payments: List<SalePayment>, saleId: Long): List<SalePayment>
     fun findBySaleId(saleID: Long): List<SalePayment>
+    fun delete(salePayment: SalePayment, saleId: Long)
 }
