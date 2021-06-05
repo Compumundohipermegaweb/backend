@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovemen
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.*
+import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
@@ -45,8 +46,8 @@ class CashConfig {
     }
 
     @Bean
-    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository): GetAllIncomes {
-        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository)
+    fun getAllIncomes(cashMovementRepository: CashMovementRepository, saleRepository: SaleRepository, salePaymentRepository: SalePaymentRepository, clientRepository: ClientRepository): GetAllIncomes {
+        return GetAllIncomes(cashMovementRepository, saleRepository, salePaymentRepository, clientRepository)
     }
 
     @Bean

@@ -9,6 +9,8 @@ import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.*
+import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
+import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -87,11 +89,19 @@ class CashController(private val openCash: OpenCash,
     }
 
     private fun Income.toIncomeResponse(): IncomeResponse {
-        return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount)
+        if(client != null) {
+            return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount, salesmanId, client.toClientResponse())
+        }
+        return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount, salesmanId, null)
     }
 
     private fun Expense.toExpenseResponse(): ExpenseResponse {
         return ExpenseResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
     }
 
+    private fun Client.toClientResponse(): ClientResponse {
+        return ClientResponse(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+    }
 }
+
+
