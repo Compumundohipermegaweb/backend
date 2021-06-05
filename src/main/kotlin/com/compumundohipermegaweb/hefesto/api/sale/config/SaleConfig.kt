@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.sale.config
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
+import com.compumundohipermegaweb.hefesto.api.checking.account.domain.repository.CheckingAccountRepository
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
@@ -41,8 +42,8 @@ class SaleConfig {
     }
 
     @Bean
-    fun paySale(cashMovementRepository: CashMovementRepository, salePaymentRepository: SalePaymentRepository): PaySale {
-        return PaySale(cashMovementRepository, salePaymentRepository)
+    fun paySale(cashMovementRepository: CashMovementRepository, salePaymentRepository: SalePaymentRepository, saleRepository: SaleRepository, checkingAccountRepository: CheckingAccountRepository): PaySale {
+        return PaySale(cashMovementRepository, salePaymentRepository, saleRepository, checkingAccountRepository)
     }
 
     @Bean
