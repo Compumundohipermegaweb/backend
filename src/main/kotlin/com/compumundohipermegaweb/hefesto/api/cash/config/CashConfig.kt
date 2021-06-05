@@ -25,8 +25,8 @@ class CashConfig {
     }
 
     @Bean
-    fun closeCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository): CloseCash {
-        return CloseCash(cashRepository, cashStartEndRepository)
+    fun closeCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository, cashMovementRepository: CashMovementRepository): CloseCash {
+        return CloseCash(cashRepository, cashStartEndRepository, cashMovementRepository)
     }
 
     @Bean

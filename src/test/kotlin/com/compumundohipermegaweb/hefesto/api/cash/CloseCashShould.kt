@@ -2,7 +2,9 @@ package com.compumundohipermegaweb.hefesto.api.cash
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.CloseCash
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashStartEnd
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
@@ -17,6 +19,7 @@ import java.util.*
 class CloseCashShould {
     private lateinit var cashRepository: CashRepository
     private lateinit var cashStartEndRepository: CashStartEndRepository
+    private lateinit var cashMovementRepository: CashMovementRepository
 
     private lateinit var closeCash: CloseCash
 
@@ -26,6 +29,7 @@ class CloseCashShould {
     fun `close a cash`() {
         givenCashRepository()
         givenCashStartEndRepository()
+        givenCashMovementRepository()
         givenCloseCash()
 
         whenClosingACash()
@@ -45,8 +49,13 @@ class CloseCashShould {
         `when`(cashStartEndRepository.save(any())).thenReturn(CASH_START_END_CLOSED)
     }
 
+    private fun givenCashMovementRepository() {
+        cashMovementRepository = mock()
+        `when`(cashMovementRepository.save(any(), any())).thenReturn(CASH_MOVEMENT)
+    }
+
     private fun givenCloseCash() {
-        closeCash = CloseCash(cashRepository, cashStartEndRepository)
+        closeCash = CloseCash(cashRepository, cashStartEndRepository, cashMovementRepository)
     }
 
     private fun whenClosingACash() {
@@ -58,6 +67,7 @@ class CloseCashShould {
         verify(cashRepository).save(CASH_TO_CLOSE)
         verify(cashStartEndRepository).findByCashIdAndEndDate(0L)
         verify(cashStartEndRepository).save(CASH_START_END)
+        verify(cashMovementRepository).save(any(), any())
         then(closedCash).isEqualTo(CLOSED_CASH)
     }
 
@@ -68,5 +78,6 @@ class CloseCashShould {
         private val CASH_START_END = CashStartEnd(0L, 0L, Date(), 0.0, 0L, null, 0.0, 0.0, Date())
         private val DATE = Date()
         private val CASH_START_END_CLOSED = CashStartEnd(0L, 0L, Date(), 0.0, 0L, DATE, 0.0, 0.0, Date())
+        private val CASH_MOVEMENT = CashMovement(0L, 0L, "EGRESO", Date(), 0L, "CIERRE", 0L, 0L, 0L, 0.0, "CIERRE DE CAJA")
     }
 }

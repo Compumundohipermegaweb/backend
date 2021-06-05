@@ -100,7 +100,7 @@ class OpenCashShould {
         verify(cashRepository).findById(0L)
         verify(cashRepository).save(CASH_TO_OPEN)
         verify(cashStartEndRepository).save(any())
-        verify(cashMovementRepository).save(CASH_MOVEMENT, 0L)
+        verify(cashMovementRepository).save(any(), any())
         then(openedCash).isEqualTo(OPENED_CASH)
     }
 
