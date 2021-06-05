@@ -45,9 +45,9 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository,
         val cashStartEnd = cashStartEndRepository.findByCashIdAndEndDate(saleRequest.branchId)
 
         if(saleRequest.category.equals("LOCAL")) {
-            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), sale.id, "VENTA", 0L, 0L, saleRequest.salesmanId, sale.total, "VENTA LOCAL"), cashStartEnd.id)
+            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 2L, "VENTA", 0L, sale.id, saleRequest.salesmanId, sale.total, "VENTA LOCAL"), cashStartEnd.id)
         } else {
-            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), sale.id, "VENTA", 0L, 0L, saleRequest.salesmanId, sale.total, "VENTA ONLINE"), cashStartEnd.id)
+            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 1L, "VENTA", 0L, sale.id, saleRequest.salesmanId, sale.total, "VENTA ONLINE"), cashStartEnd.id)
         }
     }
 

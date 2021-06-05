@@ -22,8 +22,8 @@ data class CashMovementRepresentation(@Id @GeneratedValue(strategy = GenerationT
                                       val sourceDescription: String,
                                       @Column(name = "PAYMENT_METHOD_ID")
                                       val paymentMethodId: Long,
-                                      @Column(name = "CARD_ID")
-                                      val cardId: Long,
+                                      @Column(name = "TRANSACTION_ID")
+                                      val transactionId: Long,
                                       @Column(name = "USER_ID")
                                       val userId: Long,
                                       @Column(name = "AMOUNT")

@@ -99,9 +99,9 @@ class CashController(private val openCash: OpenCash,
 
     private fun Income.toIncomeResponse(): IncomeResponse {
         if(client != null) {
-            return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount, salesmanId, client.toClientResponse())
+            return IncomeResponse(movement_id, datetime, sourceId, sourceDescription, detail, payments, amount, salesmanId, client.toClientResponse(),transactionId)
         }
-        return IncomeResponse(movement_id, datetime, transactionId, transactionDescription, detail, payments, amount, salesmanId, null)
+        return IncomeResponse(movement_id, datetime,sourceId, sourceDescription, detail, payments, amount, salesmanId, null,transactionId)
     }
 
     private fun Expense.toExpenseResponse(): ExpenseResponse {

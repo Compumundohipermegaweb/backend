@@ -23,7 +23,7 @@ class CloseCash(private val cashRepository: CashRepository,
                 cash.status = "CLOSE"
                 cashRepository.save(cash)
                 val cashEnd = cashStartEndRepository.findByCashIdAndEndDate(cash.id)
-                cashMovementRepository.save(CashMovement(0L, cashEnd.id, "EGRESO", Date(), 0L, "CIERRE", 0L, 0L, closeRequest.userId, closeRequest.realBalance, "CIERRE DE CAJA"), cashEnd.id)
+                cashMovementRepository.save(CashMovement(0L, cashEnd.id, "EGRESO", Date(), 4L, "CIERRE", 0L, 0L, closeRequest.userId, closeRequest.realBalance, "CIERRE DE CAJA"), cashEnd.id)
                 cashEnd.closeDate = Date()
                 cashEnd.realBalance = closeRequest.realBalance
                 cashEnd.theoreticalBalance = closeRequest.theoreticalBalance

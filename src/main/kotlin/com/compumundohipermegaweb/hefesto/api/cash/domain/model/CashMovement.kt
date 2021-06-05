@@ -10,7 +10,7 @@ data class CashMovement(
     val sourceId: Long,
     val sourceDescription: String,
     var paymentMethodId: Long,
-    val cardId: Long,
+    val transactionId: Long,
     val userId: Long,
     val amount: Double,
     val detail: String

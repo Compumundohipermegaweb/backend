@@ -25,10 +25,10 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
                     for(payment in payments) {
                         paymentType += payment.type
                     }
-                    transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", payments, it.amount, it.userId, client)
+                    transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", payments, it.amount, it.userId, client,it.transactionId)
                 }
             } else {
-                transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", emptyList(), it.amount, it.userId, null)
+                transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", emptyList(), it.amount, it.userId, null,it.transactionId)
             }
         }
         return transactions
