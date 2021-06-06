@@ -4,6 +4,6 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEn
 
 class GetCashByUserId(private val cashStartEndRepository: CashStartEndRepository) {
     operator fun invoke(userId: Long): Long {
-        return  cashStartEndRepository.findByUserId(userId)[0].id
+        return cashStartEndRepository.findByUserId(userId).filter { it.closeDate == null }.toList()[0].id
     }
 }
