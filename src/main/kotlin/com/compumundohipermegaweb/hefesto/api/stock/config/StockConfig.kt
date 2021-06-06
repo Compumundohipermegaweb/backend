@@ -2,17 +2,16 @@ package com.compumundohipermegaweb.hefesto.api.stock.config
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.IncreaseStock
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.RegisterStock
+import com.compumundohipermegaweb.hefesto.api.stock.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.JpaStockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.SpringDataStock
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.mail.javamail.JavaMailSender
 
 
 @Configuration
@@ -36,6 +35,11 @@ class StockConfig {
     @Bean
     fun registerStock(stockRepository: StockRepository): RegisterStock {
         return RegisterStock(stockRepository)
+    }
+
+    @Bean
+    fun stockMinimumAlert(stockRepository: StockRepository, @Autowired emailSender: JavaMailSender): StockMinimumAlert {
+        return StockMinimumAlert(stockRepository, emailSender)
     }
 
     @Bean
