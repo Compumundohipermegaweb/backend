@@ -13,9 +13,9 @@ class UpdatePaymentDetails(private val cashMovementRepository: CashMovementRepos
         val movement = cashMovementRepository.findById(movementId)
         if(movement != null) {
             if(movement.sourceDescription == "VENTA") {
-                val payments = salePaymentRepository.findBySaleId(movement.sourceId)
-                payments.forEach { salePaymentRepository.delete(it, movement.sourceId) }
-                paymentRequest.forEach { salePaymentRepository.save(it.toSalePayment(), movement.sourceId) }
+                val payments = salePaymentRepository.findBySaleId(movement.transactionId)
+                payments.forEach { salePaymentRepository.delete(it, movement.transactionId) }
+                paymentRequest.forEach { salePaymentRepository.save(it.toSalePayment(), movement.transactionId) }
             }
         }
     }
