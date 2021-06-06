@@ -8,7 +8,7 @@ class GetClientBySaleId(private val saleRepository: SaleRepository,
                         private val clientRepository: ClientRepository) {
 
     operator fun invoke(saleId: Long): Client? {
-        var client: Client? = null
+        val client: Client?
         val sale = saleRepository.findById(saleId)
         if(sale != null) {
             client = clientRepository.findById(sale.clientId)
