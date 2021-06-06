@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.IncreaseStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
+import com.compumundohipermegaweb.hefesto.api.stock.domain.action.RegisterStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
@@ -29,6 +30,11 @@ class StockConfig {
     @Bean
     fun increaseStock(stockService: StockService): IncreaseStock {
         return IncreaseStock(stockService)
+    }
+
+    @Bean
+    fun registerStock(stockRepository: StockRepository): RegisterStock {
+        return RegisterStock(stockRepository)
     }
 
     @Bean
