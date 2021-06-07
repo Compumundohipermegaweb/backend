@@ -5,7 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Role
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Session
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.User
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
-import com.compumundohipermegaweb.hefesto.api.authentication.domain.service.UserAuthenticationService
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.service.PasswordAuthenticationService
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.catchThrowable
@@ -16,7 +16,7 @@ import org.mockito.Mockito.`when`
 class LoginShould {
 
     private lateinit var userRepository: UserRepository
-    private lateinit var userAuthenticationService: UserAuthenticationService
+    private lateinit var passwordAuthenticationService: PasswordAuthenticationService
     private lateinit var login: Login
 
     private lateinit var session: Session
@@ -52,40 +52,61 @@ class LoginShould {
 
         whenLogin()
 
-        verify(userAuthenticationService).authenticate(ADMIN_USER, ACTION_DATA.password)
+        thenPasswordHasBeenAuthenticated()
     }
 
     @Test
-    fun `should fail if the authentication failed` () {
+    fun `fail if the authentication failed` () {
         givenUserRepository()
         givenUserAuthenticationService()
         givenLogin()
 
-        exceptionThrown = catchThrowable {
-            session = login(INVALID_USER_ACTION_DATA)
-        }
+        whenLoginWithInvalidPassword()
 
-        then(exceptionThrown).isNotNull
-        then(exceptionThrown).isInstanceOf(AuthenticationException::class.java)
+        thenAuthenticationFailed()
+    }
+
+    @Test
+    fun `fail if the user cant be found` () {
+        givenUserRepository()
+        givenUserAuthenticationService()
+        givenLogin()
+
+        whenLoginWithInvalidUsername()
+
+        thenAuthenticationFailed()
     }
 
     private fun givenUserAuthenticationService() {
-        userAuthenticationService = mock()
-        `when`(userAuthenticationService.authenticate(ADMIN_USER, ACTION_DATA.password)).thenReturn(true)
-        `when`(userAuthenticationService.authenticate(ADMIN_USER, INVALID_USER_ACTION_DATA.password)).thenReturn(false)
+        passwordAuthenticationService = mock()
+        `when`(passwordAuthenticationService.authenticate(ADMIN_USER.password, ACTION_DATA.password)).thenReturn(true)
+        `when`(passwordAuthenticationService.authenticate(ADMIN_USER.password, INVALID_PASSWORD_ACTION_DATA.password)).thenReturn(false)
     }
 
     private fun givenUserRepository() {
         userRepository = mock()
         `when`(userRepository.find(ACTION_DATA.user)).thenReturn(ADMIN_USER)
+        `when`(userRepository.find(INVALID_USER_ACTION_DATA.user)).thenReturn(null)
     }
 
     private fun givenLogin() {
-        login = Login(userAuthenticationService, userRepository)
+        login = Login(passwordAuthenticationService, userRepository)
     }
 
     private fun whenLogin() {
         session = login(ACTION_DATA)
+    }
+
+    private fun whenLoginWithInvalidPassword() {
+        exceptionThrown = catchThrowable {
+            session = login(INVALID_PASSWORD_ACTION_DATA)
+        }
+    }
+
+    private fun whenLoginWithInvalidUsername() {
+        exceptionThrown = catchThrowable {
+            session = login(INVALID_USER_ACTION_DATA)
+        }
     }
 
     private fun theSessionHasBeenCreated() {
@@ -97,9 +118,18 @@ class LoginShould {
         then(session.user).isNotNull
     }
 
+    private fun thenPasswordHasBeenAuthenticated() {
+        verify(passwordAuthenticationService).authenticate(ADMIN_USER.password, ACTION_DATA.password)
+    }
+
+    private fun thenAuthenticationFailed() {
+        then(exceptionThrown).isInstanceOf(AuthenticationException::class.javaObjectType)
+    }
+
     private companion object {
         val ACTION_DATA = Login.ActionData(user = "email@example.com", password = "password")
-        val INVALID_USER_ACTION_DATA = Login.ActionData(user = "email@example.com", password = "invalidPassword")
+        val INVALID_PASSWORD_ACTION_DATA = Login.ActionData(user = "email@example.com", password = "invalidPassword")
+        val INVALID_USER_ACTION_DATA = Login.ActionData(user = "invaliduser@gmail.com", "password")
         val ADMIN_USER = User("", ACTION_DATA.user, ACTION_DATA.password, Role.ADMIN)
     }
 }

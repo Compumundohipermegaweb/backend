@@ -4,6 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.User
 
 
 interface UserRepository {
-    fun find(username: String): User
-
+    fun find(username: String): User?
 }

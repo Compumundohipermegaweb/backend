@@ -4,16 +4,16 @@ import com.compumundohipermegaweb.hefesto.api.authentication.domain.exception.Au
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Session
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Token
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
-import com.compumundohipermegaweb.hefesto.api.authentication.domain.service.UserAuthenticationService
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.service.PasswordAuthenticationService
 
-class Login(private val userAuthenticationService: UserAuthenticationService,
+class Login(private val passwordAuthenticationService: PasswordAuthenticationService,
             private val userRepository: UserRepository) {
 
     operator fun invoke(actionData: ActionData): Session {
-        val user = userRepository.find(actionData.user)
+        val user = userRepository.find(actionData.user) ?: throw AuthenticationException("¡Usuario o contraseña inválidos!")
 
-        if(!userAuthenticationService.authenticate(user, actionData.password)) {
-            throw AuthenticationException("Usuario o contraseña inválidos!")
+        if(!passwordAuthenticationService.authenticate(user.password, actionData.password)) {
+            throw AuthenticationException("¡Usuario o contraseña inválidos!")
         }
 
         return Session(actionData.user, Token(code = user.code, role = user.role))
