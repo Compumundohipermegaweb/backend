@@ -26,4 +26,4 @@ data class UserRepresentation(
     val password: String,
 
     @Column(name = "ROLE")
-    val role: Role)
+    val role: String)

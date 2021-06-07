@@ -85,8 +85,8 @@ class LoginShould {
 
     private fun givenUserRepository() {
         userRepository = mock()
-        `when`(userRepository.find(ACTION_DATA.user)).thenReturn(ADMIN_USER)
-        `when`(userRepository.find(INVALID_USER_ACTION_DATA.user)).thenReturn(null)
+        `when`(userRepository.find(ACTION_DATA.username)).thenReturn(ADMIN_USER)
+        `when`(userRepository.find(INVALID_USER_ACTION_DATA.username)).thenReturn(null)
     }
 
     private fun givenLogin() {
@@ -127,9 +127,9 @@ class LoginShould {
     }
 
     private companion object {
-        val ACTION_DATA = Login.ActionData(user = "email@example.com", password = "password")
-        val INVALID_PASSWORD_ACTION_DATA = Login.ActionData(user = "email@example.com", password = "invalidPassword")
-        val INVALID_USER_ACTION_DATA = Login.ActionData(user = "invaliduser@gmail.com", "password")
-        val ADMIN_USER = User("", ACTION_DATA.user, ACTION_DATA.password, Role.ADMIN)
+        val ACTION_DATA = Login.ActionData(username = "email@example.com", password = "password")
+        val INVALID_PASSWORD_ACTION_DATA = Login.ActionData(username = "email@example.com", password = "invalidPassword")
+        val INVALID_USER_ACTION_DATA = Login.ActionData(username = "invaliduser@gmail.com", "password")
+        val ADMIN_USER = User("", ACTION_DATA.username, ACTION_DATA.password, Role.ADMIN)
     }
 }

@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.authentication.infra
 
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Role
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.User
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
 import com.compumundohipermegaweb.hefesto.api.authentication.infra.representation.UserRepresentation
@@ -11,5 +12,5 @@ class JpaUserRepository(private val userDao: UserDao): UserRepository {
         return userRepresentation?.toUser()
     }
 
-    private fun UserRepresentation.toUser() = User(code, username, password, role)
+    private fun UserRepresentation.toUser() = User(code, username, password, Role.valueOf(role))
 }
