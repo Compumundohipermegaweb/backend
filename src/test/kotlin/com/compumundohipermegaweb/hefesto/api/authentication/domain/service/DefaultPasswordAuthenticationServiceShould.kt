@@ -38,7 +38,7 @@ class DefaultPasswordAuthenticationServiceShould {
         givenPasswordEncodingService()
         givenUserAuthenticationService()
 
-        result = passwordAuthenticationService.authenticate(ENCODED_WRONG_PASSWORD, WRONG_PASSWORD)
+        result = passwordAuthenticationService.authenticate(ENCODED_PASSWORD, WRONG_PASSWORD)
 
         then(result).isFalse
     }

@@ -10,14 +10,18 @@ class Login(private val passwordAuthenticationService: PasswordAuthenticationSer
             private val userRepository: UserRepository) {
 
     operator fun invoke(actionData: ActionData): Session {
-        val user = userRepository.find(actionData.user) ?: throw AuthenticationException("¡Usuario o contraseña inválidos!")
+        val user = userRepository.find(actionData.user) ?: throw AuthenticationException(FAILED_AUTHENTICATION_MESSAGE)
 
         if(!passwordAuthenticationService.authenticate(user.password, actionData.password)) {
-            throw AuthenticationException("¡Usuario o contraseña inválidos!")
+            throw AuthenticationException(FAILED_AUTHENTICATION_MESSAGE)
         }
 
         return Session(actionData.user, Token(code = user.code, role = user.role))
     }
 
     data class ActionData(val user: String, val password: String)
+
+    private companion object {
+        const val FAILED_AUTHENTICATION_MESSAGE = "¡Usuario o contraseña inválidos!"
+    }
 }
