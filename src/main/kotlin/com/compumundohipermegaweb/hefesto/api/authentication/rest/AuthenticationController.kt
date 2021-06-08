@@ -5,6 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Sessio
 import com.compumundohipermegaweb.hefesto.api.authentication.rest.representation.LoginRequest
 import com.compumundohipermegaweb.hefesto.api.authentication.rest.representation.LoginResponse
 import com.compumundohipermegaweb.hefesto.api.authentication.rest.representation.TokenResponse
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +20,11 @@ class AuthenticationController(private val login: Login) {
     fun post(@RequestBody request: LoginRequest): ResponseEntity<LoginResponse> {
         val session = login(request.toActionData())
         return ResponseEntity.ok(session.toResponse())
+    }
+
+    @PostMapping("/logout")
+    fun logout(): ResponseEntity<Any> {
+        return ResponseEntity.status(HttpStatus.OK).build()
     }
 
     private fun LoginRequest.toActionData() = Login.ActionData(username, password)
