@@ -6,6 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.Ch
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.GetClientBySaleId
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.PaySale
@@ -27,8 +28,9 @@ class SaleConfig {
                     invoiceService: InvoiceService,
                     stockService: StockService,
                     itemService: ItemService,
-                    checkingAccountService: CheckingAccountService): InvoiceSale {
-        return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService)
+                    checkingAccountService: CheckingAccountService,
+                    paymentMethodService: PaymentMethodService): InvoiceSale {
+        return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService,paymentMethodService)
     }
 
     @Bean

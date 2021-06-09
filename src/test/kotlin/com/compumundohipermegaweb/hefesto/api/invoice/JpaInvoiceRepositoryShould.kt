@@ -56,7 +56,7 @@ class JpaInvoiceRepositoryShould {
         val DATE = Date()
         val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "","",1, 200.50))
-        val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L, "EFECTIVO",200.50))
+        val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,5L,0L,"","",250.0))
         val INVOICE = Invoice(0L, 0L, "", DATE, "", CLIENT, 0L, "", "", "", "", SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL), 0.0, 0.0, 0.0)
         val INVOICE_DAO =  InvoiceDao(0L, 0L, "", DATE, "FV", "", 0L, 0.0, 0.0, 0.0)
         val SECOND_SAVED_INVOICE_DAO = InvoiceDao(0L, 0L, "", DATE, "FV", "", 0L, 0.0, 0.0, 0.0)

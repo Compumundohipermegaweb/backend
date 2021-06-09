@@ -6,7 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
-import com.compumundohipermegaweb.hefesto.api.payment.method.domain.model.PaymentMethod
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
@@ -20,7 +20,9 @@ class InvoiceSale(private val saleService: SaleService,
                   private val invoiceService: InvoiceService,
                   private val stockService: StockService,
                   private val itemService: ItemService,
-                  private val checkingAccountService: CheckingAccountService) {
+                  private val checkingAccountService: CheckingAccountService,
+                  private val paymentMethodService: PaymentMethodService
+) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
         val sale = saleRequest.toSale()
 
@@ -29,7 +31,8 @@ class InvoiceSale(private val saleService: SaleService,
         }
 
         sale.saleDetails.payments.forEach {
-            if(PaymentMethod.Type.valueOf(it.type) == PaymentMethod.Type.CUENTA_CORRIENTE) {
+            val method=paymentMethodService.findById(it.paymentMethodId)
+            if( method?.type == "CUENTA_CORRIENTE") {
                 checkingAccountService.discount(sale.client.id, it.subTotal)
             }
         }
@@ -55,7 +58,8 @@ class InvoiceSale(private val saleService: SaleService,
     }
 
     private fun SaleDetailsRequest.toSaleDetails(): SaleDetails {
-        val saleDetails = SaleDetails(detailsRequest.map { SaleDetail(it.id, "", it.description, it.quantity, it.unitPrice) }, paymentsRequest.map { SalePayment(0L, it.type, it.subTotal) })
+        val saleDetails = SaleDetails(detailsRequest.map { SaleDetail(it.id, "", it.description, it.quantity, it.unitPrice) },
+                                                            paymentsRequest.map { SalePayment(0L,0L,it.method.id,it.cardId,it.lastDigits,it.email,it.sub_total) })
         saleDetails.details.forEach {
             val item = itemService.findItemById(it.id)
             if(item != null) {

@@ -11,4 +11,9 @@ class DefaultPaymentMethodService(private val paymentMethodRepository: PaymentMe
     override fun findAllPaymentMethod(): List<PaymentMethod> {
         return paymentMethodRepository.findAllPaymentMethod()
     }
+
+    override fun findById(id: Long): PaymentMethod? {
+        return paymentMethodRepository?.findById(id)
+    }
+
 }

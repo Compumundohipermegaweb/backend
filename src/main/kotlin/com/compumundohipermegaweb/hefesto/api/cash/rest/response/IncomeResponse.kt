@@ -2,6 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.cash.rest.response
 
 import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
@@ -12,7 +13,7 @@ data class IncomeResponse(@JsonProperty("id_movement") val movementId: Long,
                           @JsonProperty("source_id") val sourceId: Long,
                           @JsonProperty("source_description") val sourceDescription: String,
                           @JsonProperty("detail") val detail: String,
-                          @JsonProperty("payments") val payments: List<SalePayment>,
+                          @JsonProperty("payments") val payments: List<PaymentRequest>,
                           @JsonProperty("amount") val amount: Double,
                           @JsonProperty("salesman_id") val salesmanId: Long,
                           @JsonProperty("client") val clientResponse: ClientResponse?,

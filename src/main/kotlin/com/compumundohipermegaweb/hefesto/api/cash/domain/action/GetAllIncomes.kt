@@ -3,6 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.cash.domain.action
 import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 
@@ -17,18 +18,15 @@ class GetAllIncomes(private val cashMovementRepository: CashMovementRepository,
         movements.forEach {
 
             if(it.sourceDescription.contains("VENTA")) {
-                val income = saleRepository.findById(it.sourceId)
+                val income = saleRepository.findById(it.transactionId)
                 if(income != null) {
                     val client = clientRepository.findById(income.clientId)
-                    val paymentType = mutableListOf<String>()
                     val payments = salePaymentRepository.findBySaleId(income.id)
-                    for(payment in payments) {
-                        paymentType += payment.type
-                    }
-                    transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", payments, it.amount, it.userId, client,it.transactionId)
+
+                    transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, it.detail, payments, it.amount, it.userId, client,it.transactionId)
                 }
             } else {
-                transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, "", emptyList(), it.amount, it.userId, null,it.transactionId)
+                transactions+=Income(it.id, it.dateTime, it.sourceId, it.sourceDescription, it.detail, emptyList(), it.amount, it.userId, null,it.transactionId)
             }
         }
         return transactions

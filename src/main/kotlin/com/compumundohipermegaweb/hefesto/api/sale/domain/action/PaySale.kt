@@ -16,27 +16,27 @@ class PaySale(private val cashMovementRepository: CashMovementRepository,
     operator fun invoke(paySaleRequest: PaySaleRequest) {
         val paymentDetails = paySaleRequest.paymentDetails
         val movement = paySaleRequest.cashMovement
-        val savedPayment = paymentDetails.map { salePaymentRepository.save(it.toSalePayment(), movement.transactionId) }
-        movement.paymentMethodId = savedPayment[0].id
+        val savedPayment = paymentDetails.map { salePaymentRepository.save(it.toSalePayment(movement.transactionId), movement.transactionId) }
+        //movement.paymentMethodId = savedPayment[0].id
         cashMovementRepository.save(movement, movement.cashStartEndId)
 
         paymentDetails.forEach {
-            if(it.type == "CUENTA CORRIENTE") {
+            if(it.method.type == "CUENTA_CORRIENTE") {
                 val sale = saleRepository.findById(movement.transactionId)
                 if(sale != null) {
                     val clientId = sale.clientId
                     val checkingAccount = checkingAccountRepository.findCheckingAccountByClientId(clientId)
                     if(checkingAccount != null){
-                        checkingAccountRepository.updateBalanceDue(clientId, checkingAccount.balanceDue + it.subTotal)
-                        checkingAccountRepository.updateBalance(clientId, checkingAccount.creditLimit - it.subTotal)
+                        checkingAccountRepository.updateBalanceDue(clientId, checkingAccount.balanceDue + it.sub_total)
+                        checkingAccountRepository.updateBalance(clientId, checkingAccount.creditLimit - it.sub_total)
                     }
                 }
             }
         }
     }
 
-    private fun PaymentRequest.toSalePayment(): SalePayment {
-        return SalePayment(0L, type, subTotal)
+    private fun PaymentRequest.toSalePayment(saleId: Long): SalePayment {
+        return SalePayment(0L,saleId,method.id,cardId,lastDigits,email,sub_total)
     }
 }
 

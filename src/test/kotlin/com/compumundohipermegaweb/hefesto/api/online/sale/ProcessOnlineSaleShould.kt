@@ -7,6 +7,7 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.online.sale.domain.action.ProcessOnlineSale
+import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PutPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.service.RejectedSaleService
@@ -14,10 +15,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
-import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
-import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailRequest
-import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsRequest
-import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.*
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.nhaarman.mockito_kotlin.mock
@@ -173,7 +171,7 @@ class ProcessOnlineSaleShould {
         val SALE_ITEM_DETAIL_DOS = SaleDetail(2L, "2","",5, 287.50)
         val SALE_ITEM_DETAIL_TO_REJECT_UNO = SaleDetail(3L, "3","",5, 287.50)
 
-        val SALE_PAYMENT_DETAIL = listOf(SalePayment(1L, "MERCADOPAGO",1040.0))
+        val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,5L,0L,"","",1040.0))
 
         val INVOICE_UNO = Invoice(1L, 1L, "", Date(), "A", CLIENT, 1L,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021",
             SaleDetails(listOf(SALE_ITEM_DETAIL_UNO, SALE_ITEM_DETAIL_DOS), SALE_PAYMENT_DETAIL), 1040.0, 0.0, 1040.0)
@@ -208,9 +206,8 @@ class ProcessOnlineSaleShould {
                                         SaleDetailRequest(2L, "", 5, 57.50)),
                 paymentsRequest = listOf(
                     PaymentRequest(
-                        type = "MERCADO PAGO",
-                        subTotal = 150.50
-                    )
+                        PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
+                        sub_total = 150.50,null,null,null)
                 )
             ),
             category = ""
@@ -235,10 +232,8 @@ class ProcessOnlineSaleShould {
                 detailsRequest = listOf(SaleDetailRequest(1L, "", 5, 150.50),
                                         SaleDetailRequest(3L, "2",5, 287.50)),
                 paymentsRequest = listOf(
-                    PaymentRequest(
-                        type = "MERCADO PAGO",
-                        subTotal = 150.50
-                    )
+                    PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
+                        sub_total = 150.50,null,null,null)
                 )
             ),
             category = ""
@@ -262,10 +257,8 @@ class ProcessOnlineSaleShould {
             saleDetailsRequest = SaleDetailsRequest(
                 detailsRequest = listOf(SaleDetailRequest(1L, "", 5, 150.50)),
                 paymentsRequest = listOf(
-                    PaymentRequest(
-                        type = "MERCADO PAGO",
-                        subTotal = 150.50
-                    )
+                    PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
+                        sub_total = 150.50,null,null,null)
                 )
             ),
             category = ""
@@ -290,10 +283,8 @@ class ProcessOnlineSaleShould {
                 detailsRequest = listOf(SaleDetailRequest(4L, "", 5, 150.50),
                     SaleDetailRequest(3L, "2",5, 287.50)),
                 paymentsRequest = listOf(
-                    PaymentRequest(
-                        type = "MERCADO PAGO",
-                        subTotal = 150.50
-                    )
+                    PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
+                        sub_total = 150.50,null,null,null)
                 )
             ),
             category = ""

@@ -23,11 +23,11 @@ class JpaSalePaymentRepository(private val springDataSalePaymentClient: SpringDa
     }
 
     private fun SalePayment.toPaymentDetailDao(saleId: Long): SalePaymentDao {
-        return SalePaymentDao(id, saleId, type, subTotal)
+        return SalePaymentDao(id,saleId,paymentMethodId,cardId,lastDigits, email, subTotal)
     }
 
     private fun SalePaymentDao.toPaymentDetail(): SalePayment {
-        return SalePayment(id, type, subTotal)
+        return SalePayment(id,saleId,paymentMethodId,cardId,lastDigits, email, subTotal)
     }
 }
 

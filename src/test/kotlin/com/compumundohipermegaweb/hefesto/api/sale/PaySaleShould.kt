@@ -4,12 +4,14 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.model.CheckingAccount
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.repository.CheckingAccountRepository
+import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PutPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.sale.domain.action.PaySale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SalePaymentRepository
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
 import com.compumundohipermegaweb.hefesto.api.sale.infra.representation.SaleDao
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaySaleRequest
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -108,14 +110,15 @@ class PaySaleShould {
         private val DATE = Date()
 
         private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
-        private val PAYMENT_REQUEST = PaymentRequest("EFECTIVO",  200.50)
+        private val PAYMENT_METHOD_REQUEST = PaymentMethodRequest(0L,"Efectivo","EFECTIVO")
+        private val PAYMENT_REQUEST = PaymentRequest(PAYMENT_METHOD_REQUEST,  200.50,null,null,null)
         private val PAY_SALE_REQUEST = PaySaleRequest(CASH_MOVEMENT, listOf(PAYMENT_REQUEST))
-        private val SALE_PAYMENT = SalePayment(0L, "EFECTIVO" ,200.50)
-
+        private val SALE_PAYMENT = SalePayment(0L, 0L,PAYMENT_METHOD_REQUEST.id,null,null,null,200.50)
+        private val PAYMENT_METHOD_WHIT_CHECKING_ACCOUNT = PaymentMethodRequest(0L,"CUENTA_CORRIENTE","CUENTA_CORRIENTE")
         private val CASH_MOVEMENT_WHIT_CHECKING_ACCOUNT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L,0L, 0.0, "")
-        private val PAYMENT_REQUEST_WHIT_CHECKING_ACCOUNT = PaymentRequest("CUENTA CORRIENTE",  200.50)
+        private val PAYMENT_REQUEST_WHIT_CHECKING_ACCOUNT = PaymentRequest(PAYMENT_METHOD_WHIT_CHECKING_ACCOUNT,  200.50,null,null,null)
         private val PAY_SALE_REQUEST_WHIT_CHECKING_ACCOUNT = PaySaleRequest(CASH_MOVEMENT_WHIT_CHECKING_ACCOUNT, listOf(PAYMENT_REQUEST_WHIT_CHECKING_ACCOUNT))
-        private val SALE_PAYMENT_WHIT_CHECKING_ACCOUNT = SalePayment(0L, "CUENTA CORRIENTE" ,200.50)
+        private val SALE_PAYMENT_WHIT_CHECKING_ACCOUNT = SalePayment(0L,0L,PAYMENT_METHOD_WHIT_CHECKING_ACCOUNT.id,null,null,null,200.50)
         private val CHECKING_ACCOUNT = CheckingAccount(0L, 0L, 0.0, 0.0, 0.0)
 
 

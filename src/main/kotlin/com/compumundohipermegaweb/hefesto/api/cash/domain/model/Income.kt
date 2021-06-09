@@ -2,6 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.cash.domain.model
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
 import java.util.*
 
 data class Income(

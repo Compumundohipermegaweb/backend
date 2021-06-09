@@ -11,6 +11,11 @@ import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.response.*
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.action.FindAllPaymentMethods
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.repository.PaymentMethodRepository
+import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
+import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.PaymentRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -99,9 +104,9 @@ class CashController(private val openCash: OpenCash,
 
     private fun Income.toIncomeResponse(): IncomeResponse {
         if(client != null) {
-            return IncomeResponse(movement_id, datetime, sourceId, sourceDescription, detail, payments, amount, salesmanId, client.toClientResponse(),transactionId)
+            return IncomeResponse(movement_id, datetime, sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, client.toClientResponse(),transactionId)
         }
-        return IncomeResponse(movement_id, datetime,sourceId, sourceDescription, detail, payments, amount, salesmanId, null,transactionId)
+        return IncomeResponse(movement_id, datetime,sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, null,transactionId)
     }
 
     private fun Expense.toExpenseResponse(): ExpenseResponse {
@@ -110,6 +115,18 @@ class CashController(private val openCash: OpenCash,
 
     private fun Client.toClientResponse(): ClientResponse {
         return ClientResponse(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)
+    }
+
+    private fun toListPaymentRequest(listPayments: List<SalePayment>): List<PaymentRequest>{
+        val payments = mutableListOf<PaymentRequest>()
+        for(payment in listPayments){
+            payments += payment.toPaymentRequest()
+        }
+        return payments
+    }
+
+    private fun SalePayment.toPaymentRequest(): PaymentRequest{
+        return PaymentRequest(PaymentMethodRequest(paymentMethodId,"",""),subTotal,cardId, email, lastDigits)
     }
 }
 

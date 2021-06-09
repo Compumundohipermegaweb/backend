@@ -85,7 +85,7 @@ class JpaSalePaymentRepositoryShould {
     }
 
     private companion object {
-        val SALE_PAYMENT_DETAIL_DAO = SalePaymentDao(0L, 0L, "", 0.0)
-        val SALE_PAYMENT_DETAIL = SalePayment(0L, "", 0.0)
+        val SALE_PAYMENT_DETAIL_DAO = SalePaymentDao(0L, 0L, 0L,0L,"","",0.0)
+        val SALE_PAYMENT_DETAIL = SalePayment(0L,0L,0L,0L,"","",0.0)
     }
 }
