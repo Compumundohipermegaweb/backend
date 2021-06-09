@@ -20,8 +20,8 @@ class StockMinimumAlert(
         val message = SimpleMailMessage()
         var text = ""
         message.setFrom("arg.hefesto.web@gmail.com")
-        message.setTo("aron_2309@hotmail.com")
-        text+= "testeando el email sender"
+        message.setTo("dergonokay@gmail.com")
+        text+= "testeando el email sender\n"
         stock.forEach { text+=it.toString()  }
         message.setText(text)
         emailSender.send(message)

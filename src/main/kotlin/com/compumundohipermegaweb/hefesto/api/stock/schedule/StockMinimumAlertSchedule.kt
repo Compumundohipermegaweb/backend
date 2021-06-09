@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.stock.schedule
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.StockMinimumAlert
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component

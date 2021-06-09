@@ -6,5 +6,5 @@ import javax.persistence.*
 @Entity
 @Table(name = "AUDIT_REPRESENTATION")
 @Audited
-data class AuditRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long,
+data class AuditRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                                @Column(name = "NAME") val name: String)

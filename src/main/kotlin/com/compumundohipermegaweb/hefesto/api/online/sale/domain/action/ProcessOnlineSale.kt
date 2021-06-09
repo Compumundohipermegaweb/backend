@@ -68,6 +68,7 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
             rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "The client did not provide an address",rejectionLevel), rejectedItems)
         }
         return invoice
+        //agregar un onlineSaleReposnse con lo que entro y lo que no
     }
 
     private fun Client.isValid(): Boolean {
