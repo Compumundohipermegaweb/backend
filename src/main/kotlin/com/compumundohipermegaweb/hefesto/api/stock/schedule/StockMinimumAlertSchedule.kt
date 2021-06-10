@@ -13,7 +13,7 @@ class StockMinimumAlertSchedule(private val stockMinimumAlert: StockMinimumAlert
                                 private val alertRepository: AlertRepository,
                                 private val branchRepository: BranchRepository) {
 
-    @Scheduled(cron = "0 40 19 * * ?")
+    @Scheduled(cron = "0 50 20 * * ?")
     fun runTask() {
 
         val branches = branchRepository.findAll()
