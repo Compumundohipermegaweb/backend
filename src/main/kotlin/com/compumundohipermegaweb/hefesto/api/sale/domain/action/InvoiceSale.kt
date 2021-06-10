@@ -54,7 +54,7 @@ class InvoiceSale(private val saleService: SaleService,
             branchId = branchId,
             saleDetails = saleDetails,
             total = total,
-            category = "VENTA_ONLINE")
+            category = category?:"VENTA_ONLINE")
     }
 
     private fun SaleDetailsRequest.toSaleDetails(): SaleDetails {
