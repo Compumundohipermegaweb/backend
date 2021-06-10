@@ -8,5 +8,5 @@ import javax.persistence.*
 @Table(name = "ALERT")
 @Audited
 data class AlertRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
-                               @Column(name = "TIME") val time: LocalTime,
+                               @Column(name = "SCHEDULE_HOUR") var time: String,
                                @Column(name = "PROCESS_DESCRIPTION") val processDescription: String)

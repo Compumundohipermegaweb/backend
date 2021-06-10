@@ -12,5 +12,13 @@ class JpaUserRepository(private val userDao: UserDao): UserRepository {
         return userRepresentation?.toUser()
     }
 
+    override fun findByCode(code: String): List<User> {
+        val users = userDao.findByCode(code)
+        if(users.isNotEmpty()) {
+            return userDao.findByCode(code).map { it.toUser() }
+        }
+        return emptyList()
+    }
+
     private fun UserRepresentation.toUser() = User(code, username, password, Role.valueOf(role))
 }

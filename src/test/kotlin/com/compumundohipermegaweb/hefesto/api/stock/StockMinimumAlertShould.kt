@@ -1,5 +1,8 @@
 package com.compumundohipermegaweb.hefesto.api.stock
 
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.Role
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.model.User
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.StockMinimumAlert
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
@@ -15,6 +18,7 @@ class StockMinimumAlertShould {
 
     private lateinit var stockRepository: StockRepository
     private lateinit var javaMailSender: JavaMailSender
+    private lateinit var userRepository: UserRepository
 
     private lateinit var stockMinimumAlert: StockMinimumAlert
 
@@ -22,6 +26,7 @@ class StockMinimumAlertShould {
     fun `register stock`() {
         givenStockRepository()
         givenEmailSender()
+        givenUserRepository()
         givenStockMinimumAlert()
 
         whenAlertMinimumStock()
@@ -34,12 +39,17 @@ class StockMinimumAlertShould {
         `when`(stockRepository.findAllInStock(1)).thenReturn(listOf(STOCK))
     }
 
+    private fun givenUserRepository() {
+        userRepository = mock()
+        `when`(userRepository.findByCode("1")).thenReturn(listOf(USER))
+    }
+
     private fun givenEmailSender() {
         javaMailSender = mock()
     }
 
     private fun givenStockMinimumAlert() {
-        stockMinimumAlert = StockMinimumAlert(stockRepository, javaMailSender)
+        stockMinimumAlert = StockMinimumAlert(stockRepository, javaMailSender, userRepository)
     }
 
     private fun whenAlertMinimumStock() {
@@ -53,5 +63,6 @@ class StockMinimumAlertShould {
 
     private companion object {
         private val STOCK = Stock(0L, "", 1L, 100, 100, 50, "")
+        private val USER = User("1", "", "", Role.SUPERVISOR)
     }
 }

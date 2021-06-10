@@ -8,7 +8,6 @@ import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
-import java.time.LocalTime
 
 class GetAllAlertsShould {
     private lateinit var jpaAlertRepository: JpaAlertRepository
@@ -45,8 +44,7 @@ class GetAllAlertsShould {
     }
 
     private companion object {
-        private val TIME = LocalTime.now()
-        private val ALERT = Alert(1L, TIME, "Stock minimo")
-        private val ANOTHER_ALERT = Alert(2L, TIME, "Compras a proveedores")
+        private val ALERT = Alert(1L, "00:00:00", "Stock minimo")
+        private val ANOTHER_ALERT = Alert(2L, "00:00:00", "Compras a proveedores")
     }
 }

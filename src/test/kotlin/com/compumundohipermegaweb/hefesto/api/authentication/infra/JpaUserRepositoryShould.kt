@@ -12,6 +12,7 @@ class JpaUserRepositoryShould {
     private lateinit var userRepository: UserRepository
 
     private var userFound: User? = null
+    private lateinit var usersFound: List<User>
 
     @Test
     fun `find by username` () {
@@ -21,6 +22,16 @@ class JpaUserRepositoryShould {
         whenFindingUser()
 
         thenUserIsFound()
+    }
+
+    @Test
+    fun `find by code` () {
+        givenUserDao()
+        givenUserRepository()
+
+        whenFindingUserByCode()
+
+        thenUsersAreFoundByCode()
     }
 
     private fun givenUserDao() {
@@ -35,8 +46,16 @@ class JpaUserRepositoryShould {
         userFound = userRepository.find(USERNAME)
     }
 
+    private fun whenFindingUserByCode() {
+        usersFound = userRepository.findByCode("1")
+    }
+
     private fun thenUserIsFound() {
         verify(userDao).findByUsername(USERNAME)
+    }
+
+    private fun thenUsersAreFoundByCode() {
+        verify(userDao).findByCode("1")
     }
 
     private companion object {

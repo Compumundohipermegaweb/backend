@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.stock.config
 
+import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.*
@@ -38,8 +39,8 @@ class StockConfig {
     }
 
     @Bean
-    fun stockMinimumAlert(stockRepository: StockRepository, @Autowired emailSender: JavaMailSender): StockMinimumAlert {
-        return StockMinimumAlert(stockRepository, emailSender)
+    fun stockMinimumAlert(stockRepository: StockRepository, @Autowired emailSender: JavaMailSender, userRepository: UserRepository): StockMinimumAlert {
+        return StockMinimumAlert(stockRepository, emailSender, userRepository)
     }
 
     @Bean

@@ -9,13 +9,13 @@ import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
-import java.time.LocalTime
 
 class JpaAlertRepositoryShould {
     private lateinit var springDataAlertDao: SpringDataAlertDao
     private lateinit var jpaAlertRepository: JpaAlertRepository
 
     private lateinit var alertsFound: List<Alert>
+    private var alertFound: Alert? = null
 
     @Test
     fun `find all alerts`() {
@@ -27,9 +27,31 @@ class JpaAlertRepositoryShould {
         thenTheAlertsAreFound()
     }
 
+    @Test
+    fun `find alerts by description`() {
+        givenSpringDataAlertDao()
+        givenJpaAlertRepository()
+
+        whenFindingTheAlertByDescription()
+
+        thenTheAlertAreFound()
+    }
+
+    @Test
+    fun `update alert time`() {
+        givenSpringDataAlertDao()
+        givenJpaAlertRepository()
+
+        whenUpdatingAlertTime()
+
+        thenTheAlertIsUpdated()
+    }
+
     private fun givenSpringDataAlertDao() {
         springDataAlertDao = mock()
         `when`(springDataAlertDao.findAll()).thenReturn(mutableListOf(ALERT_REPRESENTATION, ANOTHER_ALERT_REPRESENTATION))
+        `when`(springDataAlertDao.getByProcessDescription("Stock minimo")).thenReturn(mutableListOf(ALERT_REPRESENTATION))
+        `when`(springDataAlertDao.save(ALERT_REPRESENTATION)).thenReturn(UPDATED_ALERT_REPRESENTATION)
     }
 
     private fun givenJpaAlertRepository() {
@@ -40,16 +62,37 @@ class JpaAlertRepositoryShould {
         alertsFound = jpaAlertRepository.getAllAlerts()
     }
 
+    private fun whenFindingTheAlertByDescription() {
+        alertFound = jpaAlertRepository.getByProcessDescription("Stock minimo")
+    }
+
+    private fun whenUpdatingAlertTime() {
+        ALERT.time = "11:00:00"
+        alertFound = jpaAlertRepository.updateTimeAlert(ALERT)
+    }
+
     private fun thenTheAlertsAreFound() {
         verify(springDataAlertDao).findAll()
         then(alertsFound).isEqualTo(listOf(ALERT, ANOTHER_ALERT))
     }
 
+    private fun thenTheAlertAreFound() {
+        verify(springDataAlertDao).getByProcessDescription("Stock minimo")
+        then(alertFound).isEqualTo(ALERT)
+    }
+
+    private fun thenTheAlertIsUpdated() {
+        verify(springDataAlertDao).getByProcessDescription("Stock minimo")
+        verify(springDataAlertDao).save(ALERT_REPRESENTATION)
+        then(alertFound).isEqualTo(UPDATED_ALERT)
+    }
+
     private companion object {
-        private val TIME = LocalTime.now()
-        private val ALERT = Alert(1L, TIME, "Stock minimo")
-        private val ANOTHER_ALERT = Alert(2L, TIME, "Compras a proveedores")
-        private val ALERT_REPRESENTATION = AlertRepresentation(1L, TIME, "Stock minimo")
-        private val ANOTHER_ALERT_REPRESENTATION = AlertRepresentation(2L, TIME, "Compras a proveedores")
+        private val ALERT = Alert(1L, "00:00:00", "Stock minimo")
+        private val UPDATED_ALERT = Alert(1L, "11:00:00", "Stock minimo")
+        private val ANOTHER_ALERT = Alert(2L, "00:00:00", "Compras a proveedores")
+        private val ALERT_REPRESENTATION = AlertRepresentation(1L, "00:00:00", "Stock minimo")
+        private val UPDATED_ALERT_REPRESENTATION = AlertRepresentation(1L, "11:00:00", "Stock minimo")
+        private val ANOTHER_ALERT_REPRESENTATION = AlertRepresentation(2L, "00:00:00", "Compras a proveedores")
     }
 }
