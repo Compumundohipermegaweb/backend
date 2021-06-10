@@ -15,6 +15,9 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.round
 
 class InvoiceSale(private val saleService: SaleService,
                   private val invoiceService: InvoiceService,
@@ -46,7 +49,8 @@ class InvoiceSale(private val saleService: SaleService,
 
     private fun SaleRequest.toSale(): Sale {
         val saleDetails = saleDetailsRequest.toSaleDetails()
-        val total = saleDetails.details.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
+        var total = saleDetails.details.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
+        total = Math.round(total * 100) / 100.0
         return Sale(id = 0L,
             type = invoiceType,
             client = clientRequest.toClient(),
@@ -72,6 +76,8 @@ class InvoiceSale(private val saleService: SaleService,
     private fun ClientRequest.toClient(): Client {
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
+
+
 }
 
 
