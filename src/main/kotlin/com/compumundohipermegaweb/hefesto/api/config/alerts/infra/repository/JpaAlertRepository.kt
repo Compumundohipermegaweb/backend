@@ -6,12 +6,13 @@ import com.compumundohipermegaweb.hefesto.api.config.alerts.infra.representation
 
 class JpaAlertRepository(private val springDataAlertDao: SpringDataAlertDao): AlertRepository {
 
-    override fun updateTimeAlert(alert: Alert): Alert {
-        val savedAlert = springDataAlertDao.getByProcessDescription(alert.processDescription)
+    override fun updateTimeAlert(alert: Alert): Alert? {
+        val savedAlert = springDataAlertDao.getByAlertDescription(alert.alertDescription)
         if(savedAlert.isNotEmpty()) {
             savedAlert[0].time = alert.time
+            return springDataAlertDao.save(savedAlert[0]).toAlert()
         }
-        return springDataAlertDao.save(savedAlert[0].toRepresentation()).toAlert()
+        return null
     }
 
     override fun getAllAlerts(): List<Alert> {
@@ -19,7 +20,7 @@ class JpaAlertRepository(private val springDataAlertDao: SpringDataAlertDao): Al
     }
 
     override fun getByProcessDescription(processDescription: String): Alert? {
-        val alertsFound = springDataAlertDao.getByProcessDescription(processDescription)
+        val alertsFound = springDataAlertDao.getByAlertDescription(processDescription)
         if(alertsFound.isNotEmpty()){
             return alertsFound[0].toAlert()
         }
@@ -27,11 +28,7 @@ class JpaAlertRepository(private val springDataAlertDao: SpringDataAlertDao): Al
     }
 
     private fun AlertRepresentation.toAlert(): Alert {
-        return Alert(id, time, processDescription)
-    }
-
-    private fun AlertRepresentation.toRepresentation(): AlertRepresentation {
-        return AlertRepresentation(id, time, processDescription)
+        return Alert(id, time, alertDescription)
     }
 }
 

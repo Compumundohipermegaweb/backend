@@ -4,5 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.config.alerts.infra.representation
 import org.springframework.data.repository.CrudRepository
 
 interface SpringDataAlertDao: CrudRepository<AlertRepresentation, Long> {
-    fun getByProcessDescription(processDescription: String): List<AlertRepresentation>
+    fun getByAlertDescription(alertDescription: String): List<AlertRepresentation>
 }

@@ -50,7 +50,7 @@ class JpaAlertRepositoryShould {
     private fun givenSpringDataAlertDao() {
         springDataAlertDao = mock()
         `when`(springDataAlertDao.findAll()).thenReturn(mutableListOf(ALERT_REPRESENTATION, ANOTHER_ALERT_REPRESENTATION))
-        `when`(springDataAlertDao.getByProcessDescription("Stock minimo")).thenReturn(mutableListOf(ALERT_REPRESENTATION))
+        `when`(springDataAlertDao.getByAlertDescription("Stock minimo")).thenReturn(mutableListOf(ALERT_REPRESENTATION))
         `when`(springDataAlertDao.save(ALERT_REPRESENTATION)).thenReturn(UPDATED_ALERT_REPRESENTATION)
     }
 
@@ -77,12 +77,12 @@ class JpaAlertRepositoryShould {
     }
 
     private fun thenTheAlertAreFound() {
-        verify(springDataAlertDao).getByProcessDescription("Stock minimo")
+        verify(springDataAlertDao).getByAlertDescription("Stock minimo")
         then(alertFound).isEqualTo(ALERT)
     }
 
     private fun thenTheAlertIsUpdated() {
-        verify(springDataAlertDao).getByProcessDescription("Stock minimo")
+        verify(springDataAlertDao).getByAlertDescription("Stock minimo")
         verify(springDataAlertDao).save(ALERT_REPRESENTATION)
         then(alertFound).isEqualTo(UPDATED_ALERT)
     }

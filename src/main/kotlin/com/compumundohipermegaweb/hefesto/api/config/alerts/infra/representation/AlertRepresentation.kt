@@ -9,4 +9,4 @@ import javax.persistence.*
 @Audited
 data class AlertRepresentation(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
                                @Column(name = "SCHEDULE_HOUR") var time: String,
-                               @Column(name = "PROCESS_DESCRIPTION") val processDescription: String)
+                               @Column(name = "ALERT_DESCRIPTION") val alertDescription: String)

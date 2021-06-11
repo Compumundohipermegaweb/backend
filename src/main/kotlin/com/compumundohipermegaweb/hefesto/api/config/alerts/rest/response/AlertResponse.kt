@@ -6,4 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AlertResponse(@JsonProperty("id") val id: Long,
                          @JsonProperty("time") val time: String,
-                         @JsonProperty("process_description") val processDescription: String)
+                         @JsonProperty("alert_description") val alertDescription: String)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class AlertsResponse(@JsonProperty("alerts") val alerts: List<AlertResponse>)
