@@ -8,24 +8,19 @@ import com.compumundohipermegaweb.hefesto.api.config.alerts.rest.response.AlertR
 import com.compumundohipermegaweb.hefesto.api.config.alerts.rest.response.AlertsResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/api/configurable")
+@RequestMapping("/api/alerts")
 class AlertController(private val getAllAlerts: GetAllAlerts,
                       private val updateAlert: UpdateAlert) {
 
     @GetMapping
-    @RequestMapping("/alerts")
     fun getAllAlerts(): ResponseEntity<AlertsResponse> {
         return ResponseEntity.ok(AlertsResponse(getAllAlerts.invoke().map { it.toAlertResponse() }))
     }
 
-    @PostMapping
-    @RequestMapping("/alerts/update")
+    @PutMapping
     fun updateAlert(@RequestBody alertRequest: AlertRequest): ResponseEntity<AlertResponse> {
         val alert = updateAlert.invoke(alertRequest)
         if(alert != null) {
