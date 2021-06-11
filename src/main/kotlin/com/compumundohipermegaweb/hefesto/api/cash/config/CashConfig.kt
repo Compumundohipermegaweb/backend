@@ -4,6 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashRepository
 import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.TotalMovementRepository
 import com.compumundohipermegaweb.hefesto.api.cash.infra.repository.*
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.repository.CheckingAccountRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
@@ -74,5 +75,15 @@ class CashConfig {
     @Bean
     fun cashMovementRepository(springCashMovementDao: SpringCashMovementDao): CashMovementRepository {
         return JpaCashMovementRepository(springCashMovementDao)
+    }
+
+    @Bean
+    fun totalMovementRepository(springTotalMovementDao: SpringTotalMovementDao): TotalMovementRepository {
+        return JpaTotalMovementRepository(springTotalMovementDao)
+    }
+
+    @Bean
+    fun getTotalMovement(totalMovementRepository: TotalMovementRepository): GetTotalMovement {
+        return GetTotalMovement(totalMovementRepository)
     }
 }

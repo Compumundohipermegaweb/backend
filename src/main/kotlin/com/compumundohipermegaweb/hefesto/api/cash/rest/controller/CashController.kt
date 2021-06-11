@@ -1,10 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.cash.rest.controller
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.action.*
-import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Cash
-import com.compumundohipermegaweb.hefesto.api.cash.domain.model.CashMovement
-import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Expense
-import com.compumundohipermegaweb.hefesto.api.cash.domain.model.Income
+import com.compumundohipermegaweb.hefesto.api.cash.domain.model.*
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CashRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.CloseRequest
 import com.compumundohipermegaweb.hefesto.api.cash.rest.request.OpenRequest
@@ -31,7 +28,8 @@ class CashController(private val openCash: OpenCash,
                      private val getAllCashMovements: GetAllCashMovements,
                      private val getAllIncomes: GetAllIncomes,
                      private val getAllExpenses: GetAllExpenses,
-                     private val updatePaymentDetails: UpdatePaymentDetails) {
+                     private val updatePaymentDetails: UpdatePaymentDetails,
+                     private val getTotalMovement: GetTotalMovement) {
 
     @PostMapping
     @RequestMapping("/start")
@@ -94,6 +92,12 @@ class CashController(private val openCash: OpenCash,
         return ResponseEntity.ok(ok)
     }
 
+    @GetMapping
+    @RequestMapping("/total-movement")
+    fun getTotalMovement(@RequestParam("branch_id") branchId: Long): ResponseEntity<TotalsMovementResponse> {
+        return ResponseEntity.ok(TotalsMovementResponse(getTotalMovement.invoke(branchId).map { it.toTotalMovementResponse() }))
+    }
+
     private fun Cash.toResponse(): CashResponse {
         return CashResponse(id, branchId, pointOfSale, status)
     }
@@ -104,13 +108,13 @@ class CashController(private val openCash: OpenCash,
 
     private fun Income.toIncomeResponse(): IncomeResponse {
         if(client != null) {
-            return IncomeResponse(movement_id, datetime, sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, client.toClientResponse(),transactionId)
+            return IncomeResponse(movement_id, datetime.toString(), sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, client.toClientResponse(),transactionId)
         }
-        return IncomeResponse(movement_id, datetime,sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, null,transactionId)
+        return IncomeResponse(movement_id, datetime.toString(),sourceId, sourceDescription, detail, toListPaymentRequest(payments), amount, salesmanId, null,transactionId)
     }
 
     private fun Expense.toExpenseResponse(): ExpenseResponse {
-        return ExpenseResponse(movement_id, datetime, transactionDescription, detail, payments, amount)
+        return ExpenseResponse(movement_id, datetime.toString(), transactionDescription, detail, payments, amount)
     }
 
     private fun Client.toClientResponse(): ClientResponse {
@@ -128,6 +132,12 @@ class CashController(private val openCash: OpenCash,
     private fun SalePayment.toPaymentRequest(): PaymentRequest{
         return PaymentRequest(PaymentMethodRequest(paymentMethodId,"",""),subTotal,cardId, email, lastDigits)
     }
+
+    private fun TotalMovement.toTotalMovementResponse(): TotalMovementResponse {
+        return TotalMovementResponse(branchId, cashId, cashStartEndId, dateTime.toString(), movementType, paymentMethod, total)
+    }
+
+
 }
 
 

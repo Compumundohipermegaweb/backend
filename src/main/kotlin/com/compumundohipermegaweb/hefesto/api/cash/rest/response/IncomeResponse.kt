@@ -9,7 +9,7 @@ import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class IncomeResponse(@JsonProperty("id_movement") val movementId: Long,
-                          @JsonProperty("datetime") val datetime: Date,
+                          @JsonProperty("datetime") val datetime: String,
                           @JsonProperty("source_id") val sourceId: Long,
                           @JsonProperty("source_description") val sourceDescription: String,
                           @JsonProperty("detail") val detail: String,
