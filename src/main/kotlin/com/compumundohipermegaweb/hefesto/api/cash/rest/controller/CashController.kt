@@ -90,8 +90,8 @@ class CashController(private val openCash: OpenCash,
     @PostMapping
     @RequestMapping("/payment-details/update")
     fun updateSalePayment(@RequestParam("movement_id") movementId: Long, @RequestBody paymentDetails: List<PaymentRequest>): ResponseEntity<Boolean> {
-        updatePaymentDetails.invoke(movementId, paymentDetails)
-        return ResponseEntity.ok(true)
+        val ok = updatePaymentDetails.invoke(movementId, paymentDetails)
+        return ResponseEntity.ok(ok)
     }
 
     private fun Cash.toResponse(): CashResponse {
