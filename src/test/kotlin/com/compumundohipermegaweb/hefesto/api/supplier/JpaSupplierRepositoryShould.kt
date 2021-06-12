@@ -29,16 +29,6 @@ class JpaSupplierRepositoryShould {
     }
 
     @Test
-    fun `find by supply sku`() {
-        givenSupplierCrudRepository()
-        givenSupplierRepository()
-
-        supplierRepository.findBySupplySku("1")
-
-        verify(supplierDao).findBySupplySku("1")
-    }
-
-    @Test
     fun `find by id`() {
         givenSupplierCrudRepository()
         givenSupplierRepository()
@@ -67,7 +57,7 @@ class JpaSupplierRepositoryShould {
     }
 
     companion object{
-        val SUPPLIER_DAO = SupplierRepresentation(0L,"ORG","A", "111","aaa@aaa","99-99999999-1", "")
-        val SUPPLIER = Supplier(0L,"ORG","A", "111","aaa@aaa","99-99999999-1", "")
+        val SUPPLIER_DAO = SupplierRepresentation(0L,"ORG","A", "111","aaa@aaa","99-99999999-1")
+        val SUPPLIER = Supplier(0L,"ORG","A", "111","aaa@aaa","99-99999999-1")
     }
 }

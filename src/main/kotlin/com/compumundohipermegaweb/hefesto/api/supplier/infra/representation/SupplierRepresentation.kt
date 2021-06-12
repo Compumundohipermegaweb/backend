@@ -24,7 +24,4 @@ data class SupplierRepresentation (
     val email: String,
 
     @Column(name = "CUIT")
-    val cuit: String,
-
-    @Column(name = "SUPPLY_SKU")
-    val supplySku: String)
+    val cuit: String)

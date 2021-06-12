@@ -9,6 +9,5 @@ data class PostSupplierRequest(
     @JsonProperty("contact_name") val contactName: String,
     @JsonProperty("contact_number") val contactNumber: String,
     @JsonProperty("email") val email: String,
-    @JsonProperty("cuit") val cuit: String,
-    @JsonProperty("supply_sku") val supplySku: String
+    @JsonProperty("cuit") val cuit: String
 )

@@ -26,6 +26,6 @@ class SupplierController (private val registerSupplier: RegisterSupplier) {
         ).body(supplier)
     }
 
-    private fun PostSupplierRequest.toSupplier() = Supplier(0L, organization, contactName, contactNumber, email, cuit, supplySku)
+    private fun PostSupplierRequest.toSupplier() = Supplier(0L, organization, contactName, contactNumber, email, cuit)
 }
 

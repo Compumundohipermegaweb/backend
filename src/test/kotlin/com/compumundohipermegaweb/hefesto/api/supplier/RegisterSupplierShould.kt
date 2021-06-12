@@ -40,6 +40,6 @@ class RegisterSupplierShould {
     }
 
     private companion object {
-        val SUPPLIER = Supplier(0L,"","","","","", "")
+        val SUPPLIER = Supplier(0L,"","","","","")
     }
 }

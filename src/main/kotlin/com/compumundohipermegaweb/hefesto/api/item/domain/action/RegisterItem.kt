@@ -30,7 +30,7 @@ class RegisterItem(private val itemService: ItemService,
     }
 
     private fun PostSupplierRequest.toSupplier(): Supplier {
-        return Supplier(0L, organization, contactName, contactNumber, email, cuit, "")
+        return Supplier(0L, organization, contactName, contactNumber, email, cuit)
     }
 }
 

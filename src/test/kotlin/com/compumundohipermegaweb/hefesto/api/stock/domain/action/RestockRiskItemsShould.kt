@@ -162,7 +162,7 @@ class RestockRiskItemsShould {
         val ORDER_1 = PurchaseOrder(0, "0", 10, "supplier1@gmail.com")
         val ORDER_2 = PurchaseOrder(0, "1", 20, "supplier2@gmail.com")
         val ORDER_3 = PurchaseOrder(0, "2", 15, "supplier3@gmail.com")
-        val SUPPLIER_1 = Supplier(0L, "", "", "", "supplier1@gmail.com", "", "0")
-        val SUPPLIER_2 = Supplier(0L, "", "", "", "supplier2@gmail.com", "", "1")
+        val SUPPLIER_1 = Supplier(0L, "", "", "", "supplier1@gmail.com", "")
+        val SUPPLIER_2 = Supplier(0L, "", "", "", "supplier2@gmail.com", "")
     }
 }

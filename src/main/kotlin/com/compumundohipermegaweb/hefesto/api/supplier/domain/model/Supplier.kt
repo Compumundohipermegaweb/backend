@@ -6,7 +6,6 @@ data class Supplier(
     val contactName: String,
     val contactNumber: String,
     val email: String,
-    val cuit: String,
-    val supplySku: String)
+    val cuit: String)
 
 
