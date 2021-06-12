@@ -60,6 +60,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
             """
                 <table>
                     <tr>
+                        <th>Orden de compra Nro.</th>
                         <th>SKU</th>
                         <th>Cantidad</th>
                     </tr>
@@ -67,6 +68,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                 purchaseOrders.map {
                     """
                     <tr>
+                        <td>${it.id}</td>
                         <td>${it.sku}</td>
                         <td>${it.amount}</td>
                     </tr>
