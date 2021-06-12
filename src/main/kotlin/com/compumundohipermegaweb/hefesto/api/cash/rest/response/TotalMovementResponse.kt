@@ -15,4 +15,4 @@ data class TotalMovementResponse (
     @JsonProperty("total") val total: Double
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class TotalsMovementResponse(@JsonProperty("expenses") val totals: List<TotalMovementResponse>)
+data class TotalsMovementResponse(@JsonProperty("totals") val totals: List<TotalMovementResponse>)
