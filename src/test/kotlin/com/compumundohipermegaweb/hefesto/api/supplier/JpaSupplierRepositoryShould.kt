@@ -37,6 +37,17 @@ class JpaSupplierRepositoryShould {
 
         verify(supplierDao).findBySupplySku("1")
     }
+
+    @Test
+    fun `find by id`() {
+        givenSupplierCrudRepository()
+        givenSupplierRepository()
+
+        supplierRepository.findById(1L)
+
+        verify(supplierDao).findById(1L)
+    }
+
     private fun givenSupplierCrudRepository() {
         supplierDao = mock(SupplierDao::class.java)
         `when`(supplierDao.save(SUPPLIER_DAO)).thenReturn(SUPPLIER_DAO)

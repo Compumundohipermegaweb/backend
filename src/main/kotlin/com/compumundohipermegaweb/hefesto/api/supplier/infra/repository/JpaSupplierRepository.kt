@@ -16,6 +16,11 @@ class JpaSupplierRepository ( private val supplierDao : SupplierDao) : SupplierR
         return supplierRepresentation?.toSupplier()
     }
 
+    override fun findById(id: Long): Supplier? {
+        val supplierRepresentation = supplierDao.findById(id)
+        return if(supplierRepresentation.isPresent) { supplierRepresentation.get().toSupplier() } else { null }
+    }
+
     private fun Supplier.toRepresentation() = SupplierRepresentation(id, organization, contactName, contactNumber, email, cuit, supplySku)
 
     private fun SupplierRepresentation.toSupplier() = Supplier (id, organization, contactName, contactNumber, email, cuit, supplySku)

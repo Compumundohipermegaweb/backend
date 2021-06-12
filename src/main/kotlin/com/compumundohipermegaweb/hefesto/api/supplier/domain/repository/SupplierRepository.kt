@@ -6,4 +6,5 @@ interface SupplierRepository {
 
     fun save(supplier: Supplier): Supplier
     fun findBySupplySku(sku: String): Supplier?
+    fun findById(id: Long): Supplier?
 }

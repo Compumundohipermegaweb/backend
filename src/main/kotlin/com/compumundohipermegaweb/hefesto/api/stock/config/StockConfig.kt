@@ -3,12 +3,14 @@ package com.compumundohipermegaweb.hefesto.api.stock.config
 import com.compumundohipermegaweb.hefesto.api.authentication.domain.repository.UserRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
+import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.JpaStockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.SpringDataStock
+import com.compumundohipermegaweb.hefesto.api.supplier.domain.service.SupplierService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,6 +19,14 @@ import org.springframework.mail.javamail.JavaMailSender
 
 @Configuration
 class StockConfig {
+
+    @Bean
+    fun restockRiskItems(stockRepository: StockRepository,
+                         purchaseOrderRepository: PurchaseOrderRepository,
+                         @Autowired mailSender: JavaMailSender,
+                         supplierService: SupplierService): RestockRiskItems {
+        return RestockRiskItems(stockRepository, purchaseOrderRepository, mailSender, supplierService)
+    }
 
     @Bean
     fun getAllStockByBranch(stockService: StockService, itemService: ItemService): GetAllStockByBranch {
