@@ -8,15 +8,18 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 
 
-class StockMinimumAlert(private val stockRepository: StockRepository,
-                        private val emailSender: JavaMailSender,
-                        private val userRepository: UserRepository) {
+class SecurityStockAlert(private val stockRepository: StockRepository,
+                         private val emailSender: JavaMailSender,
+                         private val userRepository: UserRepository) {
 
     operator fun invoke(branchId: Long) {
         var stock = stockRepository.findAllInStock(branchId)
-        stock = stock.filter { it.stockTotal <= it.minimumStock }
+        stock = stock.filter { it.stockTotal <= it.securityStock }
         val receivers = userRepository.findByCode(branchId.toString()).filter { it.role == Role.SUPERVISOR }.map { it.username }
-        sendEmails(stock, receivers)
+        if(stock.isNotEmpty() && receivers.isNotEmpty()) {
+            sendEmails(stock, receivers)
+        }
+
     }
 
     private fun sendEmails(stock: List<Stock>, receivers: List<String>) {
@@ -24,9 +27,13 @@ class StockMinimumAlert(private val stockRepository: StockRepository,
         val helper = MimeMessageHelper(email)
 
         helper.setFrom("arg.hefesto.web@gmail.com")
-        helper.setSubject("Alerta de Stock minimo")
+        helper.setSubject("Alerta de stock de seguridad")
 
         val text = StringBuilder()
+
+        text.append("Los siguientes items pasaron la brecha de stock de seguridad")
+        text.append("<br>")
+        text.append("<br>")
 
         text.append("<table border='1'>")
         text.append("<tbody>")
