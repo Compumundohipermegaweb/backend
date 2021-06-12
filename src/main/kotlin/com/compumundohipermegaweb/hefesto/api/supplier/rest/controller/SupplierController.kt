@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 class SupplierController (private val registerSupplier: RegisterSupplier) {
     @PostMapping
     fun postSupplier(@RequestBody body: PostSupplierRequest): ResponseEntity<Supplier> {
-        val supplier = registerSupplier(Supplier(0L,body.organization,body.contactName,body.contactNumber,body.email,body.cuit))
+        val supplier = registerSupplier(Supplier(0L,body.organization,body.contactName,body.contactNumber,body.email,body.cuit, ""))
 
         return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(supplier.id).toUri())

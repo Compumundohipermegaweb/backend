@@ -7,10 +7,24 @@ import javax.persistence.*
 @Table(name ="SUPPLIER")
 @Audited
 data class SupplierDao (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID") val id: Long,
-    @Column(name = "ORGANIZATION") val organization: String,
-    @Column(name = "CONTACT_NAME") val contactName: String,
-    @Column(name = "CONTACT_NUMBER") val contactNumber: String,
-    @Column(name = "EMAIL")  val email: String,
-    @Column(name = "CUIT") val cuit: String
- )
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID") val id: Long,
+
+    @Column(name = "ORGANIZATION")
+    val organization: String,
+
+    @Column(name = "CONTACT_NAME")
+    val contactName: String,
+
+    @Column(name = "CONTACT_NUMBER")
+    val contactNumber: String,
+
+    @Column(name = "EMAIL")
+    val email: String,
+
+    @Column(name = "CUIT")
+    val cuit: String,
+
+    @Column(name = "SUPPLY_SKU")
+    val supplySku: String)

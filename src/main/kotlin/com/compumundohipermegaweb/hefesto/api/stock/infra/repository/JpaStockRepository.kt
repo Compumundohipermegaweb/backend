@@ -24,6 +24,10 @@ class JpaStockRepository(private val springDataStock: SpringDataStock): StockRep
 
     }
 
+    override fun findLowStock(): List<Stock> {
+        TODO("Not yet implemented")
+    }
+
     override fun findAllInStock(branchId: Long): List<Stock> {
         val stockDao = springDataStock.findAllByBranchId(branchId)
 

@@ -46,7 +46,7 @@ class JpaSupplierRepositoryShould {
     }
 
     companion object{
-        val SUPPLIER_DAO = SupplierDao(0L,"ORG","A", "111","aaa@aaa","99-99999999-1")
-        val SUPPLIER = Supplier(0L,"ORG","A", "111","aaa@aaa","99-99999999-1")
+        val SUPPLIER_DAO = SupplierDao(0L,"ORG","A", "111","aaa@aaa","99-99999999-1", "")
+        val SUPPLIER = Supplier(0L,"ORG","A", "111","aaa@aaa","99-99999999-1", "")
     }
 }

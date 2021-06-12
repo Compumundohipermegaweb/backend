@@ -7,10 +7,16 @@ import com.compumundohipermegaweb.hefesto.api.supplier.infra.representation.Supp
 class JpaSupplierRepository ( private val springDataSupplierClient : SpringDataSupplierClient) : SupplierRepository {
 
     override fun save(supplier: Supplier): Supplier{
-        val supplierDao = SupplierDao(supplier.id, supplier.organization, supplier.contactName, supplier.contactNumber, supplier.email ,supplier.cuit )
+        val supplierDao = supplier.toRepresentation()
         return springDataSupplierClient.save(supplierDao).toSupplier()
     }
 
-    private fun SupplierDao.toSupplier() = Supplier (id, organization, contactName, contactNumber, email, cuit)
+    override fun findBySupplySku(sku: String): Supplier {
+        TODO("Not yet implemented")
+    }
+
+    private fun Supplier.toRepresentation() = SupplierDao(id, organization, contactName, contactNumber, email, cuit, supplySku)
+
+    private fun SupplierDao.toSupplier() = Supplier (id, organization, contactName, contactNumber, email, cuit, supplySku)
 
 }

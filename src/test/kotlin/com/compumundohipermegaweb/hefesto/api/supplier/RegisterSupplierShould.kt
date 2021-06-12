@@ -39,7 +39,7 @@ class RegisterSupplierShould {
         `when`(supplierRepository.save(SUPPLIER)).thenReturn(SUPPLIER)
     }
 
-    private companion object{
-        val SUPPLIER = Supplier(0L,"","","","","")
+    private companion object {
+        val SUPPLIER = Supplier(0L,"","","","","", "")
     }
 }

@@ -74,7 +74,7 @@ class RegisterItemShould {
     private companion object {
         private val ITEM = Item(0L, "", "", "", 0L, 0L, "", 0.0, 10.0, true, "", 0)
         private val SUPPLIER_REQUEST = PostSupplierRequest("", "", "", "", "")
-        private val SUPPLIER = Supplier(0L, "", "", "" ,"", "")
+        private val SUPPLIER = Supplier(0L, "", "", "" ,"", "", "")
         private val ITEM_REQUEST = ItemRequest("", "", "",  0L, 0L, "", 0.0, 10.0, true, "", SUPPLIER_REQUEST)
     }
 }
