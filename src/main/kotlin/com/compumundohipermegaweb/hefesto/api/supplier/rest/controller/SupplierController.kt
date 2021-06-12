@@ -13,13 +13,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 @RestController
 @RequestMapping("/api/suppliers")
 class SupplierController (private val registerSupplier: RegisterSupplier) {
+
     @PostMapping
     fun postSupplier(@RequestBody body: PostSupplierRequest): ResponseEntity<Supplier> {
-        val supplier = registerSupplier(Supplier(0L,body.organization,body.contactName,body.contactNumber,body.email,body.cuit, ""))
 
-        return ResponseEntity.created(
-            ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(supplier.id).toUri())
-            .body(supplier);
+        val supplier = registerSupplier(body.toSupplier())
+
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(supplier.id)
+                .toUri()
+        ).body(supplier)
     }
+
+    private fun PostSupplierRequest.toSupplier() = Supplier(0L, organization, contactName, contactNumber, email, cuit, supplySku)
 }
 

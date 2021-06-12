@@ -78,6 +78,6 @@ class RestockRiskItems(private val stockRepository: StockRepository,
 
     private fun Stock.asPurchaseOrder(): PurchaseOrder {
         val supplier = supplierRepository.findBySupplySku(sku)
-        return PurchaseOrder(0L, sku, securityStock, supplier.email)
+        return PurchaseOrder(0L, sku, securityStock, supplier!!.email)
     }
 }

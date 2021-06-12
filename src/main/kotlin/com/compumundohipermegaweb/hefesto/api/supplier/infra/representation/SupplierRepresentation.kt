@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name ="SUPPLIER")
 @Audited
-data class SupplierDao (
+data class SupplierRepresentation (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID") val id: Long,
