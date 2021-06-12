@@ -5,7 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.model.Supplier
-import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.SupplierRepository
+import com.compumundohipermegaweb.hefesto.api.supplier.domain.service.SupplierService
 import com.nhaarman.mockito_kotlin.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -16,7 +16,7 @@ class RestockRiskItemsShould {
     private lateinit var stockRepository: StockRepository
     private lateinit var purchaseOrderRepository: PurchaseOrderRepository
     private lateinit var mailSender: JavaMailSender
-    private lateinit var supplierRepository: SupplierRepository
+    private lateinit var supplierService: SupplierService
     private lateinit var restockRiskItems: RestockRiskItems
 
     @Test
@@ -24,7 +24,7 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
@@ -37,7 +37,7 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
@@ -50,7 +50,7 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
@@ -63,7 +63,7 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
@@ -77,7 +77,7 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
@@ -90,18 +90,18 @@ class RestockRiskItemsShould {
         givenStockRepository()
         givenPurchaseOrderRepository()
         givenMailSender()
-        givenSupplierRepository()
+        givenSupplierService()
         givenRestockRiskItems()
 
         whenRestockingRiskItems()
 
-        verify(supplierRepository, times(AMOUNT_ITEMS_WITHOUT_PURCHASE_ORDER)).findBySupplySku(any())
+        verify(supplierService, times(AMOUNT_ITEMS_WITHOUT_PURCHASE_ORDER)).findBySuppliedSku(any())
     }
 
-    private fun givenSupplierRepository() {
-        supplierRepository = mock()
-        `when`(supplierRepository.findBySupplySku("0")).thenReturn(SUPPLIER_1)
-        `when`(supplierRepository.findBySupplySku("1")).thenReturn(SUPPLIER_2)
+    private fun givenSupplierService() {
+        supplierService = mock()
+        `when`(supplierService.findBySuppliedSku("0")).thenReturn(SUPPLIER_1)
+        `when`(supplierService.findBySuppliedSku("1")).thenReturn(SUPPLIER_2)
     }
 
     private fun givenStockRepository() {
@@ -122,7 +122,7 @@ class RestockRiskItemsShould {
     }
 
     private fun givenRestockRiskItems() {
-        restockRiskItems = RestockRiskItems(stockRepository, purchaseOrderRepository, mailSender, supplierRepository)
+        restockRiskItems = RestockRiskItems(stockRepository, purchaseOrderRepository, mailSender, supplierService)
     }
 
     private fun whenRestockingRiskItems() {

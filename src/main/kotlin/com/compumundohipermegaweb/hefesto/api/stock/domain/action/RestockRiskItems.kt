@@ -4,7 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.model.Purch
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
-import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.SupplierRepository
+import com.compumundohipermegaweb.hefesto.api.supplier.domain.service.SupplierService
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import javax.mail.internet.MimeMessage
@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage
 class RestockRiskItems(private val stockRepository: StockRepository,
                        private val purchaseOrderRepository: PurchaseOrderRepository,
                        private val mailSender: JavaMailSender,
-                       private val supplierRepository: SupplierRepository) {
+                       private val supplierService: SupplierService) {
 
     operator fun invoke() {
         val purchaseOrders = generatePurchaseOrders()
@@ -79,7 +79,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                 """.trimIndent()
 
     private fun Stock.asPurchaseOrder(): PurchaseOrder {
-        val supplier = supplierRepository.findBySupplySku(sku)
+        val supplier = supplierService.findBySuppliedSku(sku)
         return PurchaseOrder(0L, sku, securityStock, supplier!!.email)
     }
 }
