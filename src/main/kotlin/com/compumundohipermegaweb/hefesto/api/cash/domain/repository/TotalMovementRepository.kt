@@ -4,5 +4,5 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.model.TotalMovement
 
 
 interface TotalMovementRepository {
-    fun findByBranchId(branchId: Long): List<TotalMovement>
+    fun findAll(branchId: Long): List<TotalMovement>
 }

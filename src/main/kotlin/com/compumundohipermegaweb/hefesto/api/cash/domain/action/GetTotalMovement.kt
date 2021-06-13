@@ -6,6 +6,6 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.TotalMoveme
 
 class GetTotalMovement(private val totalMovementRepository: TotalMovementRepository){
     operator fun invoke(branchId: Long): List<TotalMovement>{
-        return totalMovementRepository.findByBranchId(branchId).filter { it.paymentMethod == "Efectivo" }
+        return totalMovementRepository.findAll(branchId)
     }
 }

@@ -8,8 +8,10 @@ class TotalMovement (
     val cashStartEndId: Long,
     val dateTime: Date,
     val movementType: String,
+    val source: String,
     val paymentMethod: String,
-    val total: Double
+    val card: String,
+    val total: Double,
 )
 
 

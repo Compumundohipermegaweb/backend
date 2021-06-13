@@ -28,7 +28,7 @@ class GetTotalMovementShould {
 
     private fun givenTotalMovementRepository() {
         totalMovementRepository = mock()
-        `when`(totalMovementRepository.findByBranchId(0L)).thenReturn(listOf(TOTAL_MOVEMENT, ANOTHER_TOTAL_MOVEMENT))
+        `when`(totalMovementRepository.findAll(0L)).thenReturn(listOf(TOTAL_MOVEMENT, ANOTHER_TOTAL_MOVEMENT))
     }
 
     private fun givenGetTotalMovement() {
@@ -37,12 +37,12 @@ class GetTotalMovementShould {
     }
 
     private fun thenTotalMovementAreGet() {
-        verify(totalMovementRepository).findByBranchId(0L)
+        verify(totalMovementRepository).findAll(0L)
         then(totalsMovements).isEqualTo(listOf(TOTAL_MOVEMENT, ANOTHER_TOTAL_MOVEMENT))
     }
 
     companion object{
-        private val TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"INGRESO","Efectivo",100.00)
-        private val ANOTHER_TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"EGRESO","Efectivo",100.00)
+        private val TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"INGRESO","Venta OnLine","Efectivo","No Aplica",100.00)
+        private val ANOTHER_TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"EGRESO","Venta Local","Efectivo","No Aplica",100.00)
     }
 }
