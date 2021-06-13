@@ -15,6 +15,14 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
         return purchaseOrderDao.existsBySku(sku)
     }
 
+    override fun acceptById(id: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override fun findBySku(sku: String): PurchaseOrder? {
+        TODO("Not yet implemented")
+    }
+
     private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, sku, amount, supplier)
 
     private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, sku, amount, supplier)
