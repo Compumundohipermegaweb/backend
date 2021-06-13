@@ -17,4 +17,9 @@ data class PurchaseOrderRepresentation(
         val amount: Int,
 
         @Column(name = "SUPPLIER")
-        val supplier: String)
+        val supplier: String,
+
+        @Column(name = "STATUS")
+        val status: String)
+
+

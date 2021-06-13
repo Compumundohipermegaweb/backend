@@ -16,14 +16,15 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
     }
 
     override fun acceptById(id: Long) {
-        TODO("Not yet implemented")
+        purchaseOrderDao.updateStatusById(id, PurchaseOrder.Status.ACCEPTED.name)
     }
 
     override fun findBySku(sku: String): PurchaseOrder? {
-        TODO("Not yet implemented")
+        val representation = purchaseOrderDao.findBySku(sku)
+        return representation?.toPurchaseOrder()
     }
 
-    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, sku, amount, supplier)
+    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, sku, amount, supplier, status.name)
 
-    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, sku, amount, supplier)
+    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, sku, amount, supplier, PurchaseOrder.Status.valueOf(status))
 }

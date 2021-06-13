@@ -13,7 +13,7 @@ class JpaPurchaseOrderRepositoryShould {
     private lateinit var purchaseOrderDao: PurchaseOrderDao
     private lateinit var purchaseOrderRepository: PurchaseOrderRepository
 
-    private lateinit var purchaseOrder: PurchaseOrder
+    private var purchaseOrder: PurchaseOrder? = null
 
     @Test
     fun `save a purchase order`() {
@@ -35,9 +35,30 @@ class JpaPurchaseOrderRepositoryShould {
         thenExistenceWasChecked()
     }
 
+    @Test
+    fun `accept by id`() {
+        givenPurchaseOrderDao()
+        givenPurchaseOrderRepository()
+
+        whenAcceptingById()
+
+        thenPurchaseOrderHasBeenAccepted()
+    }
+
+    @Test
+    fun `find by sku`() {
+        givenPurchaseOrderDao()
+        givenPurchaseOrderRepository()
+
+        whenFindingBySku()
+
+        thenPurchaseOrderHasBeenFound()
+    }
+
     private fun givenPurchaseOrderDao() {
         purchaseOrderDao = mock()
         `when`(purchaseOrderDao.save(PURCHASE_ORDER_REPRESENTATION)).thenReturn(PURCHASE_ORDER_REPRESENTATION)
+        `when`(purchaseOrderDao.findBySku(SKU)).thenReturn(PURCHASE_ORDER_REPRESENTATION)
     }
 
     private fun givenPurchaseOrderRepository() {
@@ -52,6 +73,14 @@ class JpaPurchaseOrderRepositoryShould {
         purchaseOrderRepository.exists(SKU)
     }
 
+    private fun whenAcceptingById() {
+        purchaseOrderRepository.acceptById(1L)
+    }
+
+    private fun whenFindingBySku() {
+        purchaseOrder = purchaseOrderRepository.findBySku(SKU)
+    }
+
     private fun thenPurchaseOrderHasBeenSaved() {
         verify(purchaseOrderDao).save(PURCHASE_ORDER_REPRESENTATION)
     }
@@ -60,9 +89,17 @@ class JpaPurchaseOrderRepositoryShould {
         verify(purchaseOrderDao).existsBySku(SKU)
     }
 
+    private fun thenPurchaseOrderHasBeenAccepted() {
+        verify(purchaseOrderDao).updateStatusById(1L, PurchaseOrder.Status.ACCEPTED.name)
+    }
+
+    private fun thenPurchaseOrderHasBeenFound() {
+        verify(purchaseOrderDao).findBySku(SKU)
+    }
+
     private companion object {
         const val SKU = "1"
-        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, "", 15, "")
-        val PURCHASE_ORDER = PurchaseOrder(0L, "", 15, "")
+        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, "", 15, "", "PENDING")
+        val PURCHASE_ORDER = PurchaseOrder(0L, "", 15, "", PurchaseOrder.Status.PENDING)
     }
 }
