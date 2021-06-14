@@ -10,6 +10,9 @@ data class PurchaseOrderRepresentation(
         @Column(name = "ID")
         val id: Long,
 
+        @Column(name = "BRANCH_ID")
+        val branchId: Long,
+
         @Column(name = "SKU")
         val sku: String,
 

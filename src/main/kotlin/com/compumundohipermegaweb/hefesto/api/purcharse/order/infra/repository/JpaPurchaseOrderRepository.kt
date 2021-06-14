@@ -24,7 +24,7 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
         return representation?.toPurchaseOrder()
     }
 
-    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, sku, amount, supplier, status.name)
+    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, branchId, sku, amount, supplier, status.name)
 
-    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, sku, amount, supplier, PurchaseOrder.Status.valueOf(status))
+    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, branchId, sku, amount, supplier, PurchaseOrder.Status.valueOf(status))
 }

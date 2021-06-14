@@ -99,7 +99,7 @@ class JpaPurchaseOrderRepositoryShould {
 
     private companion object {
         const val SKU = "1"
-        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, "", 15, "", "PENDING")
-        val PURCHASE_ORDER = PurchaseOrder(0L, "", 15, "", PurchaseOrder.Status.PENDING)
+        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, 1L, "", 15, "", "PENDING")
+        val PURCHASE_ORDER = PurchaseOrder(0L, 1L, "", 15, "", PurchaseOrder.Status.PENDING)
     }
 }

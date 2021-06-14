@@ -26,7 +26,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
 
         lowStock.forEach {
             if (!purchaseOrderRepository.exists(it.sku)) {
-                val purchaseOrder = it.asPurchaseOrder()
+                val purchaseOrder = it.asPurchaseOrder(it.branchId)
                 purchaseOrders.add(purchaseOrderRepository.save(purchaseOrder))
             }
         }
@@ -78,8 +78,8 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                 </table>
                 """.trimIndent()
 
-    private fun Stock.asPurchaseOrder(): PurchaseOrder {
+    private fun Stock.asPurchaseOrder(branchId: Long): PurchaseOrder {
         val supplier = supplierService.findBySuppliedSku(sku)
-        return PurchaseOrder(0L, sku, securityStock, supplier!!.email, PurchaseOrder.Status.PENDING)
+        return PurchaseOrder(0L, branchId, sku, securityStock, supplier!!.email, PurchaseOrder.Status.PENDING)
     }
 }
