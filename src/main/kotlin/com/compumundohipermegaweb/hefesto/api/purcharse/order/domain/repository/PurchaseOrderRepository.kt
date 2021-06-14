@@ -10,4 +10,5 @@ interface PurchaseOrderRepository {
     fun findBySku(sku: String): PurchaseOrder?
     fun findAll(): List<PurchaseOrder>
     fun findByDispatchId(dispatchId: Long): List<PurchaseOrder>
+    fun confirmByDispatchId(dispatchId: Long)
 }

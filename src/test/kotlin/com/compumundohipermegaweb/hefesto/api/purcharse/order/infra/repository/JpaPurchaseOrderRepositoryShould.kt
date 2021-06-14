@@ -75,6 +75,16 @@ class JpaPurchaseOrderRepositoryShould {
         thenPurchaseOrdersWhereFoundByDispatchId()
     }
 
+    @Test
+    fun `update status by dispatch id`() {
+        givenPurchaseOrderDao()
+        givenPurchaseOrderRepository()
+
+        whenConfirmingByDispatchId()
+
+        thenPurchaseOrderHaveBeenConfirmed()
+    }
+
     private fun givenPurchaseOrderDao() {
         purchaseOrderDao = mock()
         `when`(purchaseOrderDao.save(PURCHASE_ORDER_REPRESENTATION)).thenReturn(PURCHASE_ORDER_REPRESENTATION)
@@ -109,6 +119,10 @@ class JpaPurchaseOrderRepositoryShould {
         purchaseOrderRepository.findByDispatchId(1L)
     }
 
+    private fun whenConfirmingByDispatchId() {
+        purchaseOrderRepository.confirmByDispatchId(1L)
+    }
+
     private fun thenPurchaseOrderHasBeenSaved() {
         verify(purchaseOrderDao).save(PURCHASE_ORDER_REPRESENTATION)
     }
@@ -133,6 +147,10 @@ class JpaPurchaseOrderRepositoryShould {
 
     private fun thenPurchaseOrdersWhereFoundByDispatchId() {
         verify(purchaseOrderDao).findAllByDispatchId(1L)
+    }
+
+    private fun thenPurchaseOrderHaveBeenConfirmed() {
+        verify(purchaseOrderDao).updateStatusByDispatchId(1L, PurchaseOrder.Status.CONFIRMED.name)
     }
 
     private companion object {

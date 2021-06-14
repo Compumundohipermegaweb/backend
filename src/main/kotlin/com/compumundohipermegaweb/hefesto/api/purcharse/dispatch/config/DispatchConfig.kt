@@ -38,8 +38,9 @@ class DispatchConfig {
     }
 
     @Bean
-    fun confirmDispatch(dispatchRepository: DispatchRepository): ConfirmDispatch {
-        return ConfirmDispatch(dispatchRepository)
+    fun confirmDispatch(dispatchRepository: DispatchRepository,
+                        purchaseOrderRepository: PurchaseOrderRepository): ConfirmDispatch {
+        return ConfirmDispatch(dispatchRepository, purchaseOrderRepository)
     }
 
     @Bean

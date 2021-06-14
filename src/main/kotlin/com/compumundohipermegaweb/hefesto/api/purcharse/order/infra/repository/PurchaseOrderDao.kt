@@ -23,4 +23,9 @@ interface PurchaseOrderDao: CrudRepository<PurchaseOrderRepresentation, Long> {
     fun findBySku(sku: String): PurchaseOrderRepresentation?
 
     fun findAllByDispatchId(dispatchId: Long): List<PurchaseOrderRepresentation>
+
+    @Modifying
+    @Transactional
+    @Query("update PurchaseOrderRepresentation po set po.status = :status where po.dispatchId = :dispatchId")
+    fun updateStatusByDispatchId(dispatchId: Long, status: String)
 }
