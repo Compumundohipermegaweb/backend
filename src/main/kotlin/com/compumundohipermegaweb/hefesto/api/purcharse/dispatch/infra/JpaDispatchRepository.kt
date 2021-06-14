@@ -12,6 +12,11 @@ class JpaDispatchRepository(private val dispatchDao: DispatchDao): DispatchRepos
         return dispatchDao.save(representation).toDispatch()
     }
 
+    override fun findAll(): List<Dispatch> {
+        val representations = dispatchDao.findAll()
+        return representations.map { it.toDispatch() }
+    }
+
     private fun Dispatch.toRepresentation() = DispatchRepresentation(id, supplierId, totalCost, status.name)
 
     private fun DispatchRepresentation.toDispatch() = Dispatch(id, supplierId, totalCost, Dispatch.Status.valueOf(status))

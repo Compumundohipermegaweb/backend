@@ -2,6 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.config
 
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.DispatchOrders
+import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.FindAllDispatches
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.repository.DispatchRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.infra.JpaDispatchRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.infra.reposiotory.DispatchDao
@@ -26,6 +27,13 @@ class DispatchConfig {
                 itemRepository,
                 purchaseOrderRepository,
                 priceToleranceRepository)
+    }
+
+    @Bean
+    fun findAllDispatches(dispatchRepository: DispatchRepository,
+                          supplierRepository: SupplierRepository,
+                          purchaseOrderRepository: PurchaseOrderRepository): FindAllDispatches {
+        return FindAllDispatches(dispatchRepository, supplierRepository, purchaseOrderRepository)
     }
 
     @Bean

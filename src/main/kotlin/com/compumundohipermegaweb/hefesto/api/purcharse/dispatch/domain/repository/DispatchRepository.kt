@@ -5,4 +5,5 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.model.Di
 interface DispatchRepository {
 
     fun save(dispatch: Dispatch): Dispatch
+    fun findAll(): List<Dispatch>
 }

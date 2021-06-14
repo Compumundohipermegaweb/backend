@@ -26,6 +26,16 @@ class JpaDispatchRepositoryShould {
         thenDispatchHasBeenSaved()
     }
 
+    @Test
+    fun `find all`() {
+        givenDispatchDao()
+        givenDispatchRepository()
+
+        whenFindingAll()
+
+        thenAllDispatchesHaveBeenFound()
+    }
+
     private fun givenDispatchDao() {
         dispatchDao = mock()
         `when`(dispatchDao.save(DISPATCH_REPRESENTATION_TO_SAVE)).thenReturn(DISPATCH_REPRESENTATION_TO_SAVE)
@@ -39,8 +49,16 @@ class JpaDispatchRepositoryShould {
         dispatchSaved = dispatchRepository.save(DISPATCH_TO_SAVE)
     }
 
+    private fun whenFindingAll() {
+        dispatchRepository.findAll()
+    }
+
     private fun thenDispatchHasBeenSaved() {
         verify(dispatchDao).save(DISPATCH_REPRESENTATION_TO_SAVE)
+    }
+
+    private fun thenAllDispatchesHaveBeenFound() {
+        verify(dispatchDao).findAll()
     }
 
     private companion object {

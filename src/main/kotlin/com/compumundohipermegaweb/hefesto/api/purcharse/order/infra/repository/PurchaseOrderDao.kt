@@ -21,4 +21,6 @@ interface PurchaseOrderDao: CrudRepository<PurchaseOrderRepresentation, Long> {
     fun updateDispatchId(id: Long, dispatchId: Long)
 
     fun findBySku(sku: String): PurchaseOrderRepresentation?
+
+    fun findAllByDispatchId(dispatchId: Long): List<PurchaseOrderRepresentation>
 }

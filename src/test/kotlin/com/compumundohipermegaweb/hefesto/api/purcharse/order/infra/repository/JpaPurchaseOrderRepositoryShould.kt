@@ -65,6 +65,16 @@ class JpaPurchaseOrderRepositoryShould {
         thenPurchaseOrdersHasBeenFound()
     }
 
+    @Test
+    fun `find all by dispatch id`() {
+        givenPurchaseOrderDao()
+        givenPurchaseOrderRepository()
+
+        whenFindingByDispatchId()
+
+        thenPurchaseOrdersWhereFoundByDispatchId()
+    }
+
     private fun givenPurchaseOrderDao() {
         purchaseOrderDao = mock()
         `when`(purchaseOrderDao.save(PURCHASE_ORDER_REPRESENTATION)).thenReturn(PURCHASE_ORDER_REPRESENTATION)
@@ -95,6 +105,10 @@ class JpaPurchaseOrderRepositoryShould {
         purchaseOrderRepository.findAll()
     }
 
+    private fun whenFindingByDispatchId() {
+        purchaseOrderRepository.findByDispatchId(1L)
+    }
+
     private fun thenPurchaseOrderHasBeenSaved() {
         verify(purchaseOrderDao).save(PURCHASE_ORDER_REPRESENTATION)
     }
@@ -115,6 +129,10 @@ class JpaPurchaseOrderRepositoryShould {
 
     private fun thenPurchaseOrdersHasBeenFound() {
         verify(purchaseOrderDao).findAll()
+    }
+
+    private fun thenPurchaseOrdersWhereFoundByDispatchId() {
+        verify(purchaseOrderDao).findAllByDispatchId(1L)
     }
 
     private companion object {

@@ -31,6 +31,11 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
         return representations.map { it.toPurchaseOrder() }
     }
 
+    override fun findByDispatchId(dispatchId: Long): List<PurchaseOrder> {
+        val representations = purchaseOrderDao.findAllByDispatchId(dispatchId)
+        return representations.map { it.toPurchaseOrder() }
+    }
+
     private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, branchId, sku, amount, supplier, status.name, dispatchId)
 
     private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, branchId, sku, amount, supplier, PurchaseOrder.Status.valueOf(status), dispatchId)
