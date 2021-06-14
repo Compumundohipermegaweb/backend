@@ -7,6 +7,7 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepos
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.service.SupplierService
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
+import org.springframework.scheduling.annotation.Scheduled
 import javax.mail.internet.MimeMessage
 
 class RestockRiskItems(private val stockRepository: StockRepository,
@@ -14,6 +15,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                        private val mailSender: JavaMailSender,
                        private val supplierService: SupplierService) {
 
+    @Scheduled(cron = "0 0 4 1/1 * ? *")
     operator fun invoke(): List<String> {
         val purchaseOrders = generatePurchaseOrders()
         val groupedOrders = purchaseOrders.groupBy { it.supplier }
