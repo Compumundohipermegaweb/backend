@@ -28,6 +28,11 @@ class CashConfig {
     }
 
     @Bean
+    fun registerCashMovement(cashMovementRepository: CashMovementRepository): RegisterMovement {
+        return RegisterMovement(cashMovementRepository)
+    }
+
+    @Bean
     fun closeCash(cashRepository: CashRepository, cashStartEndRepository: CashStartEndRepository, cashMovementRepository: CashMovementRepository): CloseCash {
         return CloseCash(cashRepository, cashStartEndRepository, cashMovementRepository)
     }
