@@ -55,38 +55,40 @@ class RestockRiskItems(private val stockRepository: StockRepository,
 
         val text = generateEmailText(purchaseOrders)
 
-        helper.setText(text)
+        helper.setText(text, true)
 
         return email
     }
 
     private fun generateEmailText(purchaseOrders: List<PurchaseOrder>) =
             """
-                <table>
-                    <tr>
-                        <th>Sucursal</th>
-                        <th>Orden de compra Nro.</th>
-                        <th>SKU</th>
-                        <th>Cantidad</th>
-                    </tr>
-                ${
-                purchaseOrders.groupBy { it.branchId }.map {
-                    """
-                    <tr>
-                        ${it.value.map { purchaseOrder ->
-                            """
-                            <td>${it.key}</>
-                            <td>${purchaseOrder.id}</td>
-                            <td>${purchaseOrder.sku}</td>
-                            <td>${purchaseOrder.amount}</td>
-                            """.trimIndent()
-                    }}
-                    </tr>
+            <table border='1'">
+                <tr>
+                    <th>Sucursal</th>
+                    <th>Orden de compra Nro.</th>
+                    <th>SKU</th>
+                    <th>Cantidad</th>
+                </tr>
+                ${purchaseOrders.groupBy { it.branchId }.map {
+                """
+                ${it.value.map { purchaseOrder ->
+                """
+                <tr>
+                    <td>${it.key}</>
+                    <td>${purchaseOrder.id}</td>
+                    <td>${purchaseOrder.sku}</td>
+                    <td>${purchaseOrder.amount}</td>
+                </tr>
+                """.trimIndent()
+                }}
                 """.trimIndent()
                 }
             }
-                </table>
-                """.trimIndent()
+            </table>
+            """.trimIndent()
+                .replace("[", "")
+                .replace("]", "")
+                .replace(",", "")
 
     private fun Stock.asPurchaseOrder(branchId: Long): PurchaseOrder {
         val supplier = supplierService.findBySuppliedSku(sku)
