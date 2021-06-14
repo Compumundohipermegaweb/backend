@@ -11,4 +11,5 @@ interface StockRepository {
     fun findAllInStock(branchId: Long): List<Stock>
     fun findBySkuAndBranchId(sku: String, branchId: Long): StockRepresentation?
     fun findLowStock(): List<Stock>
+    fun increaseStock(sku: String, amount: Int)
 }

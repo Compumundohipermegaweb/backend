@@ -81,11 +81,22 @@ class JpaStockRepositoryShould {
         thenLowStockHasBeenFound()
     }
 
+     @Test
+     fun `increase the stock of a given sku`() {
+         givenStockCrudRepository()
+         givenStockRepository()
+
+         whenIncreasingStockBySku()
+
+         thenStockIsIncreased()
+     }
+
     private fun givenStockCrudRepository() {
         stockDao = mock()
         `when`(stockDao.save(STOCK_DAO)).thenReturn(STOCK_DAO)
         `when`(stockDao.findBySku("")).thenReturn(Optional.empty())
         `when`(stockDao.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
+        `when`(stockDao.findBySku(STOCK_REPRESENTATION.sku)).thenReturn(Optional.of(STOCK_REPRESENTATION))
         `when`(stockDao.findAllByBranchId(BRANCH_ID)).thenReturn(SAVED_STOCK)
         `when`(stockDao.findByIdAndBranchId(0L, 0)).thenReturn(STOCK_DAO)
     }
@@ -118,6 +129,10 @@ class JpaStockRepositoryShould {
         stocked = stockRepository.findLowStock()
     }
 
+    private fun whenIncreasingStockBySku() {
+        stockRepository.increaseStock(STOCK_REPRESENTATION.sku, 1)
+    }
+
     private fun thenStockFound() {
         then(stockFound.get()).isNotNull
     }
@@ -144,6 +159,10 @@ class JpaStockRepositoryShould {
         verify(stockDao).findAllWithLowStock()
     }
 
+    private fun thenStockIsIncreased() {
+        verify(stockDao).updateStockBySku(STOCK_REPRESENTATION.sku, STOCK_REPRESENTATION.stockTotal + 1)
+    }
+
     private companion object {
         const val BRANCH_ID = 100L
         val STOCK_DAO = StockRepresentation(0L, "1", 0, 0, 0,0)
@@ -162,5 +181,7 @@ class JpaStockRepositoryShould {
                 Stock(3L, "3", BRANCH_ID, 10, 5, 1, ""),
                 Stock(4L, "4", BRANCH_ID, 10, 5, 1, "")
         )
+
+        val STOCK_REPRESENTATION = StockRepresentation(1L, "111", 1L, 20, 10, 30)
     }
 }

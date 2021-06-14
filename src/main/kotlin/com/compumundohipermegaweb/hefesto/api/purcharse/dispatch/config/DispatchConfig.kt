@@ -9,6 +9,7 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.infra.JpaDispat
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.infra.reposiotory.DispatchDao
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PriceToleranceRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
+import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.SupplierRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,8 +40,9 @@ class DispatchConfig {
 
     @Bean
     fun confirmDispatch(dispatchRepository: DispatchRepository,
-                        purchaseOrderRepository: PurchaseOrderRepository): ConfirmDispatch {
-        return ConfirmDispatch(dispatchRepository, purchaseOrderRepository)
+                        purchaseOrderRepository: PurchaseOrderRepository,
+                        stockRepository: StockRepository): ConfirmDispatch {
+        return ConfirmDispatch(dispatchRepository, purchaseOrderRepository, stockRepository)
     }
 
     @Bean

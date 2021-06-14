@@ -29,6 +29,11 @@ class JpaStockRepository(private val stockDao: StockDao): StockRepository {
         return representations.map { it.toStock() }
     }
 
+    override fun increaseStock(sku: String, amount: Int) {
+        val current = stockDao.findBySku(sku).get()
+        stockDao.updateStockBySku(sku, current.stockTotal + amount)
+    }
+
     override fun findAllInStock(branchId: Long): List<Stock> {
         val stockDao = stockDao.findAllByBranchId(branchId)
 
