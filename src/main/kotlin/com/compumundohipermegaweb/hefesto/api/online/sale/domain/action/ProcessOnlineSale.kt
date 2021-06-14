@@ -4,8 +4,10 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.service.ClientService
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
+import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.RejectedInvoice
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
+import com.compumundohipermegaweb.hefesto.api.online.sale.domain.model.ProcessedOnlineSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.service.RejectedSaleService
@@ -13,6 +15,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.action.InvoiceSale
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
+import java.util.*
 
 class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                         private val stockService: StockService,
@@ -28,9 +31,11 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
     private val rejectPartialStockMotive = "There is not enough stock to cover the total quantity requested"
     private val rejectedItemMotive = "The item does not exist in our item master"
 
-    operator fun invoke(onlineSaleRequest: SaleRequest): Invoice? {
+    operator fun invoke(onlineSaleRequest: SaleRequest): ProcessedOnlineSale {
 
         var invoice: Invoice? = null
+        var rejectedSale: RejectedSale? = null
+        var rejectedInvoice: RejectedInvoice? = null
         var idSale: Long? = null
         val rejectionLevel: String
 
@@ -60,15 +65,17 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                 } else {
                     "PARCIAL"
                 }
-                rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "invalid items or stocks", rejectionLevel), rejectedItems)
+                rejectedSale = rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "invalid items or stocks", rejectionLevel), rejectedItems)
             }
         } else {
             rejectionLevel = "TOTAL"
             rejectedItems = onlineSaleRequest.saleDetailsRequest.detailsRequest.map { it.toRejectedItemDetail("The client did not provide an address") }.toList()
-            rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "The client did not provide an address",rejectionLevel), rejectedItems)
+            rejectedSale =  rejectedSaleService.saveRejectedSale(createRejectedSale(idSale, "The client did not provide an address",rejectionLevel), rejectedItems)
         }
-        return invoice
-        //agregar un onlineSaleReposnse con lo que entro y lo que no
+        if(rejectedSale != null) {
+            rejectedInvoice = createInvoice(onlineSaleRequest, rejectedItems)
+        }
+        return ProcessedOnlineSale(invoice, rejectedInvoice)
     }
 
     private fun Client.isValid(): Boolean {
@@ -141,6 +148,14 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
     private fun SaleDetailRequest.toRejectedItemDetail(motive: String): RejectedItemDetail {
         return RejectedItemDetail(0L, id, "", description, quantity, unitPrice, motive)
     }
+
+    private fun createInvoice(onlineSaleRequest: SaleRequest, rejectedItemDetail: List<RejectedItemDetail>) =
+        RejectedInvoice(rejectionDate = Date(),
+                        client = onlineSaleRequest.clientRequest.toClient(),
+                        rejectedItems = rejectedItemDetail,
+                        subTotal = rejectedItemDetail.sumOf { it.unitPrice * it.quantity },
+                        ivaSubTotal = 0.0,
+                        total =  rejectedItemDetail.sumOf { it.unitPrice * it.quantity })
 }
 
 

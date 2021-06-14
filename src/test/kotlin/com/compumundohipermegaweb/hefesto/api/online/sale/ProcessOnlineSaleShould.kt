@@ -7,7 +7,6 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.online.sale.domain.action.ProcessOnlineSale
-import com.compumundohipermegaweb.hefesto.api.payment.method.rest.request.PutPaymentMethodRequest
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.service.RejectedSaleService
