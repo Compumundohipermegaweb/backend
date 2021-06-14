@@ -36,6 +36,17 @@ class JpaDispatchRepositoryShould {
         thenAllDispatchesHaveBeenFound()
     }
 
+    @Test
+    fun `update status to confirm`() {
+        givenDispatchDao()
+        givenDispatchRepository()
+
+        whenConfirmingDispatch()
+
+        thenDispatchIsConfirmed()
+
+    }
+
     private fun givenDispatchDao() {
         dispatchDao = mock()
         `when`(dispatchDao.save(DISPATCH_REPRESENTATION_TO_SAVE)).thenReturn(DISPATCH_REPRESENTATION_TO_SAVE)
@@ -53,12 +64,20 @@ class JpaDispatchRepositoryShould {
         dispatchRepository.findAll()
     }
 
+    private fun whenConfirmingDispatch() {
+        dispatchRepository.confirm(1L)
+    }
+
     private fun thenDispatchHasBeenSaved() {
         verify(dispatchDao).save(DISPATCH_REPRESENTATION_TO_SAVE)
     }
 
     private fun thenAllDispatchesHaveBeenFound() {
         verify(dispatchDao).findAll()
+    }
+
+    private fun thenDispatchIsConfirmed() {
+        verify(dispatchDao).updateStatus(1L, Dispatch.Status.CONFIRMED.name)
     }
 
     private companion object {

@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.rest
 
+import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.ConfirmDispatch
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.DispatchOrders
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.FindAllDispatches
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.FullDispatch
@@ -10,13 +11,15 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.model.Purch
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.rest.representation.PurchaseOrderResponse
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.model.Supplier
 import com.compumundohipermegaweb.hefesto.api.supplier.rest.representation.SupplierResponse
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/dispatches")
 class DispatchController(private val dispatchOrders: DispatchOrders,
-                         private val findAllDispatches: FindAllDispatches) {
+                         private val findAllDispatches: FindAllDispatches,
+                         private val confirmDispatch: ConfirmDispatch) {
 
     @PostMapping
     fun post(@RequestBody request: DispatchRequest): ResponseEntity<DispatchResponse> {
@@ -36,6 +39,12 @@ class DispatchController(private val dispatchOrders: DispatchOrders,
     fun getAll(): ResponseEntity<GetAllDispatchesResponse> {
         val dispatches = findAllDispatches().map { it.toResponse() }
         return ResponseEntity.ok(GetAllDispatchesResponse(dispatches))
+    }
+
+    @PostMapping("/{ID}/confirm")
+    fun confirm(@PathVariable("ID") id: Long): ResponseEntity<Any> {
+        confirmDispatch(id)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     private fun DispatchedItemRequest.toDispatchedItem() = DispatchedItem(sku, amount, unitPrice, subtotal)
