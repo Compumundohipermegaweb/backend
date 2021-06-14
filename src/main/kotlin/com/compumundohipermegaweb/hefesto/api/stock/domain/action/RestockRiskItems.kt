@@ -60,17 +60,23 @@ class RestockRiskItems(private val stockRepository: StockRepository,
             """
                 <table>
                     <tr>
+                        <th>Sucursal</th>
                         <th>Orden de compra Nro.</th>
                         <th>SKU</th>
                         <th>Cantidad</th>
                     </tr>
                 ${
-                purchaseOrders.map {
+                purchaseOrders.groupBy { it.branchId }.map {
                     """
                     <tr>
-                        <td>${it.id}</td>
-                        <td>${it.sku}</td>
-                        <td>${it.amount}</td>
+                        ${it.value.map { purchaseOrder ->
+                            """
+                            <td>${it.key}</>
+                            <td>${purchaseOrder.id}</td>
+                            <td>${purchaseOrder.sku}</td>
+                            <td>${purchaseOrder.amount}</td>
+                            """.trimIndent()
+                    }}
                     </tr>
                 """.trimIndent()
                 }
