@@ -1,7 +1,17 @@
 package com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.rest.representation
 
-data class DispatchResponse(val status: String, val errors: List<DispatchErrorResponse>)
+import com.fasterxml.jackson.annotation.JsonProperty
 
-data class DispatchErrorResponse(val code: String, val dispatchedItemResponse: DispatchedItemResponse)
+data class DispatchResponse(
+        @JsonProperty("status") val status: String,
+        @JsonProperty("errors") val errors: List<DispatchErrorResponse>)
 
-data class DispatchedItemResponse(val sku: String, val amount: Int, val unitPrice: Double, val subtotal: Double)
+data class DispatchErrorResponse(
+        @JsonProperty("code") val code: String,
+        @JsonProperty("dispatched_item") val dispatchedItemResponse: DispatchedItemResponse)
+
+data class DispatchedItemResponse(
+        @JsonProperty("sku") val sku: String,
+        @JsonProperty("amount") val amount: Int,
+        @JsonProperty("unit_price") val unitPrice: Double,
+        @JsonProperty("subtotal") val subtotal: Double)
