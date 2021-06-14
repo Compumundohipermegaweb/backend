@@ -3,7 +3,7 @@ package com.compumundohipermegaweb.hefesto.api.stock.domain.service
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 
 class DefaultStockService(private val stockRepository: StockRepository,
                           private val itemRepository: ItemRepository): StockService {
@@ -18,7 +18,7 @@ class DefaultStockService(private val stockRepository: StockRepository,
     }
 
     override fun reduceStock(idItem: Long, idBranch: Long, amount: Int) {
-        val stock: StockDao?
+        val stock: StockRepresentation?
         val sku = itemRepository.findById(idItem)?.sku
         if(sku != null){
             stock = stockRepository.findBySkuAndBranchId(sku, idBranch)
@@ -39,7 +39,7 @@ class DefaultStockService(private val stockRepository: StockRepository,
     }
 
     override fun increaseStock(idItem: Long, idBranch: Long, amount: Int) {
-        val stock: StockDao?
+        val stock: StockRepresentation?
         val sku = itemRepository.findById(idItem)?.sku
         if(sku != null){
             stock = stockRepository.findBySkuAndBranchId(sku, idBranch)
@@ -50,11 +50,11 @@ class DefaultStockService(private val stockRepository: StockRepository,
         }
     }
 
-    private fun Stock.toDao(): StockDao {
-        return StockDao(id, sku, branchId, stockTotal, minimumStock, securityStock)
+    private fun Stock.toDao(): StockRepresentation {
+        return StockRepresentation(id, sku, branchId, stockTotal, minimumStock, securityStock)
     }
 
-    private fun StockDao.toStock(): Stock {
+    private fun StockRepresentation.toStock(): Stock {
         return Stock(id, sku, branchId, stockTotal, minimumStock, securityStock, "")
     }
 }

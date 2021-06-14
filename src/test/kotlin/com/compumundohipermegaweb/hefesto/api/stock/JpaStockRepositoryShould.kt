@@ -3,8 +3,8 @@ package com.compumundohipermegaweb.hefesto.api.stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.JpaStockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.SpringDataStock
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
@@ -13,11 +13,11 @@ import org.mockito.Mockito.verify
 import java.util.*
 
 class JpaStockRepositoryShould {
-    private lateinit var springDataStock: SpringDataStock
+    private lateinit var stockDao: StockDao
     private lateinit var stockRepository: StockRepository
 
-    private lateinit var stockSaved: StockDao
-    private lateinit var stockFound: Optional<StockDao>
+    private lateinit var stockSaved: StockRepresentation
+    private lateinit var stockFound: Optional<StockRepresentation>
     private lateinit var stockFoundForIdItem: Stock
     private lateinit var stocked: List<Stock>
 
@@ -71,17 +71,27 @@ class JpaStockRepositoryShould {
         thenStockFoundForId()
     }
 
+    @Test
+    fun `find items with low stock`() {
+        givenStockCrudRepository()
+        givenStockRepository()
+
+        whenFindingLowStock()
+
+        thenLowStockHasBeenFound()
+    }
+
     private fun givenStockCrudRepository() {
-        springDataStock = mock()
-        `when`(springDataStock.save(STOCK_DAO)).thenReturn(STOCK_DAO)
-        `when`(springDataStock.findBySku("")).thenReturn(Optional.empty())
-        `when`(springDataStock.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
-        `when`(springDataStock.findAllByBranchId(BRANCH_ID)).thenReturn(SAVED_STOCK)
-        `when`(springDataStock.findByIdAndBranchId(0L, 0)).thenReturn(STOCK_DAO)
+        stockDao = mock()
+        `when`(stockDao.save(STOCK_DAO)).thenReturn(STOCK_DAO)
+        `when`(stockDao.findBySku("")).thenReturn(Optional.empty())
+        `when`(stockDao.findBySku("1")).thenReturn(Optional.of(STOCK_DAO))
+        `when`(stockDao.findAllByBranchId(BRANCH_ID)).thenReturn(SAVED_STOCK)
+        `when`(stockDao.findByIdAndBranchId(0L, 0)).thenReturn(STOCK_DAO)
     }
 
     private fun givenStockRepository() {
-        stockRepository = JpaStockRepository(springDataStock)
+        stockRepository = JpaStockRepository(stockDao)
     }
 
     private fun whenFindingTheStock() {
@@ -104,6 +114,10 @@ class JpaStockRepositoryShould {
         stocked = stockRepository.findAllInStock(BRANCH_ID)
     }
 
+    private fun whenFindingLowStock() {
+        stocked = stockRepository.findLowStock()
+    }
+
     private fun thenStockFound() {
         then(stockFound.get()).isNotNull
     }
@@ -118,7 +132,7 @@ class JpaStockRepositoryShould {
     }
 
     private fun thenStockSaved() {
-        verify(springDataStock).save(STOCK_DAO)
+        verify(stockDao).save(STOCK_DAO)
         then(stockSaved).isNotNull
     }
 
@@ -126,16 +140,20 @@ class JpaStockRepositoryShould {
         then(stocked).containsOnly(*expected)
     }
 
+    private fun thenLowStockHasBeenFound() {
+        verify(stockDao).findAllWithLowStock()
+    }
+
     private companion object {
         const val BRANCH_ID = 100L
-        val STOCK_DAO = StockDao(0L, "1", 0, 0, 0,0)
+        val STOCK_DAO = StockRepresentation(0L, "1", 0, 0, 0,0)
         val STOCK = Stock(0L, "1", 0, 0, 0,0, "")
 
         val SAVED_STOCK = listOf(
-                StockDao(1L, "1", BRANCH_ID, 10, 5, 1),
-                StockDao(2L, "2", BRANCH_ID, 10, 5, 1),
-                StockDao(3L, "3", BRANCH_ID, 10, 5, 1),
-                StockDao(4L, "4", BRANCH_ID, 10, 5, 1)
+                StockRepresentation(1L, "1", BRANCH_ID, 10, 5, 1),
+                StockRepresentation(2L, "2", BRANCH_ID, 10, 5, 1),
+                StockRepresentation(3L, "3", BRANCH_ID, 10, 5, 1),
+                StockRepresentation(4L, "4", BRANCH_ID, 10, 5, 1)
         )
 
         val EXPECTED_STOCK = listOf(

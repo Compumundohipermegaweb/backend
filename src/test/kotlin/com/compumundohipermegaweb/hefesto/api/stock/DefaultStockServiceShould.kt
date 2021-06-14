@@ -5,7 +5,7 @@ import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemReposit
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
@@ -199,14 +199,14 @@ class DefaultStockServiceShould {
     private companion object {
         val ITEM = Item(0L, "2", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
         val STOCK_TO_SAVE = Stock(2L, "2", 0, 0, 0,0, "")
-        val STOCK_DAO_SAVED = StockDao(2L, "2", 0, 0,0, 0)
+        val STOCK_DAO_SAVED = StockRepresentation(2L, "2", 0, 0,0, 0)
         val STOCK = Stock(0L, "1", 0, 50, 0,0, "")
-        val STOCK_DAO = StockDao(0L, "2", 0, 100,0, 0)
-        val REDUCED_STOCK_DAO = StockDao(1L, "1", 1, 50,0, 0)
-        val STOCK_DAO_1 = StockDao(0L, "1", 1L, 3,0, 0)
+        val STOCK_DAO = StockRepresentation(0L, "2", 0, 100,0, 0)
+        val REDUCED_STOCK_DAO = StockRepresentation(1L, "1", 1, 50,0, 0)
+        val STOCK_DAO_1 = StockRepresentation(0L, "1", 1L, 3,0, 0)
 
         val ITEM_TO_INCREASE_STOCK = Item(0L, "5", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)
-        val STOCK_DAO_TO_INCREASE = StockDao(5L, "5", 5L, 100,0, 0)
-        val STOCK_DAO_INCREASED = StockDao(5L, "5", 5L, 150,0, 0)
+        val STOCK_DAO_TO_INCREASE = StockRepresentation(5L, "5", 5L, 100,0, 0)
+        val STOCK_DAO_INCREASED = StockRepresentation(5L, "5", 5L, 150,0, 0)
     }
 }

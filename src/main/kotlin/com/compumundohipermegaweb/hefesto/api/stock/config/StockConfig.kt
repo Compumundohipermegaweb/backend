@@ -9,7 +9,7 @@ import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepos
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.DefaultStockService
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
 import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.JpaStockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.SpringDataStock
+import com.compumundohipermegaweb.hefesto.api.stock.infra.repository.StockDao
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.service.SupplierService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -59,7 +59,7 @@ class StockConfig {
     }
 
     @Bean
-    fun stockRepository(springDataStock: SpringDataStock): StockRepository {
-        return JpaStockRepository(springDataStock)
+    fun stockRepository(stockDao: StockDao): StockRepository {
+        return JpaStockRepository(stockDao)
     }
 }

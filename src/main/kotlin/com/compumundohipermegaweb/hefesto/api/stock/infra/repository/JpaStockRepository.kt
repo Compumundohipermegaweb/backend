@@ -2,39 +2,40 @@ package com.compumundohipermegaweb.hefesto.api.stock.infra.repository
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 import java.util.*
 
-class JpaStockRepository(private val springDataStock: SpringDataStock): StockRepository {
+class JpaStockRepository(private val stockDao: StockDao): StockRepository {
 
-    override fun save(stock: StockDao): StockDao {
-        return springDataStock.save(stock)
+    override fun save(stock: StockRepresentation): StockRepresentation {
+        return stockDao.save(stock)
     }
 
-    override fun findBySku(sku: String): Optional<StockDao> {
-        return springDataStock.findBySku(sku)
+    override fun findBySku(sku: String): Optional<StockRepresentation> {
+        return stockDao.findBySku(sku)
     }
 
     override fun findByIdAndBranchId(idItem: Long, branchId: Long): Stock? {
-        return springDataStock.findByIdAndBranchId(idItem, branchId)?.toStock()
+        return stockDao.findByIdAndBranchId(idItem, branchId)?.toStock()
     }
 
-    override fun findBySkuAndBranchId(sku: String, branchId: Long):  StockDao? {
-        return springDataStock.findBySkuAndBranchId(sku,branchId)
+    override fun findBySkuAndBranchId(sku: String, branchId: Long):  StockRepresentation? {
+        return stockDao.findBySkuAndBranchId(sku,branchId)
 
     }
 
     override fun findLowStock(): List<Stock> {
-        TODO("Not yet implemented")
+        val representations = stockDao.findAllWithLowStock()
+        return representations.map { it.toStock() }
     }
 
     override fun findAllInStock(branchId: Long): List<Stock> {
-        val stockDao = springDataStock.findAllByBranchId(branchId)
+        val stockDao = stockDao.findAllByBranchId(branchId)
 
         return stockDao.map{ it.toStock() }
     }
 
-    private fun StockDao.toStock(): Stock {
+    private fun StockRepresentation.toStock(): Stock {
         return Stock(id, sku, branchId, stockTotal, minimumStock, securityStock, "")
     }
 }

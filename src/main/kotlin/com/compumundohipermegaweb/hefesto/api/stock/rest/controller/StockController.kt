@@ -1,9 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.stock.rest.controller
 
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.GetAllStockByBranch
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.IncreaseStock
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.ReduceStock
-import com.compumundohipermegaweb.hefesto.api.stock.domain.action.RegisterStock
+import com.compumundohipermegaweb.hefesto.api.stock.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.stock.domain.model.Stock
 import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockModificationRequest
 import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockRequest
@@ -15,12 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import javax.xml.ws.Response
 
 @Controller
 class StockController(private val getAllStockByBranch: GetAllStockByBranch,
                       private val reduceStock: ReduceStock,
                       private val increaseStock: IncreaseStock,
-                      private val registerStock: RegisterStock) {
+                      private val registerStock: RegisterStock,
+                      private val restockRiskItems: RestockRiskItems) {
+
+    @GetMapping("/api/batch/restock")
+    fun restock(): ResponseEntity<String> {
+        val mail = restockRiskItems().joinToString(" ")
+        return ResponseEntity.ok(mail)
+    }
 
     @GetMapping("/api/branches/{branch_id}/stock/all")
     fun getAllStockByBranch(@PathVariable("branch_id") branchId: Long): ResponseEntity<StocksResponse> {

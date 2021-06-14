@@ -14,10 +14,11 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                        private val mailSender: JavaMailSender,
                        private val supplierService: SupplierService) {
 
-    operator fun invoke() {
+    operator fun invoke(): List<String> {
         val purchaseOrders = generatePurchaseOrders()
         val groupedOrders = purchaseOrders.groupBy { it.supplier }
-        sendOrders(groupedOrders)
+        val email = sendOrders(groupedOrders)
+        return email.map { it.content.toString() }
     }
 
     private fun generatePurchaseOrders(): List<PurchaseOrder> {
@@ -34,11 +35,14 @@ class RestockRiskItems(private val stockRepository: StockRepository,
         return purchaseOrders
     }
 
-    private fun sendOrders(groupedOrders: Map<String, List<PurchaseOrder>>) {
+    private fun sendOrders(groupedOrders: Map<String, List<PurchaseOrder>>): List<MimeMessage> {
+        val emailSent = mutableListOf<MimeMessage>()
         groupedOrders.forEach {
             val email = createEmail(it.key, it.value)
             mailSender.send(email)
+            emailSent.add(email)
         }
+        return emailSent
     }
 
     private fun createEmail(supplierEmail: String, purchaseOrders: List<PurchaseOrder>): MimeMessage {

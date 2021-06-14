@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.stock
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.action.RegisterStock
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockRequest
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
@@ -63,9 +63,9 @@ class RegisterStockShould {
 
     private companion object {
         private val STOCK_REQUEST = StockRequest("SKU1", 0, 0, 0, 0)
-        private val STOCK_DAO = StockDao(0L,"SKU1", 0, 0, 0, 0)
+        private val STOCK_DAO = StockRepresentation(0L,"SKU1", 0, 0, 0, 0)
 
         private val ANOTHER_STOCK_REQUEST = StockRequest("SKU2", 1, 0, 0, 0)
-        private val ANOTHER_STOCK_DAO = StockDao(1L,"SKU2", 1, 0, 0, 0)
+        private val ANOTHER_STOCK_DAO = StockRepresentation(1L,"SKU2", 1, 0, 0, 0)
     }
 }

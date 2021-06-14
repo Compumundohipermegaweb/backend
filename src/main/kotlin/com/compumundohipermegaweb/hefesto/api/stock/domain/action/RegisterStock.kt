@@ -1,7 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.stock.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.stock.domain.repository.StockRepository
-import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockDao
+import com.compumundohipermegaweb.hefesto.api.stock.infra.representation.StockRepresentation
 import com.compumundohipermegaweb.hefesto.api.stock.rest.request.StockRequest
 
 class RegisterStock(private val stockRepository: StockRepository) {
@@ -12,8 +12,8 @@ class RegisterStock(private val stockRepository: StockRepository) {
         }
     }
 
-    private fun StockRequest.toStockDao(): StockDao {
-        return StockDao(0L, sku, branchId, stockTotal, minimumStock, securityStock)
+    private fun StockRequest.toStockDao(): StockRepresentation {
+        return StockRepresentation(0L, sku, branchId, stockTotal, minimumStock, securityStock)
     }
 }
 
