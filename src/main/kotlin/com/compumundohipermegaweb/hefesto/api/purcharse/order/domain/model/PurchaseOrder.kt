@@ -6,7 +6,8 @@ data class PurchaseOrder(
         val sku: String,
         val amount: Int,
         val supplier: String,
-        val status: Status) {
+        val status: Status,
+        val dispatchId: Long) {
 
     enum class Status {
         PENDING, ACCEPTED, CONFIRMED, REJECTED

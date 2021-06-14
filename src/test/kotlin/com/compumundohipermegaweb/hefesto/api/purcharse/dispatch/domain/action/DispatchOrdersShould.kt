@@ -137,7 +137,7 @@ class DispatchOrdersShould {
                         DispatchedItem(SKU, 1, 5.0, 5.0)))
         result = dispatchOrders(actionData)
 
-        verify(purchaseOrderRepository).acceptById(PURCHASE_ORDER_ID)
+        verify(purchaseOrderRepository).accept(PURCHASE_ORDER_ID, 2L)
     }
 
     private fun thenResultHasError(dispatchError: DispatchError) {
@@ -199,7 +199,7 @@ class DispatchOrdersShould {
         const val SKU_WITHOUT_PURCHASE_ORDER = "18976"
         const val EXPENSIVE_SKU = "111777"
         const val PURCHASE_ORDER_ID = 1L
-        val PURCHASE_ORDER = PurchaseOrder(PURCHASE_ORDER_ID, 1L, SKU, 1, "", PurchaseOrder.Status.PENDING)
+        val PURCHASE_ORDER = PurchaseOrder(PURCHASE_ORDER_ID, 1L, SKU, 1, "", PurchaseOrder.Status.PENDING, 0L)
         val ACTION_DATA = DispatchOrders.ActionData(1L, 1L, 0.0, emptyList())
         val ITEM = Item(1L, SKU, "", "", 1L, 1L, "", 15.0, 5.0, false, "", 10)
         val EXPENSIVE_ITEM = Item(2L, EXPENSIVE_SKU, "", "", 1L, 1L, "", 150.0, 100.0, false, "", 10)

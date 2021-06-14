@@ -23,6 +23,9 @@ data class PurchaseOrderRepresentation(
         val supplier: String,
 
         @Column(name = "STATUS")
-        val status: String)
+        val status: String,
+
+        @Column(name = "DISPATCH_ID")
+        val dispatchId: Long)
 
 

@@ -92,6 +92,6 @@ class RestockRiskItems(private val stockRepository: StockRepository,
 
     private fun Stock.asPurchaseOrder(branchId: Long): PurchaseOrder {
         val supplier = supplierService.findBySuppliedSku(sku)
-        return PurchaseOrder(0L, branchId, sku, securityStock, supplier!!.email, PurchaseOrder.Status.PENDING)
+        return PurchaseOrder(0L, branchId, sku, securityStock, supplier!!.email, PurchaseOrder.Status.PENDING, 0L)
     }
 }

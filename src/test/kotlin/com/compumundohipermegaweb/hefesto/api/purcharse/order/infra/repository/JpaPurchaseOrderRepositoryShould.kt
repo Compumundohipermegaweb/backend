@@ -74,7 +74,7 @@ class JpaPurchaseOrderRepositoryShould {
     }
 
     private fun whenAcceptingById() {
-        purchaseOrderRepository.acceptById(1L)
+        purchaseOrderRepository.accept(1L, 1L)
     }
 
     private fun whenFindingBySku() {
@@ -90,7 +90,8 @@ class JpaPurchaseOrderRepositoryShould {
     }
 
     private fun thenPurchaseOrderHasBeenAccepted() {
-        verify(purchaseOrderDao).updateStatusById(1L, PurchaseOrder.Status.ACCEPTED.name)
+        verify(purchaseOrderDao).updateStatus(1L, PurchaseOrder.Status.ACCEPTED.name)
+        verify(purchaseOrderDao).updateDispatchId(1L, 1L)
     }
 
     private fun thenPurchaseOrderHasBeenFound() {
@@ -99,7 +100,7 @@ class JpaPurchaseOrderRepositoryShould {
 
     private companion object {
         const val SKU = "1"
-        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, 1L, "", 15, "", "PENDING")
-        val PURCHASE_ORDER = PurchaseOrder(0L, 1L, "", 15, "", PurchaseOrder.Status.PENDING)
+        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, 1L, "", 15, "", "PENDING", 0L)
+        val PURCHASE_ORDER = PurchaseOrder(0L, 1L, "", 15, "", PurchaseOrder.Status.PENDING, 0L)
     }
 }

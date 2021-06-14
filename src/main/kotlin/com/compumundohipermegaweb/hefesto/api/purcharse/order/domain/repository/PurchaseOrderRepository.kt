@@ -6,6 +6,6 @@ interface PurchaseOrderRepository {
 
     fun save(purchaseOrder: PurchaseOrder): PurchaseOrder
     fun exists(sku: String): Boolean
-    fun acceptById(id: Long)
+    fun accept(id: Long, dispatchId: Long)
     fun findBySku(sku: String): PurchaseOrder?
 }

@@ -10,6 +10,8 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.MimeMailMessage
+import javax.mail.internet.MimeMessage
 
 class RestockRiskItemsShould {
 
@@ -111,7 +113,7 @@ class RestockRiskItemsShould {
 
     private fun givenMailSender() {
         mailSender = mock()
-        `when`(mailSender.createMimeMessage()).thenReturn(mock())
+        `when`(mailSender.createMimeMessage()).thenReturn(MIME_MESSAGE)
     }
 
     private fun givenPurchaseOrderRepository() {
@@ -159,10 +161,11 @@ class RestockRiskItemsShould {
                 Stock(2, "2", 1, 14, 10, 15, ""))
 
         val AMOUNT_ITEMS_WITHOUT_PURCHASE_ORDER = LOW_STOCK.size - 1
-        val ORDER_1 = PurchaseOrder(0, 1L, "0", 10, "supplier1@gmail.com", PurchaseOrder.Status.PENDING)
-        val ORDER_2 = PurchaseOrder(0, 1L, "1", 20, "supplier2@gmail.com", PurchaseOrder.Status.PENDING)
-        val ORDER_3 = PurchaseOrder(0, 1L, "2", 15, "supplier3@gmail.com", PurchaseOrder.Status.PENDING)
+        val ORDER_1 = PurchaseOrder(0, 1L, "0", 10, "supplier1@gmail.com", PurchaseOrder.Status.PENDING, 0L)
+        val ORDER_2 = PurchaseOrder(0, 1L, "1", 20, "supplier2@gmail.com", PurchaseOrder.Status.PENDING, 0L)
+        val ORDER_3 = PurchaseOrder(0, 1L, "2", 15, "supplier3@gmail.com", PurchaseOrder.Status.PENDING, 0L)
         val SUPPLIER_1 = Supplier(0L, "", "", "", "supplier1@gmail.com", "")
         val SUPPLIER_2 = Supplier(0L, "", "", "", "supplier2@gmail.com", "")
+        val MIME_MESSAGE = mock<MimeMessage>().also { `when`(it.content).thenReturn("") }
     }
 }
