@@ -49,8 +49,8 @@ class StockConfig {
     }
 
     @Bean
-    fun stockMinimumAlert(stockRepository: StockRepository, @Autowired emailSender: JavaMailSender, userRepository: UserRepository): SecurityStockAlert {
-        return SecurityStockAlert(stockRepository, emailSender, userRepository)
+    fun stockMinimumAlert(stockRepository: StockRepository, @Autowired emailSender: JavaMailSender, userRepository: UserRepository, itemRepository: ItemRepository): SecurityStockAlert {
+        return SecurityStockAlert(stockRepository, emailSender, userRepository, itemRepository)
     }
 
     @Bean
