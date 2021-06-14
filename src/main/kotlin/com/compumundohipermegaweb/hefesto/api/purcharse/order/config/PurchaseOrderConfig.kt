@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.purcharse.order.config
 
+import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.action.FindAllPurchaseOrders
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PriceToleranceRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.infra.repository.JpaPriceToleranceRepository
@@ -11,6 +12,11 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PurchaseOrderConfig {
+
+    @Bean
+    fun findAllPurchaseOrders(purchaseOrderRepository: PurchaseOrderRepository): FindAllPurchaseOrders {
+        return FindAllPurchaseOrders(purchaseOrderRepository)
+    }
 
     @Bean
     fun purchaseOrderRepository(purchaseOrderDao: PurchaseOrderDao): PurchaseOrderRepository {

@@ -8,4 +8,5 @@ interface PurchaseOrderRepository {
     fun exists(sku: String): Boolean
     fun accept(id: Long, dispatchId: Long)
     fun findBySku(sku: String): PurchaseOrder?
+    fun findAll(): List<PurchaseOrder>
 }
