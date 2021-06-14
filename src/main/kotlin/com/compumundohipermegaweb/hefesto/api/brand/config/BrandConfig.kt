@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration
 class BrandConfig {
 
     @Bean
-    fun findAllBrands(brandRepository: JpaBrandRepository): FindAllBrands {
+    fun findAllBrands(brandRepository: BrandRepository): FindAllBrands {
         return FindAllBrands(brandRepository)
     }
 
