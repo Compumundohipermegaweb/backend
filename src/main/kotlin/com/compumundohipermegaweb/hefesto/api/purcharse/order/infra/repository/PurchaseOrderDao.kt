@@ -8,7 +8,7 @@ import javax.transaction.Transactional
 
 interface PurchaseOrderDao: CrudRepository<PurchaseOrderRepresentation, Long> {
 
-    fun existsBySku(sku: String): Boolean
+    fun existsBySkuAndStatus(sku: String, status: String): Boolean
 
     @Modifying
     @Transactional

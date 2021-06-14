@@ -86,7 +86,8 @@ class JpaPurchaseOrderRepositoryShould {
     }
 
     private fun thenExistenceWasChecked() {
-        verify(purchaseOrderDao).existsBySku(SKU)
+        verify(purchaseOrderDao).existsBySkuAndStatus(SKU, PurchaseOrder.Status.PENDING.name)
+        verify(purchaseOrderDao).existsBySkuAndStatus(SKU, PurchaseOrder.Status.ACCEPTED.name)
     }
 
     private fun thenPurchaseOrderHasBeenAccepted() {

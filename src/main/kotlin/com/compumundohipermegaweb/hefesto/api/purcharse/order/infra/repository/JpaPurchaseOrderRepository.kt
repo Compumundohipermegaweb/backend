@@ -12,7 +12,8 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
     }
 
     override fun exists(sku: String): Boolean {
-        return purchaseOrderDao.existsBySku(sku)
+        return purchaseOrderDao.existsBySkuAndStatus(sku, PurchaseOrder.Status.PENDING.name)
+                || purchaseOrderDao.existsBySkuAndStatus(sku, PurchaseOrder.Status.ACCEPTED.name)
     }
 
     override fun accept(id: Long, dispatchId: Long) {
