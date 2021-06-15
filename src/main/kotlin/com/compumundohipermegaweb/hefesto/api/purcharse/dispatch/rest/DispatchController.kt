@@ -42,8 +42,9 @@ class DispatchController(private val dispatchOrders: DispatchOrders,
     }
 
     @PostMapping("/{ID}/confirm")
-    fun confirm(@PathVariable("ID") id: Long): ResponseEntity<Any> {
-        confirmDispatch(id)
+    fun confirm(@PathVariable("ID") id: Long, @RequestBody request: ConfirmDispatchRequest): ResponseEntity<Any> {
+        val actionData = ConfirmDispatch.ActionData(id, request.branchId, request.totalCost)
+        confirmDispatch(actionData)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 

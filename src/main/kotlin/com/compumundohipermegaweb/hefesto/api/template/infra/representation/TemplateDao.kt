@@ -13,7 +13,7 @@ import javax.persistence.*
  * Requisitos para crear correctamente un DAO
  *
  * Anotaciones a nivel clase:
- * @Entity todo DAO debe ser anotado con esta anotation para especificarle al ORM que es una entidad a ser mapear
+ * @Entity el DAO debe ser anotado con esta anotation para especificarle al ORM que es una entidad a ser mapear
  * @Table especifica la tabla primaria del elemento, es decir, contra que tabla de la BBDD se va a mapear nuestro objeto
  *
  * Anotaciones a nivel campo/variable:

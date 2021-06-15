@@ -1,5 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.config
 
+import com.compumundohipermegaweb.hefesto.api.cash.domain.service.CashService
 import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.ConfirmDispatch
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action.DispatchOrders
@@ -41,8 +42,9 @@ class DispatchConfig {
     @Bean
     fun confirmDispatch(dispatchRepository: DispatchRepository,
                         purchaseOrderRepository: PurchaseOrderRepository,
-                        stockRepository: StockRepository): ConfirmDispatch {
-        return ConfirmDispatch(dispatchRepository, purchaseOrderRepository, stockRepository)
+                        stockRepository: StockRepository,
+                        cashService: CashService): ConfirmDispatch {
+        return ConfirmDispatch(dispatchRepository, purchaseOrderRepository, stockRepository, cashService)
     }
 
     @Bean

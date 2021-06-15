@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage
 
 class RestockRiskItemsShould {
 
-    /*private lateinit var stockRepository: StockRepository
+    private lateinit var stockRepository: StockRepository
     private lateinit var purchaseOrderRepository: PurchaseOrderRepository
     private lateinit var mailSender: JavaMailSender
     private lateinit var supplierService: SupplierService
@@ -167,5 +167,5 @@ class RestockRiskItemsShould {
         val SUPPLIER_1 = Supplier(0L, "", "", "", "supplier1@gmail.com", "")
         val SUPPLIER_2 = Supplier(0L, "", "", "", "supplier2@gmail.com", "")
         val MIME_MESSAGE = mock<MimeMessage>().also { `when`(it.content).thenReturn("") }
-    }*/
+    }
 }

@@ -61,6 +61,16 @@ class JpaCashRepositoryShould {
         thenAllCashAreFound()
     }
 
+    @Test
+    fun `find by branch id`() {
+        givenSpringCashDao()
+        givenCashRepository()
+
+        cashRepository.findByBranchId(1L)
+
+        verify(springCashDao).findByBranchId(1L)
+    }
+
     private fun givenSpringCashDao() {
         springCashDao = mock()
         `when`(springCashDao.save(CASH_REPRESENTATION)).thenReturn(CASH_REPRESENTATION)

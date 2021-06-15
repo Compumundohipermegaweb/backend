@@ -7,4 +7,5 @@ interface DispatchRepository {
     fun save(dispatch: Dispatch): Dispatch
     fun findAll(): List<Dispatch>
     fun confirm(id: Long)
+    fun findById(id: Long): Dispatch?
 }

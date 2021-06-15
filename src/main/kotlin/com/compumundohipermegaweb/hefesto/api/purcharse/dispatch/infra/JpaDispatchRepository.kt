@@ -21,6 +21,11 @@ class JpaDispatchRepository(private val dispatchDao: DispatchDao): DispatchRepos
         dispatchDao.updateStatus(id, Dispatch.Status.CONFIRMED.name)
     }
 
+    override fun findById(id: Long): Dispatch? {
+        val representation = dispatchDao.findById(id).orElse(null)
+        return representation?.toDispatch()
+    }
+
     private fun Dispatch.toRepresentation() = DispatchRepresentation(id, supplierId, totalCost, status.name)
 
     private fun DispatchRepresentation.toDispatch() = Dispatch(id, supplierId, totalCost, Dispatch.Status.valueOf(status))

@@ -44,7 +44,16 @@ class JpaDispatchRepositoryShould {
         whenConfirmingDispatch()
 
         thenDispatchIsConfirmed()
+    }
 
+    @Test
+    fun `find by id`() {
+        givenDispatchDao()
+        givenDispatchRepository()
+
+        whenFindingById()
+
+        thenDispatchHaveBeenFound()
     }
 
     private fun givenDispatchDao() {
@@ -68,6 +77,10 @@ class JpaDispatchRepositoryShould {
         dispatchRepository.confirm(1L)
     }
 
+    private fun whenFindingById() {
+        dispatchRepository.findById(1L)
+    }
+
     private fun thenDispatchHasBeenSaved() {
         verify(dispatchDao).save(DISPATCH_REPRESENTATION_TO_SAVE)
     }
@@ -78,6 +91,10 @@ class JpaDispatchRepositoryShould {
 
     private fun thenDispatchIsConfirmed() {
         verify(dispatchDao).updateStatus(1L, Dispatch.Status.CONFIRMED.name)
+    }
+
+    private fun thenDispatchHaveBeenFound() {
+        verify(dispatchDao).findById(1L)
     }
 
     private companion object {

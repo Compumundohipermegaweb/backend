@@ -6,4 +6,5 @@ interface CashRepository {
     fun save(cash: Cash): Cash
     fun findById(cashId: Long): Cash?
     fun findAll(): List<Cash>
+    fun findByBranchId(branchId: Long): Cash?
 }
