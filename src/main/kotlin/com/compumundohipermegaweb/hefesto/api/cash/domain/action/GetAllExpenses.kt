@@ -17,7 +17,7 @@ class GetAllExpenses(private val cashMovementRepository: CashMovementRepository,
                 if(paymentMethod != null) {
                     payment = paymentMethod.type
                 }
-                transactions+= Expense(it.id, it.dateTime, it.sourceDescription, "", payment, it.amount)
+                transactions+= Expense(it.id, it.dateTime, it.sourceDescription, it.detail, payment, it.amount)
             }
         }
 
