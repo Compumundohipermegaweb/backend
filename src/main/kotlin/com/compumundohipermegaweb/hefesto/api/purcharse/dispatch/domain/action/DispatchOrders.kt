@@ -36,10 +36,10 @@ class DispatchOrders(private val dispatchRepository: DispatchRepository,
                 result.errors.add(DispatchError(DispatchError.Code.PRICE_DIFFERENCE_TOO_HIGH, it))
             } else {
                 val purchaseOrder = purchaseOrderRepository.findBySku(it.sku)!!
-                if(dispatchedAmountIsTooHigh(it, purchaseOrder)) {
-                    result.errors.add(DispatchError(DispatchError.Code.DISPATCHED_AMOUNT_TOO_HIGH, it))
-                } else {
-                    purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id, it.amount, it.unitPrice)
+                when {
+                    dispatchedAmountIsTooHigh(it, purchaseOrder) -> { result.errors.add(DispatchError(DispatchError.Code.DISPATCHED_AMOUNT_TOO_HIGH, it)) }
+                    purchaseOrder.status != PurchaseOrder.Status.PENDING -> { result.errors.add(DispatchError(DispatchError.Code.ALREADY_DISPATCHED, it)) }
+                    else -> { purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id, it.amount, it.unitPrice) }
                 }
             }
         }

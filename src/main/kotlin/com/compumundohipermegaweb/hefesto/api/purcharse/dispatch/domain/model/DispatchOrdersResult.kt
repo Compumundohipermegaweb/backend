@@ -8,6 +8,7 @@ data class DispatchError(val code: Code, val dispatchedItem: DispatchedItem) {
         UNKNOWN_SKU,
         NO_PURCHASE_ORDER,
         PRICE_DIFFERENCE_TOO_HIGH,
-        DISPATCHED_AMOUNT_TOO_HIGH
+        DISPATCHED_AMOUNT_TOO_HIGH,
+        ALREADY_DISPATCHED
     }
 }
