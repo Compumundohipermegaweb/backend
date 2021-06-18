@@ -17,10 +17,7 @@ class ConfirmDispatch(private val dispatchRepository: DispatchRepository,
         confirmDispatch(actionData.dispatchId)
         confirmPurchaseOrders(actionData.dispatchId)
         adjustStock(actionData.dispatchId)
-        val purchaseOrders = purchaseOrderRepository.findByDispatchId(actionData.dispatchId)
-        purchaseOrders.forEach {
-            itemRepository.updateCostBySku(it.sku, it.cost)
-        }
+        updateCosts(actionData.dispatchId)
     }
 
     private fun registerExpense(branchId: Long, totalCost: Double, dispatchId: Long) {
@@ -39,6 +36,13 @@ class ConfirmDispatch(private val dispatchRepository: DispatchRepository,
         val purchaseOrders = purchaseOrderRepository.findByDispatchId(dispatchId)
         purchaseOrders.forEach {
             stockRepository.increaseStock(it.sku, it.dispatched)
+        }
+    }
+
+    private fun updateCosts(dispatchId: Long) {
+        val purchaseOrders = purchaseOrderRepository.findByDispatchId(dispatchId)
+        purchaseOrders.forEach {
+            itemRepository.updateCostBySku(it.sku, it.cost)
         }
     }
 
