@@ -7,4 +7,5 @@ interface ClientRepository {
     fun findByFirstNameOrLastNameIn(names: List<String>): List<Client>
     fun findByDocument(document: String): Client?
     fun findById(id: Long): Client?
+    fun findAllClients():List<Client>
 }

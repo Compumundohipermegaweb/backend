@@ -1,14 +1,12 @@
 package com.compumundohipermegaweb.hefesto.api.client.rest.controller
 
-import com.compumundohipermegaweb.hefesto.api.branch.rest.representation.StockAvailableResponse
-import com.compumundohipermegaweb.hefesto.api.client.domain.action.FindClients
-import com.compumundohipermegaweb.hefesto.api.client.domain.action.GetBalanceByClientId
-import com.compumundohipermegaweb.hefesto.api.client.domain.action.RegisterClient
+import com.compumundohipermegaweb.hefesto.api.client.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ActionData
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
 import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientBalanceResponse
 import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientResponse
+import com.compumundohipermegaweb.hefesto.api.client.rest.response.ClientsResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -16,7 +14,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/clients")
 class ClientController(private val registerClient: RegisterClient,
                        private val findClients: FindClients,
-                       private val getBalanceByClientId: GetBalanceByClientId) {
+                       private val getBalanceByClientId: GetBalanceByClientId,
+                       private val updateClient: UpdateClient,
+                       private val getAllClients: GetAllClients) {
 
     @PostMapping
     fun postClient(@RequestBody clientRequest: ClientRequest) : ResponseEntity<ClientResponse> {
@@ -42,6 +42,16 @@ class ClientController(private val registerClient: RegisterClient,
         }
         return    ResponseEntity.noContent().build()
     }
+
+    @PutMapping
+    fun putClient(@RequestBody clientRequest: ClientRequest) : ResponseEntity<ClientResponse> {
+        return ResponseEntity.ok(updateClient(clientRequest)?.toClientResponse())
+    }
+
+    @GetMapping
+    @RequestMapping("/all")
+    fun getAllClients(): ResponseEntity<ClientsResponse> =
+        ResponseEntity.ok(ClientsResponse(getAllClients.invoke().map { it.toClientResponse() }))
 
     private fun Client.toClientResponse(): ClientResponse {
         return ClientResponse(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber)

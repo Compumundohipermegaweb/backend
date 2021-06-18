@@ -14,4 +14,4 @@ data class ClientDao(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Co
                      @Column(name = "CREDIT_LIMIT")  val creditLimit: Double,
                      @Column(name = "EMAIL") val email: String,
                      @Column(name = "CONTACT_NUMBER") val contactNumber: String,
-                     @Column(name = "ADDRESS") val address: String)
+                     @Column(name = "ADDRESS") val address: String?)

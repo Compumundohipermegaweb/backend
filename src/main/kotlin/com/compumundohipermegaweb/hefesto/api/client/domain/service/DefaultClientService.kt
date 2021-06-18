@@ -2,6 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.client.domain.service
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
+import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 
 class DefaultClientService(private val clientRepository: ClientRepository): ClientService {
     override fun save(client: Client): Client {
@@ -14,5 +15,9 @@ class DefaultClientService(private val clientRepository: ClientRepository): Clie
 
     override fun findByDocument(documentNumber: String): Client? {
         return clientRepository.findByDocument(documentNumber)
+    }
+
+    override fun findAllClients(): List<Client> {
+        return clientRepository.findAllClients()
     }
 }

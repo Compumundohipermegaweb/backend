@@ -11,7 +11,6 @@ class UpdateItem(private val itemService: ItemService){
         val itemFromDB = itemService.findItemById(itemRequest.id)
 
         return if (itemFromDB != null) {
-            println(itemFromDB.sku)
             val item = itemRequest.toItemRepresentation()
             itemService.save(item.toItem())
         }else{

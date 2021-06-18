@@ -13,3 +13,5 @@ data class ClientResponse(@JsonProperty("id") val id: Long,
                           @JsonProperty("email") val email: String,
                           @JsonProperty("contact_number") val contactNumber: String)
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class ClientsResponse(@JsonProperty("clients") val clients: List<ClientResponse>)

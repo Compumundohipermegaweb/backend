@@ -6,4 +6,5 @@ interface ClientService {
     fun save(client: Client): Client
     fun findById(id: Long): Client?
     fun findByDocument(documentNumber: String): Client?
+    fun findAllClients():List<Client>
 }

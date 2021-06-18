@@ -26,7 +26,11 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         return null
     }
 
-    private fun ClientDao.toClient(): Client {
+    override fun findAllClients(): List<Client> {
+        return repository.findAll().map { it.toClient() }
+    }
+
+            private fun ClientDao.toClient(): Client {
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 
@@ -36,4 +40,6 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         }
         return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address!!)
     }
+
+
 }
