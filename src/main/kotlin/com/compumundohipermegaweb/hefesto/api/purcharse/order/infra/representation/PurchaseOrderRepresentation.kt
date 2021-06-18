@@ -16,8 +16,14 @@ data class PurchaseOrderRepresentation(
         @Column(name = "SKU")
         val sku: String,
 
-        @Column(name = "AMOUNT")
-        val amount: Int,
+        @Column(name = "REQUESTED_AMOUNT")
+        val requested: Int,
+
+        @Column(name = "DISPATCHED_AMOUNT")
+        val dispatched: Int,
+
+        @Column(name = "COST")
+        val cost: Double,
 
         @Column(name = "SUPPLIER")
         val supplier: String,

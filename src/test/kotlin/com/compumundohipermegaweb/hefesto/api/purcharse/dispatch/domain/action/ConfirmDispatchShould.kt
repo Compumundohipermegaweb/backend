@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.action
 
 import com.compumundohipermegaweb.hefesto.api.cash.domain.service.CashService
+import com.compumundohipermegaweb.hefesto.api.item.domain.repository.ItemRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.repository.DispatchRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.model.PurchaseOrder
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
@@ -15,6 +16,7 @@ class ConfirmDispatchShould {
     private lateinit var dispatchRepository: DispatchRepository
     private lateinit var purchaseOrderRepository: PurchaseOrderRepository
     private lateinit var stockRepository: StockRepository
+    private lateinit var itemRepository: ItemRepository
     private lateinit var cashService: CashService
     private lateinit var confirmDispatch: ConfirmDispatch
 
@@ -24,6 +26,7 @@ class ConfirmDispatchShould {
         givenPurchaseOrderRepository()
         givenStockRepository()
         givenCashService()
+        givenItemRepository()
         givenConfirmDispatch()
 
         whenConfirmingDispatch()
@@ -37,6 +40,7 @@ class ConfirmDispatchShould {
         givenPurchaseOrderRepository()
         givenStockRepository()
         givenCashService()
+        givenItemRepository()
         givenConfirmDispatch()
 
         whenConfirmingDispatch()
@@ -50,6 +54,7 @@ class ConfirmDispatchShould {
         givenPurchaseOrderRepository()
         givenStockRepository()
         givenCashService()
+        givenItemRepository()
         givenConfirmDispatch()
 
         whenConfirmingDispatch()
@@ -63,11 +68,26 @@ class ConfirmDispatchShould {
         givenPurchaseOrderRepository()
         givenStockRepository()
         givenCashService()
+        givenItemRepository()
         givenConfirmDispatch()
 
         whenConfirmingDispatch()
 
         thenExpenseHaveBeenRegistered()
+    }
+
+    @Test
+    fun `update the item costs` () {
+        givenDispatchRepository()
+        givenPurchaseOrderRepository()
+        givenStockRepository()
+        givenCashService()
+        givenItemRepository()
+        givenConfirmDispatch()
+
+        whenConfirmingDispatch()
+
+        thenItemPriceHaveBeenUpdated()
     }
 
     private fun givenDispatchRepository() {
@@ -83,12 +103,16 @@ class ConfirmDispatchShould {
         stockRepository = mock()
     }
 
+    private fun givenItemRepository() {
+        itemRepository = mock()
+    }
+
     private fun givenCashService() {
         cashService = mock()
     }
 
     private fun givenConfirmDispatch() {
-        confirmDispatch = ConfirmDispatch(dispatchRepository, purchaseOrderRepository, stockRepository, cashService)
+        confirmDispatch = ConfirmDispatch(dispatchRepository, purchaseOrderRepository, stockRepository, itemRepository, cashService)
     }
 
     private fun whenConfirmingDispatch() {
@@ -104,15 +128,19 @@ class ConfirmDispatchShould {
     }
 
     private fun thenStockIsUpdated() {
-        verify(stockRepository).increaseStock(PURCHASE_ORDER.sku, PURCHASE_ORDER.amount)
+        verify(stockRepository).increaseStock(PURCHASE_ORDER.sku, PURCHASE_ORDER.requested)
     }
 
     private fun thenExpenseHaveBeenRegistered() {
         verify(cashService).registerSupplierExpense(ACTION_DATA.branchId, ACTION_DATA.dispatchTotalCost, ACTION_DATA.dispatchId)
     }
 
+    private fun thenItemPriceHaveBeenUpdated() {
+        verify(itemRepository).updateCostBySku(PURCHASE_ORDER.sku, PURCHASE_ORDER.cost)
+    }
+
     private companion object {
         val ACTION_DATA = ConfirmDispatch.ActionData(1L, 1L, 100.0)
-        val PURCHASE_ORDER = PurchaseOrder(1L,1L, "1", 1, "", PurchaseOrder.Status.CONFIRMED, 1L)
+        val PURCHASE_ORDER = PurchaseOrder(1L,1L, "1", 1, 1, 15.50, "", PurchaseOrder.Status.CONFIRMED, 1L)
     }
 }

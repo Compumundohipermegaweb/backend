@@ -120,6 +120,16 @@ class JpaItemRepositoryShould {
         verify(itemDao).deleteBySku("SKU")
     }
 
+    @Test
+    fun `update price by sku` () {
+        givenItemDao()
+        givenItemRepository()
+
+        itemRepository.updateCostBySku("SKU", 1.0)
+
+        verify(itemDao).updateCostBySku("SKU", 1.0)
+    }
+
     private fun givenItemDao() {
         itemDao = mock(ItemDao::class.java)
         `when`(itemDao.save(ITEM_DAO)).thenReturn(ITEM_DAO)

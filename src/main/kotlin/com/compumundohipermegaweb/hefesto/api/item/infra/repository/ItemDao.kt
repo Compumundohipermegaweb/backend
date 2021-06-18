@@ -15,4 +15,9 @@ interface ItemDao: CrudRepository<ItemRepresentation, Long> {
     @Transactional
     @Query("delete from ItemRepresentation i where i.sku = :sku")
     fun deleteBySku(sku: String)
+
+    @Modifying
+    @Transactional
+    @Query("Update ItemRepresentation i set i.cost = :newCost where i.sku = :sku")
+    fun updateCostBySku(sku: String, newCost: Double)
 }

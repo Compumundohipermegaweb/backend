@@ -79,7 +79,7 @@ class RestockRiskItems(private val stockRepository: StockRepository,
                     <td>${it.key}</>
                     <td>${purchaseOrder.id}</td>
                     <td>${purchaseOrder.sku}</td>
-                    <td>${purchaseOrder.amount}</td>
+                    <td>${purchaseOrder.requested}</td>
                 </tr>
                 """.trimIndent()
                 }}
@@ -94,6 +94,6 @@ class RestockRiskItems(private val stockRepository: StockRepository,
 
     private fun Stock.asPurchaseOrder(branchId: Long): PurchaseOrder {
         val supplier = supplierService.findBySuppliedSku(sku)
-        return PurchaseOrder(0L, branchId, sku, securityStock, supplier!!.email, PurchaseOrder.Status.PENDING, 0L)
+        return PurchaseOrder(0L, branchId, sku, securityStock, 0, 0.0, supplier!!.email, PurchaseOrder.Status.PENDING, 0L)
     }
 }

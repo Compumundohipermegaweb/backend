@@ -16,9 +16,11 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
                 || purchaseOrderDao.existsBySkuAndStatus(sku, PurchaseOrder.Status.ACCEPTED.name)
     }
 
-    override fun accept(id: Long, dispatchId: Long) {
+    override fun accept(id: Long, dispatchId: Long, dispatchedAmount: Int, cost: Double) {
         purchaseOrderDao.updateStatus(id, PurchaseOrder.Status.ACCEPTED.name)
         purchaseOrderDao.updateDispatchId(id, dispatchId)
+        purchaseOrderDao.updateDispatchedAmount(id, dispatchedAmount)
+        purchaseOrderDao.updateCost(id, cost)
     }
 
     override fun findBySku(sku: String): PurchaseOrder? {
@@ -40,7 +42,7 @@ class JpaPurchaseOrderRepository(private val purchaseOrderDao: PurchaseOrderDao)
         purchaseOrderDao.updateStatusByDispatchId(dispatchId, PurchaseOrder.Status.CONFIRMED.name)
     }
 
-    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, branchId, sku, amount, supplier, status.name, dispatchId)
+    private fun PurchaseOrder.toRepresentation() = PurchaseOrderRepresentation(id, branchId, sku, requested, dispatched, cost, supplier, status.name, dispatchId)
 
-    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, branchId, sku, amount, supplier, PurchaseOrder.Status.valueOf(status), dispatchId)
+    private fun PurchaseOrderRepresentation.toPurchaseOrder() = PurchaseOrder(id, branchId, sku, requested, dispatched, cost, supplier, PurchaseOrder.Status.valueOf(status), dispatchId)
 }

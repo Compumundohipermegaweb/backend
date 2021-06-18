@@ -36,6 +36,10 @@ class JpaItemRepository(private val itemDao: ItemDao): ItemRepository {
         itemDao.deleteBySku(sku)
     }
 
+    override fun updateCostBySku(sku: String, newPrice: Double) {
+        itemDao.updateCostBySku(sku, newPrice)
+    }
+
     private fun ItemRepresentation.toItem(): Item {
         return Item(id, sku, shortDescription, description, brandId, categoryId, uomSale, price, cost, imported, state, 0)
     }

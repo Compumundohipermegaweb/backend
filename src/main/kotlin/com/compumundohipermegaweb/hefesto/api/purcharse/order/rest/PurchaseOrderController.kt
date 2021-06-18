@@ -19,5 +19,5 @@ class PurchaseOrderController(private val findAllPurchaseOrders: FindAllPurchase
         return ResponseEntity.ok(GetAllPurchaseOrders(purchaseOrders))
     }
 
-    private fun PurchaseOrder.toResponse() = PurchaseOrderResponse(id, branchId, sku, amount, supplier, status.name, dispatchId)
+    private fun PurchaseOrder.toResponse() = PurchaseOrderResponse(id, branchId, sku, requested, supplier, status.name, dispatchId)
 }

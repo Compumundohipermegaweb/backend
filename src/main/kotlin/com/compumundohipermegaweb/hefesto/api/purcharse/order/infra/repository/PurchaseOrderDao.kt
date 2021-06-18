@@ -28,4 +28,14 @@ interface PurchaseOrderDao: CrudRepository<PurchaseOrderRepresentation, Long> {
     @Transactional
     @Query("update PurchaseOrderRepresentation po set po.status = :status where po.dispatchId = :dispatchId")
     fun updateStatusByDispatchId(dispatchId: Long, status: String)
+
+    @Modifying
+    @Transactional
+    @Query("update PurchaseOrderRepresentation po set po.dispatched = :dispatchedAmount where po.id = :id")
+    fun updateDispatchedAmount(id: Long, dispatchedAmount: Int)
+
+    @Modifying
+    @Transactional
+    @Query("update PurchaseOrderRepresentation po set po.cost = :cost where po.id = :id")
+    fun updateCost(id: Long, cost: Double)
 }

@@ -85,6 +85,16 @@ class JpaPurchaseOrderRepositoryShould {
         thenPurchaseOrderHaveBeenConfirmed()
     }
 
+    @Test
+    fun `update the dispatched amount when accepting` () {
+        givenPurchaseOrderDao()
+        givenPurchaseOrderRepository()
+
+        whenAcceptingById()
+
+        thenDispatchedAmountIsUpdated()
+    }
+
     private fun givenPurchaseOrderDao() {
         purchaseOrderDao = mock()
         `when`(purchaseOrderDao.save(PURCHASE_ORDER_REPRESENTATION)).thenReturn(PURCHASE_ORDER_REPRESENTATION)
@@ -104,7 +114,7 @@ class JpaPurchaseOrderRepositoryShould {
     }
 
     private fun whenAcceptingById() {
-        purchaseOrderRepository.accept(1L, 1L)
+        purchaseOrderRepository.accept(1L, 1L, 10, 5.0)
     }
 
     private fun whenFindingBySku() {
@@ -153,9 +163,13 @@ class JpaPurchaseOrderRepositoryShould {
         verify(purchaseOrderDao).updateStatusByDispatchId(1L, PurchaseOrder.Status.CONFIRMED.name)
     }
 
+    private fun thenDispatchedAmountIsUpdated() {
+        verify(purchaseOrderDao).updateDispatchedAmount(1L, 10)
+    }
+
     private companion object {
         const val SKU = "1"
-        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, 1L, "", 15, "", "PENDING", 0L)
-        val PURCHASE_ORDER = PurchaseOrder(0L, 1L, "", 15, "", PurchaseOrder.Status.PENDING, 0L)
+        val PURCHASE_ORDER_REPRESENTATION = PurchaseOrderRepresentation(0L, 1L, "", 15, 0, 5.0, "", "PENDING", 0L)
+        val PURCHASE_ORDER = PurchaseOrder(0L, 1L, "", 15, 0, 5.0, "", PurchaseOrder.Status.PENDING, 0L)
     }
 }

@@ -58,5 +58,5 @@ class DispatchController(private val dispatchOrders: DispatchOrders,
 
     private fun Supplier.toResponse() = SupplierResponse(id, organization, contactName, contactNumber, email, cuit)
 
-    private fun PurchaseOrder.toResponse() = PurchaseOrderResponse(id, branchId, sku, amount, supplier, status.name, dispatchId)
+    private fun PurchaseOrder.toResponse() = PurchaseOrderResponse(id, branchId, sku, requested, supplier, status.name, dispatchId)
 }

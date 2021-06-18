@@ -10,4 +10,5 @@ interface ItemRepository {
     fun findById(id: Long): Item?
     fun findAllItem(): List<Item>
     fun deleteBySku(sku: String)
+    fun updateCostBySku(sku: String, newPrice: Double)
 }

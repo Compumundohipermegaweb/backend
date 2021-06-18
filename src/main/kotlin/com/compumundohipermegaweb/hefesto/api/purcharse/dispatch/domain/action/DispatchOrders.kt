@@ -34,7 +34,7 @@ class DispatchOrders(private val dispatchRepository: DispatchRepository,
                 result.errors.add(DispatchError(DispatchError.Code.PRICE_DIFFERENCE_TOO_HIGH, it))
             } else {
                 val purchaseOrder = purchaseOrderRepository.findBySku(it.sku)!!
-                purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id)
+                purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id, it.amount, it.unitPrice)
             }
         }
 
