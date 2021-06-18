@@ -6,6 +6,7 @@ import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.model.Di
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.model.DispatchOrdersResult
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.model.DispatchedItem
 import com.compumundohipermegaweb.hefesto.api.purcharse.dispatch.domain.repository.DispatchRepository
+import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.model.PurchaseOrder
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PriceToleranceRepository
 import com.compumundohipermegaweb.hefesto.api.purcharse.order.domain.repository.PurchaseOrderRepository
 import com.compumundohipermegaweb.hefesto.api.supplier.domain.repository.SupplierRepository
@@ -19,6 +20,7 @@ class DispatchOrders(private val dispatchRepository: DispatchRepository,
     operator fun invoke(actionData: ActionData): DispatchOrdersResult {
         val result = DispatchOrdersResult(Dispatch.Status.ACCEPTED, mutableListOf())
         val dispatch = Dispatch(actionData.dispatchId, actionData.supplierId, actionData.totalCost, Dispatch.Status.ACCEPTED)
+
         if(supplierDoesNotExists(actionData.supplierId)) {
             saveRejection(actionData)
             result.setStatus(Dispatch.Status.REJECTED_UNKNOWN_SUPPLIER)
@@ -34,11 +36,18 @@ class DispatchOrders(private val dispatchRepository: DispatchRepository,
                 result.errors.add(DispatchError(DispatchError.Code.PRICE_DIFFERENCE_TOO_HIGH, it))
             } else {
                 val purchaseOrder = purchaseOrderRepository.findBySku(it.sku)!!
-                purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id, it.amount, it.unitPrice)
+                if(dispatchedAmountIsTooHigh(it, purchaseOrder)) {
+                    result.errors.add(DispatchError(DispatchError.Code.DISPATCHED_AMOUNT_TOO_HIGH, it))
+                } else {
+                    purchaseOrderRepository.accept(purchaseOrder.id, dispatch.id, it.amount, it.unitPrice)
+                }
             }
         }
 
-        dispatchRepository.save(dispatch)
+        if(result.errors.size < actionData.dispatchedItems.size) {
+            dispatchRepository.save(dispatch)
+        }
+
         return result
     }
 
@@ -61,5 +70,8 @@ class DispatchOrders(private val dispatchRepository: DispatchRepository,
     private fun DispatchOrdersResult.setStatus(dispatchStatus: Dispatch.Status) {
         status = dispatchStatus
     }
+
+    private fun dispatchedAmountIsTooHigh(dispatchedItem: DispatchedItem, purchaseOrder: PurchaseOrder) = dispatchedItem.amount > purchaseOrder.requested
+
     data class ActionData(val dispatchId: Long, val supplierId: Long, val totalCost: Double, val dispatchedItems: List<DispatchedItem>)
 }

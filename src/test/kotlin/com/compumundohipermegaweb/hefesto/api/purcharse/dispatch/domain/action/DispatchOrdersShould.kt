@@ -152,13 +152,33 @@ class DispatchOrdersShould {
         val actionData = DispatchOrders.ActionData(
             2L,
             1L,
-            125.0,
+            50.0,
             dispatchedItems = listOf(
-                DispatchedItem(SKU, 5, 5.0, 25.0)))
+                DispatchedItem(SKU_2, 5, 5.0, 50.0)))
         result = dispatchOrders(actionData)
 
 
-        verify(dispatchRepository).save(Dispatch(2L, 1L, 125.0, Dispatch.Status.ACCEPTED))
+        verify(dispatchRepository).save(Dispatch(2L, 1L, 50.0, Dispatch.Status.ACCEPTED))
+    }
+
+    @Test
+    fun `reject the line if the dispatched amount is greater than the requested` () {
+        givenDispatchRepository()
+        givenSupplierRepository()
+        givenItemRepository()
+        givenPurchaseOrderRepository()
+        givenPriceToleranceRepository()
+        givenDispatchOrders()
+
+        val actionData = DispatchOrders.ActionData(
+            2L,
+            1L,
+            125.0,
+            dispatchedItems = listOf(
+                DispatchedItem(SKU, 25, 5.0, 25.0)))
+        result = dispatchOrders(actionData)
+
+        thenResultHasError(DispatchError(DispatchError.Code.DISPATCHED_AMOUNT_TOO_HIGH, actionData.dispatchedItems[0]))
     }
 
     private fun thenResultHasError(dispatchError: DispatchError) {
@@ -179,6 +199,7 @@ class DispatchOrdersShould {
         itemRepository = mock()
         `when`(itemRepository.findBySku(UNKNOWN_SKU)).thenReturn(null)
         `when`(itemRepository.findBySku(SKU)).thenReturn(ITEM)
+        `when`(itemRepository.findBySku(SKU_2)).thenReturn(ITEM)
         `when`(itemRepository.findBySku(SKU_WITHOUT_PURCHASE_ORDER)).thenReturn(mock())
         `when`(itemRepository.findBySku(EXPENSIVE_SKU)).thenReturn(EXPENSIVE_ITEM)
     }
@@ -186,9 +207,11 @@ class DispatchOrdersShould {
     private fun givenPurchaseOrderRepository() {
         purchaseOrderRepository = mock()
         `when`(purchaseOrderRepository.exists(SKU)).thenReturn(true)
+        `when`(purchaseOrderRepository.exists(SKU_2)).thenReturn(true)
         `when`(purchaseOrderRepository.exists(SKU_WITHOUT_PURCHASE_ORDER)).thenReturn(false)
         `when`(purchaseOrderRepository.exists(EXPENSIVE_SKU)).thenReturn(true)
         `when`(purchaseOrderRepository.findBySku(SKU)).thenReturn(PURCHASE_ORDER)
+        `when`(purchaseOrderRepository.findBySku(SKU_2)).thenReturn(PURCHASE_ORDER_2)
     }
 
     private fun givenPriceToleranceRepository() {
@@ -217,11 +240,13 @@ class DispatchOrdersShould {
         const val UNKNOWN_SUPPLIER = 155L
         const val UNKNOWN_SKU = "999"
         const val SKU = "1"
+        const val SKU_2 = "2"
         const val SKU_WITHOUT_PURCHASE_ORDER = "18976"
         const val EXPENSIVE_SKU = "111777"
         const val PURCHASE_ORDER_ID = 1L
         val PURCHASE_ORDER = PurchaseOrder(PURCHASE_ORDER_ID, 1L, SKU, 1, 0, 5.0, "", PurchaseOrder.Status.PENDING, 0L)
-        val ACTION_DATA = DispatchOrders.ActionData(1L, 1L, 0.0, emptyList())
+        val PURCHASE_ORDER_2 = PurchaseOrder(2L, 1L, SKU_2, 25, 0, 0.0, "", PurchaseOrder.Status.PENDING, 0L)
+        val ACTION_DATA = DispatchOrders.ActionData(1L, 1L, 0.0, listOf(DispatchedItem(SKU, 1, 5.0, 15.0)))
         val ITEM = Item(1L, SKU, "", "", 1L, 1L, "", 15.0, 5.0, false, "", 10)
         val EXPENSIVE_ITEM = Item(2L, EXPENSIVE_SKU, "", "", 1L, 1L, "", 150.0, 100.0, false, "", 10)
     }
