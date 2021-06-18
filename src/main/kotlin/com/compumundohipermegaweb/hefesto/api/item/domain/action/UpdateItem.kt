@@ -11,12 +11,12 @@ class UpdateItem(private val itemService: ItemService){
         val itemFromDB = itemService.findItemById(itemRequest.id)
 
         return if (itemFromDB != null) {
-            val item = itemRequest.toItemRepresentation()
-            itemService.save(item.toItem())
+            val item = itemRequest.toItemRepresentation(itemFromDB)
+            itemService.save(item.toItem(itemFromDB))
         }else{
             null
         }
     }
-    private fun ItemRequest.toItemRepresentation() = ItemRepresentation(id,sku,shortDescription,description,brandId,categoryId,uomSale,price,cost,imported,state)
-    private fun ItemRepresentation.toItem() = Item(id,sku,shortDescription,description,brandId,categoryId,uomSale,price,cost,imported,state,0)
+    private fun ItemRequest.toItemRepresentation(item: Item) = ItemRepresentation(id,sku,shortDescription,description,item.brandId,categoryId,uomSale,price,cost,imported,state)
+    private fun ItemRepresentation.toItem(item: Item) = Item(id,sku,shortDescription,description,item.brandId,categoryId,uomSale,price,cost,imported,state,item.availableStock)
 }
