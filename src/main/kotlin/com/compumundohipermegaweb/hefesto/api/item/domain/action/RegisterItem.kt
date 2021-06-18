@@ -16,8 +16,9 @@ class RegisterItem(private val itemService: ItemService,
     operator fun invoke(item: ItemRequest): Item {
 
         val savedItem = itemService.save(item.toItem())
-         saveSupplier(item.supplier)
-
+        if(item.supplier!=null) {
+            saveSupplier(item.supplier)
+        }
         return savedItem
     }
 

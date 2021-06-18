@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class ItemRequest(@JsonProperty("sku")  val sku: String,
+data class ItemRequest(@JsonProperty("id")  val id: Long,
+                       @JsonProperty("sku")  val sku: String,
                        @JsonProperty("short_description") val shortDescription: String,
                        @JsonProperty("description") val description: String,
                        @JsonProperty("brand_id")  val brandId: Long,
@@ -15,5 +16,5 @@ data class ItemRequest(@JsonProperty("sku")  val sku: String,
                        @JsonProperty("cost")  val cost: Double,
                        @JsonProperty("imported")  val imported: Boolean,
                        @JsonProperty("state")  val state: String,
-                       @JsonProperty("supplier")  val supplier: PostSupplierRequest
+                       @JsonProperty("supplier")  val supplier: PostSupplierRequest?
 )

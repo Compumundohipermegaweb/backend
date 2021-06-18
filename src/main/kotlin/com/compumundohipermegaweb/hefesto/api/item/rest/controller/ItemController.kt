@@ -1,9 +1,6 @@
 package com.compumundohipermegaweb.hefesto.api.item.rest.controller
 
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.DeleteItem
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetAllItems
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.GetItemsByDescription
-import com.compumundohipermegaweb.hefesto.api.item.domain.action.RegisterItem
+import com.compumundohipermegaweb.hefesto.api.item.domain.action.*
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.rest.request.ItemRequest
 import com.compumundohipermegaweb.hefesto.api.item.rest.response.ItemResponse
@@ -16,7 +13,8 @@ import org.springframework.web.bind.annotation.*
 class ItemController(private val registerItem: RegisterItem,
                      private val getItemsByDescription: GetItemsByDescription,
                      private val getAllItems: GetAllItems,
-                     private val deleteItem: DeleteItem) {
+                     private val deleteItem: DeleteItem,
+                     private val updateItem: UpdateItem) {
 
     @PostMapping
     fun registerItem(@RequestBody itemRequest: ItemRequest): ResponseEntity<ItemResponse> {
@@ -46,7 +44,12 @@ class ItemController(private val registerItem: RegisterItem,
         return ResponseEntity.noContent().build()
     }
 
+    @PutMapping
+    fun updateItem(@RequestBody itemRequest: ItemRequest): ResponseEntity<ItemResponse> {
+        return ResponseEntity.ok(updateItem.invoke(itemRequest)?.toItemResponse())
+    }
+
     private fun Item.toItemResponse(): ItemResponse {
-        return ItemResponse(sku, shortDescription, description, categoryId, uomSale, price, cost, imported, state)
+        return ItemResponse(id, sku, shortDescription, description, categoryId, uomSale, price, cost, imported, state)
     }
 }

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class ItemResponse(@JsonProperty("sku")  val sku: String,
+data class ItemResponse(@JsonProperty("id")  val id: Long,
+                        @JsonProperty("sku")  val sku: String,
                         @JsonProperty("short_description") val shortDescription: String,
                         @JsonProperty("description") val description: String,
                         @JsonProperty("category_id")  val categoryId: Long,
