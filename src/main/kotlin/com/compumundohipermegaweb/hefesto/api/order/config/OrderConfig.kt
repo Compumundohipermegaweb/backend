@@ -1,5 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.order.config
 
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovementRepository
+import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashStartEndRepository
 import com.compumundohipermegaweb.hefesto.api.order.domain.action.GetAllOrders
 import com.compumundohipermegaweb.hefesto.api.order.domain.action.UpdateOrderState
 import com.compumundohipermegaweb.hefesto.api.order.domain.repository.OrderRepository
@@ -18,8 +20,8 @@ class OrderConfig {
     }
 
     @Bean
-    fun updateOrderState(orderRepository: OrderRepository): UpdateOrderState {
-        return UpdateOrderState(orderRepository)
+    fun updateOrderState(orderRepository: OrderRepository, cashMovementRepository: CashMovementRepository, cashStartEndRepository: CashStartEndRepository): UpdateOrderState {
+        return UpdateOrderState(orderRepository, cashMovementRepository, cashStartEndRepository)
     }
 
     @Bean

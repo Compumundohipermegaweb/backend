@@ -69,9 +69,9 @@ class GetAllOrdersShould {
         private val SHIPPED_ORDER = Order(1L, 3L, 0L,"ENTREGADO", 150.0, "RAPPI")
         private val ANOTHER_SHIPPED_ORDER = Order(1L, 4L, 0L,"ENTREGADO", 150.0, "RAPPI")
 
-        private val PENDING_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 1L,  "PENDIENTE", 0.0, "", listOf(SALE_DETAIL))
-        private val ANOTHER_PENDING_ORDER_WHIT_DETAILS = OrderWhitItemDetails(2L,  2L, "PENDIENTE", 0.0, "", listOf(SALE_DETAIL))
-        private val SHIPPED_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 3L, "ENTREGADO", 150.0, "RAPPI", listOf(SALE_DETAIL))
-        private val ANOTHER_SHIPPED_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 4L, "ENTREGADO", 150.0, "RAPPI", listOf(SALE_DETAIL))
+        private val PENDING_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 1L,  0L, 0L, 0L,"PENDIENTE", 0.0, "", listOf(SALE_DETAIL))
+        private val ANOTHER_PENDING_ORDER_WHIT_DETAILS = OrderWhitItemDetails(2L,  2L, 0L, 0L, 0L,"PENDIENTE", 0.0, "", listOf(SALE_DETAIL))
+        private val SHIPPED_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 3L,0L, 0L, 0L, "ENTREGADO", 150.0, "RAPPI", listOf(SALE_DETAIL))
+        private val ANOTHER_SHIPPED_ORDER_WHIT_DETAILS = OrderWhitItemDetails(1L, 4L, 0L, 0L, 0L,"ENTREGADO", 150.0, "RAPPI", listOf(SALE_DETAIL))
     }
 }

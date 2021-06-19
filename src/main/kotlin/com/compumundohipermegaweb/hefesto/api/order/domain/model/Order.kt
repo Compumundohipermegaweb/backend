@@ -4,5 +4,5 @@ data class Order(val id: Long,
                  val saleId: Long,
                  val branchId: Long,
                  var state: String,
-                 val shippingPrice: Double,
-                 val shippingCompany: String)
+                 var shippingPrice: Double,
+                 var shippingCompany: String)

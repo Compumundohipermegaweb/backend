@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository
 
 interface SpringOrderDao: CrudRepository<OrderRepresentation, Long> {
 
-    @Query(value = "SELECT * FROM ORDER WHERE BRANCH_ID = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM SALE_ORDER WHERE BRANCH_ID = ?1", nativeQuery = true)
     fun findAllOrdersByBranch(idBranch: Long): List<OrderRepresentation>
 
 }

@@ -14,7 +14,7 @@ class GetAllOrders(private val orderRepository: OrderRepository,
 
         order.forEach {
             val itemDetails = saleDetailRepository.findBySaleId(it.saleId)
-            ordersWhitItemDetails+=OrderWhitItemDetails(it.id, it.saleId, it.state, it.shippingPrice, it.shippingCompany, itemDetails)
+            ordersWhitItemDetails+=OrderWhitItemDetails(it.id, it.saleId, it.branchId, 0L, 0L, it.state, it.shippingPrice, it.shippingCompany, itemDetails)
         }
 
         return ordersWhitItemDetails
