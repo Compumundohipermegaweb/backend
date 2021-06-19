@@ -18,7 +18,7 @@ class UpdateOrderState(private val orderRepository: OrderRepository,
             orderToUpdate.shippingPrice = orderWhitItemDetails.shippingPrice
             orderToUpdate.shippingCompany = orderWhitItemDetails.shippingCompany
             val cashStartEnd = cashStartEndRepository.findByCashIdAndEndDate(orderWhitItemDetails.cashId)
-            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id,"EGRESO", Date(), 5L, "PAGO DE ENVIO DE PEDIDO", 0L, orderToUpdate.id, orderWhitItemDetails.userId, orderWhitItemDetails.shippingPrice, "PAGO A DELIVERY DE PEDIDO"), orderToUpdate.id)
+            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id,"EGRESO", Date(), 7L, "PAGO DE ENVIO DE PEDIDO", 0L, orderToUpdate.id, orderWhitItemDetails.userId, orderWhitItemDetails.shippingPrice, "PAGO A DELIVERY DE PEDIDO"), orderToUpdate.id)
             return orderRepository.saveOrder(orderToUpdate)
         }
         return null
