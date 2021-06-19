@@ -13,7 +13,7 @@ class SecurityStockAlertSchedule(private val securityStockAlert: SecurityStockAl
                                  private val alertRepository: AlertRepository,
                                  private val branchRepository: BranchRepository) {
 
-    @Scheduled(cron = "0 46 19 * * ?")
+    @Scheduled(cron = "0 46 18 * * ?")
     fun runTask() {
 
         val branches = branchRepository.findAll()
