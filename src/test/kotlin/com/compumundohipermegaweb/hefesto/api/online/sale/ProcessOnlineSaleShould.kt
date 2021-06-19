@@ -7,6 +7,8 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.online.sale.domain.action.ProcessOnlineSale
+import com.compumundohipermegaweb.hefesto.api.order.domain.model.Order
+import com.compumundohipermegaweb.hefesto.api.order.domain.repository.OrderRepository
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.service.RejectedSaleService
@@ -28,12 +30,14 @@ class ProcessOnlineSaleShould {
     private lateinit var clientService: ClientService
     private lateinit var stockService: StockService
     private lateinit var rejectedSaleService: RejectedSaleService
+    private lateinit var orderRepository: OrderRepository
 
     private lateinit var invoiceSale: InvoiceSale
     private lateinit var processOnlineSale: ProcessOnlineSale
 
     @Test
     fun `process complete online sale`() {
+        givenOrderRepository()
         givenItemService()
         givenClientService()
         givenStockService()
@@ -48,6 +52,7 @@ class ProcessOnlineSaleShould {
 
     @Test
     fun `process partial reject online sale`() {
+        givenOrderRepository()
         givenItemService()
         givenClientService()
         givenStockService()
@@ -62,6 +67,7 @@ class ProcessOnlineSaleShould {
 
     @Test
     fun `process total reject online sale`() {
+        givenOrderRepository()
         givenItemService()
         givenClientService()
         givenStockService()
@@ -72,6 +78,12 @@ class ProcessOnlineSaleShould {
         whenProcessingTheOnlineSaleToTotallyReject()
 
         thenTheOnlineSaleIsTotallyRejected()
+    }
+
+    private fun givenOrderRepository() {
+        orderRepository = mock()
+        `when`(orderRepository.saveOrder(ORDER)).thenReturn(ORDER)
+        `when`(orderRepository.saveOrder(ANOTHER_ORDER)).thenReturn(ANOTHER_ORDER)
     }
 
     private fun givenClientService() {
@@ -108,7 +120,7 @@ class ProcessOnlineSaleShould {
     }
 
     private fun givenProcessOnlineSale() {
-        processOnlineSale = ProcessOnlineSale(invoiceSale, stockService, itemService, clientService, rejectedSaleService)
+        processOnlineSale = ProcessOnlineSale(invoiceSale, stockService, itemService, clientService, rejectedSaleService, orderRepository)
     }
 
     private fun whenProcessingTheOnlineSale() {
@@ -124,6 +136,7 @@ class ProcessOnlineSaleShould {
     }
 
     private fun thenTheOnlineSaleIsFullyProcessed() {
+        verify(orderRepository).saveOrder(ANOTHER_ORDER)
         verify(clientService).findByDocument(CLIENT.documentNumber)
         verify(itemService).findItemById(ITEM_UNO.id)
         verify(itemService).findItemById(ITEM_DOS.id)
@@ -133,6 +146,7 @@ class ProcessOnlineSaleShould {
     }
 
     private fun thenTheOnlineSaleIsPartiallyProcessed() {
+        verify(orderRepository).saveOrder(ORDER)
         verify(clientService).findByDocument(CLIENT.documentNumber)
         verify(itemService).findItemById(ITEM_UNO.id)
         verify(itemService).findItemById(ITEM_TRES.id)
@@ -152,6 +166,10 @@ class ProcessOnlineSaleShould {
     }
 
     private companion object {
+        private val ORDER = Order(0L, 2L, 1L, "PENDIENTE", 0.0, "")
+        private val ANOTHER_ORDER = Order(0L, 1L, 1L, "PENDIENTE", 0.0, "")
+
+
         val CLIENT = Client(0L, "00000000","Name", "Sar", "", 0.0, "", "", "Domicilio falso 123")
 
         val ITEM_UNO = Item(1L, "1", "", "", 1L, 1L, "", 1.0, 10.0, false, "", 0)

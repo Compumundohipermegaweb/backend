@@ -8,6 +8,8 @@ import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.RejectedInvoi
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.online.sale.domain.model.ProcessedOnlineSale
+import com.compumundohipermegaweb.hefesto.api.order.domain.model.Order
+import com.compumundohipermegaweb.hefesto.api.order.domain.repository.OrderRepository
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedItemDetail
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.model.RejectedSale
 import com.compumundohipermegaweb.hefesto.api.rejected.sale.domain.service.RejectedSaleService
@@ -21,7 +23,8 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                         private val stockService: StockService,
                         private val itemService: ItemService,
                         private val clientService: ClientService,
-                        private val rejectedSaleService: RejectedSaleService)
+                        private val rejectedSaleService: RejectedSaleService,
+                        private val orderRepository: OrderRepository)
 {
     private lateinit var acceptedItems: List<SaleDetailRequest>
     private lateinit var rejectedItems: List<RejectedItemDetail>
@@ -58,6 +61,7 @@ class ProcessOnlineSale(private val invoiceSale: InvoiceSale,
                 onlineSaleRequest.saleDetailsRequest.detailsRequest = acceptedItems
                 invoice = invoiceSale.invoke(onlineSaleRequest)
                 idSale = invoice.saleId
+                orderRepository.saveOrder(Order(0L, idSale, onlineSaleRequest.branchId, "PENDIENTE", 0.0, ""))
             }
             if(rejectedItems.isNotEmpty()){
                 rejectionLevel = if(acceptedItems.isEmpty()) {
