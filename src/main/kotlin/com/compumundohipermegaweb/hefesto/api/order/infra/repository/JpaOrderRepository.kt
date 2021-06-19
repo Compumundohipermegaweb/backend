@@ -14,6 +14,14 @@ class JpaOrderRepository(private val springOrderDao: SpringOrderDao): OrderRepos
         return springOrderDao.findAllOrdersByBranch(branchId).map { it.toOrder() }
     }
 
+    override fun findOrderById(orderId: Long): Order? {
+        val orderFound = springOrderDao.findById(orderId)
+        if(orderFound.isPresent) {
+            return orderFound.get().toOrder()
+        }
+        return null
+    }
+
     private fun OrderRepresentation.toOrder(): Order {
         return Order(id, saleId, branchId, state, shippingPrice, shippingCompany)
     }

@@ -10,6 +10,7 @@ import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import java.util.*
 
 class JpaOrderRepositoryShould {
 
@@ -18,6 +19,7 @@ class JpaOrderRepositoryShould {
 
     private lateinit var savedOrder: Order
     private lateinit var ordersFound: List<Order>
+    private var orderFound: Order? = null
 
     @Test
     fun `save the order`() {
@@ -39,10 +41,22 @@ class JpaOrderRepositoryShould {
         thenTheOrdersHasSuccessfullyFound()
     }
 
+    @Test
+    fun `find order by id`() {
+        givenSpringOrderDao()
+        givenOrderRepository()
+
+        whenFindingTheOrderById()
+
+        thenTheOrderHasSuccessfullyFound()
+    }
+
     private fun givenSpringOrderDao() {
         springOrderDao = mock()
         `when`(springOrderDao.save(ORDER_REPRESENTATION)).thenReturn(ORDER_REPRESENTATION)
         `when`(springOrderDao.findAllOrdersByBranch(0L)).thenReturn(listOf(ORDER_REPRESENTATION, ANOTHER_ORDER_REPRESENTATION))
+        `when`(springOrderDao.findById(0L)).thenReturn(Optional.of(ORDER_REPRESENTATION))
+
     }
     
     private fun givenOrderRepository() {
@@ -56,6 +70,10 @@ class JpaOrderRepositoryShould {
     private fun whenFindingTheOrders() {
         ordersFound = orderRepository.findAllOrdersByBranch(0L)
     }
+
+    private fun whenFindingTheOrderById() {
+        orderFound = orderRepository.findOrderById(0L)
+    }
     
     private fun thenTheOrderHasSuccessfullySave() {
         verify(springOrderDao).save(ORDER_REPRESENTATION)
@@ -65,6 +83,11 @@ class JpaOrderRepositoryShould {
     private fun thenTheOrdersHasSuccessfullyFound() {
         verify(springOrderDao).findAllOrdersByBranch(0L)
         then(ordersFound).isEqualTo(listOf(ORDER, ANOTHER_ORDER))
+    }
+
+    private fun thenTheOrderHasSuccessfullyFound() {
+        verify(springOrderDao).findById(0L)
+        then(orderFound).isEqualTo(ORDER)
     }
 
     private companion object {
