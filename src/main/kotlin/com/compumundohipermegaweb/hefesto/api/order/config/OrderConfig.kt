@@ -1,6 +1,7 @@
 package com.compumundohipermegaweb.hefesto.api.order.config
 
 import com.compumundohipermegaweb.hefesto.api.order.domain.action.GetAllOrders
+import com.compumundohipermegaweb.hefesto.api.order.domain.action.UpdateOrderState
 import com.compumundohipermegaweb.hefesto.api.order.domain.repository.OrderRepository
 import com.compumundohipermegaweb.hefesto.api.order.infra.repository.JpaOrderRepository
 import com.compumundohipermegaweb.hefesto.api.order.infra.repository.SpringOrderDao
@@ -14,6 +15,11 @@ class OrderConfig {
     @Bean
     fun getAllOrders(orderRepository: OrderRepository, saleDetailRepository: SaleDetailRepository): GetAllOrders {
         return GetAllOrders(orderRepository, saleDetailRepository)
+    }
+
+    @Bean
+    fun updateOrderState(orderRepository: OrderRepository): UpdateOrderState {
+        return UpdateOrderState(orderRepository)
     }
 
     @Bean
