@@ -15,6 +15,10 @@ class JpaSaleDetailRepository(private val springDataSaleItemDetail: SpringDataSa
         return springDataSaleItemDetail.saveAll(saleDetailsDao).map { it.toSaleDetail() }
     }
 
+    override fun findBySaleId(saleId: Long): List<SaleDetail> {
+        return springDataSaleItemDetail.findBySaleId(saleId).map { it.toSaleDetail() }
+    }
+
     private fun SaleDetail.toSaleDetailDao(saleId: Long): SaleDetailDao {
         return SaleDetailDao(id, sku, description, saleId, quantity, unitPrice)
     }

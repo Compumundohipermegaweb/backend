@@ -1,9 +1,11 @@
 package com.compumundohipermegaweb.hefesto.api.order.infra.representation
 
+import org.hibernate.envers.Audited
 import javax.persistence.*
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "SALE_ORDER")
+@Audited
 data class OrderRepresentation(@Id
                                @GeneratedValue(strategy = GenerationType.IDENTITY)
                                @Column(name = "ID")
