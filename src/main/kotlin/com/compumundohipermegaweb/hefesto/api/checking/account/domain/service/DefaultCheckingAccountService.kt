@@ -15,4 +15,14 @@ class DefaultCheckingAccountService(private val checkingAccountRepository: Check
             checkingAccountRepository.updateBalance(clientId, checkingAccount.balance - amount)
         }
     }
+
+    override fun updateCreditLimitByClient(clientId: Long, creditLimit: Double): CheckingAccount {
+        checkingAccountRepository.updateCreditLimit(clientId, creditLimit)
+       return checkingAccountRepository.findCheckingAccountByClientId(clientId)!!
+    }
+
+    override fun save(clientId: Long, creditLimit: Double):CheckingAccount{
+       return checkingAccountRepository.save(clientId,creditLimit)
+
+    }
 }

@@ -18,4 +18,9 @@ interface SpringDataCheckingAccountDao: CrudRepository<CheckingAccountRepresenta
     @Modifying
     @Query("update CheckingAccountRepresentation c set c.balance = :amount where c.clientId = :clientId")
     fun updateBalanceByClient(clientId: Long, amount: Double)
+
+    @Transactional
+    @Modifying
+    @Query("update CheckingAccountRepresentation c set c.creditLimit = :creditLimit, c.balance = (:creditLimit - c.balanceDue) where c.clientId = :clientId")
+    fun updateCreditLimitByClient(clientId: Long, creditLimit: Double)
 }

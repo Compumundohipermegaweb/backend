@@ -67,6 +67,16 @@ class JpaCheckingAccountRepositoryShould {
         thenBalanceWasUpdated(2L, 350.10)
     }
 
+    @Test
+    fun `update credit limit`() {
+        givenSpringCheckingAccountRepository()
+        givenCheckingAccountRepository()
+
+        whenUpdatingCreditLimit(2L, 350.10)
+
+        thenCreditLimitWasUpdated(2L, 350.10)
+    }
+
     private fun givenSpringCheckingAccountRepository() {
         springDataCheckingAccountDao = mock()
         `when`(springDataCheckingAccountDao.findByClientId(0L)).thenReturn(CHECKING_ACCOUNT_REPRESENTATION)
@@ -89,6 +99,10 @@ class JpaCheckingAccountRepositoryShould {
         checkingAccountRepository.updateBalance(clientId, amount)
     }
 
+    private fun whenUpdatingCreditLimit(clientId: Long, creditLimit: Double) {
+        checkingAccountRepository.updateCreditLimit(clientId, creditLimit)
+    }
+
     private fun thenCheckingAccountIsFound() {
         verify(springDataCheckingAccountDao).findByClientId(0L)
         then(checkingAccountFound).isNotNull
@@ -109,6 +123,10 @@ class JpaCheckingAccountRepositoryShould {
 
     private fun thenBalanceWasUpdated(clientId: Long, amount: Double) {
         verify(springDataCheckingAccountDao).updateBalanceByClient(clientId, amount)
+    }
+
+    private fun thenCreditLimitWasUpdated(clientId: Long, creditLimit: Double) {
+        verify(springDataCheckingAccountDao).updateCreditLimitByClient(clientId, creditLimit)
     }
 
     private companion object {
