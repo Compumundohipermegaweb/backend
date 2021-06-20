@@ -34,11 +34,11 @@ class ClientController(private val registerClient: RegisterClient,
             ResponseEntity.ok(clients.map { it.toClientResponse() })
         }
     }
-    @GetMapping("/{CLIENT_ID}/checking-account/balance")
-    fun getStockAvailable (@PathVariable("CLIENT_ID") clientId: Long): ResponseEntity<ClientBalanceResponse> {
+    @GetMapping("/{CLIENT_ID}/checking-account")
+    fun getCheckingAccount (@PathVariable("CLIENT_ID") clientId: Long): ResponseEntity<ClientBalanceResponse> {
         val checkingAccount = getBalanceByClientId.invoke(clientId)
         if (checkingAccount != null) {
-            return ResponseEntity.ok(ClientBalanceResponse(checkingAccount.id,checkingAccount.balance))
+            return ResponseEntity.ok(ClientBalanceResponse(checkingAccount.id,checkingAccount.balance,checkingAccount.balanceDue,checkingAccount.creditLimit))
         }
         return    ResponseEntity.noContent().build()
     }
