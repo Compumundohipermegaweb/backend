@@ -8,7 +8,7 @@ class UpdateCreditLimit (private val checkingAccountService: CheckingAccountServ
     operator fun invoke(checkingAccountRequest: CheckingAccountRequest): CheckingAccount? {
         val checkAccClient = checkingAccountService.findCheckingAccountByClientId(checkingAccountRequest.clientId)
         if (checkAccClient != null) {
-            if (checkAccClient.balanceDue < checkingAccountRequest.creditLimit) {
+            if (checkAccClient.balanceDue <= checkingAccountRequest.creditLimit) {
                 return checkingAccountService.updateCreditLimitByClient(
                     checkingAccountRequest.clientId,
                     checkingAccountRequest.creditLimit
