@@ -3,8 +3,8 @@ package com.compumundohipermegaweb.hefesto.api.report
 import com.compumundohipermegaweb.hefesto.api.branch.domain.model.Branch
 import com.compumundohipermegaweb.hefesto.api.branch.domain.repository.BranchRepository
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
-import com.compumundohipermegaweb.hefesto.api.report.domain.action.GetSalesForBranchData
-import com.compumundohipermegaweb.hefesto.api.report.domain.model.SaleForBranchData
+import com.compumundohipermegaweb.hefesto.api.report.domain.action.GetSalesByBranchData
+import com.compumundohipermegaweb.hefesto.api.report.domain.model.SalesByBranchData
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.Sale
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.repository.SaleRepository
@@ -14,12 +14,12 @@ import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 
-class GetSalesForBranchDataShould {
+class GetSalesByBranchDataShould {
     private lateinit var saleRepository: SaleRepository
     private lateinit var branchRepository: BranchRepository
-    private lateinit var getSalesForBranchData: GetSalesForBranchData
+    private lateinit var getSalesByBranchData: GetSalesByBranchData
 
-    private lateinit var reportData: SaleForBranchData
+    private lateinit var reportData: SalesByBranchData
 
 
     @Test
@@ -46,11 +46,11 @@ class GetSalesForBranchDataShould {
     }
 
     private fun givenGetSalesForBranchData() {
-        getSalesForBranchData = GetSalesForBranchData(saleRepository, branchRepository)
+        getSalesByBranchData = GetSalesByBranchData(saleRepository, branchRepository)
     }
 
     private fun whenGenerateReportData() {
-        reportData = getSalesForBranchData.invoke()
+        reportData = getSalesByBranchData.invoke()
     }
 
     private fun thenTheReportDataIsSuccessfullyGenerated() {
@@ -68,6 +68,6 @@ class GetSalesForBranchDataShould {
         val ANOTHER_SALE_FOR_REPORTS_BRANCH_UNO = Sale(2L, "B", DEFAULT_CLIENT, 0L, 1L, SaleDetails(ArrayList(), ArrayList()), 150.0, "LOCAL")
         val SALE_FOR_REPORTS_BRANCH_DOS = Sale(3L, "B", DEFAULT_CLIENT, 0L, 2L, SaleDetails(ArrayList(), ArrayList()), 250.0, "LOCAL")
         val ANOTHER_SALE_FOR_REPORTS_BRANCH_DOS = Sale(4L, "B", DEFAULT_CLIENT, 0L, 2L, SaleDetails(ArrayList(), ArrayList()), 250.0, "LOCAL")
-        val EXPECTED_REPORT_DATA = SaleForBranchData(listOf(BRANCH_UNO, BRANCH_DOS), listOf(2, 2))
+        val EXPECTED_REPORT_DATA = SalesByBranchData(listOf(BRANCH_UNO, BRANCH_DOS), listOf(2, 2))
     }
 }
