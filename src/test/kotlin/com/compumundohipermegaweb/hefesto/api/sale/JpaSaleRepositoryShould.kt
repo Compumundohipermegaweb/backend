@@ -50,11 +50,22 @@ class JpaSaleRepositoryShould {
         thenTheSaleAreFound()
     }
 
+    @Test
+    fun `find sales by branch id`() {
+        givenSaleCrudRepository()
+        givenSaleRepository()
+
+        whenFindingSalesByBranchId()
+
+        thenTheSaleAreFoundByBranchId()
+    }
+
     private fun givenSaleCrudRepository() {
         springDataSaleClient = mock(SpringDataSaleClient::class.java)
         `when`(springDataSaleClient.save(SALE_DAO)).thenReturn(SALE_DAO)
         `when`(springDataSaleClient.findById(0L)).thenReturn(Optional.of(SALE_DAO))
         `when`(springDataSaleClient.findAll()).thenReturn(listOf(SALE_DAO_FOR_REPORTS, ANOTHER_SALE_DAO_FOR_REPORTS))
+        `when`(springDataSaleClient.findByBranchId(0L)).thenReturn(listOf(SALE_DAO_FOR_REPORTS, ANOTHER_SALE_DAO_FOR_REPORTS))
     }
 
     private fun givenSaleRepository() {
@@ -73,6 +84,11 @@ class JpaSaleRepositoryShould {
         allSales = saleRepository.findAll()
     }
 
+    private fun whenFindingSalesByBranchId() {
+        allSales = saleRepository.findByBranchId(0L)
+    }
+
+
     private fun thenInputSaved() {
         verify(springDataSaleClient).save(SALE_DAO)
         then(savedSale).isNotNull
@@ -85,6 +101,11 @@ class JpaSaleRepositoryShould {
 
     private fun thenTheSaleAreFound() {
         verify(springDataSaleClient).findAll()
+        then(allSales).isEqualTo(listOf(SALE_FOR_REPORTS, ANOTHER_SALE_FOR_REPORTS))
+    }
+
+    private fun thenTheSaleAreFoundByBranchId() {
+        verify(springDataSaleClient).findByBranchId(0L)
         then(allSales).isEqualTo(listOf(SALE_FOR_REPORTS, ANOTHER_SALE_FOR_REPORTS))
     }
 

@@ -7,4 +7,5 @@ interface SaleRepository {
     fun save(sale: Sale, invoiceId: Long): Sale
     fun findById(saleId: Long): SaleDao?
     fun findAll(): List<Sale>
+    fun findByBranchId(branchId: Long): List<Sale>
 }
