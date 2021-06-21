@@ -18,6 +18,7 @@ class JpaSaleRepositoryShould {
     private lateinit var saleRepository: JpaSaleRepository
     private lateinit var savedSale: Sale
     private var foundSale: SaleDao? = null
+    private lateinit var allSales: List<Sale>
 
     @Test
     fun `save the input`() {
@@ -39,10 +40,21 @@ class JpaSaleRepositoryShould {
         thenInputFound()
     }
 
+    @Test
+    fun `find all sales`() {
+        givenSaleCrudRepository()
+        givenSaleRepository()
+
+        whenFindingAllSales()
+
+        thenTheSaleAreFound()
+    }
+
     private fun givenSaleCrudRepository() {
         springDataSaleClient = mock(SpringDataSaleClient::class.java)
         `when`(springDataSaleClient.save(SALE_DAO)).thenReturn(SALE_DAO)
         `when`(springDataSaleClient.findById(0L)).thenReturn(Optional.of(SALE_DAO))
+        `when`(springDataSaleClient.findAll()).thenReturn(listOf(SALE_DAO_FOR_REPORTS, ANOTHER_SALE_DAO_FOR_REPORTS))
     }
 
     private fun givenSaleRepository() {
@@ -57,6 +69,10 @@ class JpaSaleRepositoryShould {
         foundSale = saleRepository.findById(0L)
     }
 
+    private fun whenFindingAllSales() {
+        allSales = saleRepository.findAll()
+    }
+
     private fun thenInputSaved() {
         verify(springDataSaleClient).save(SALE_DAO)
         then(savedSale).isNotNull
@@ -67,11 +83,22 @@ class JpaSaleRepositoryShould {
         then(foundSale).isEqualTo(SALE_DAO)
     }
 
+    private fun thenTheSaleAreFound() {
+        verify(springDataSaleClient).findAll()
+        then(allSales).isEqualTo(listOf(SALE_FOR_REPORTS, ANOTHER_SALE_FOR_REPORTS))
+    }
+
     private companion object {
         const val INVOICE_ID = 0L
         val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
         val SALE_DAO = SaleDao(0L, "B", 0L, 0L, 0L, INVOICE_ID, 0.0, "")
         val SALE = Sale(0L, "B", CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0, "")
 
+
+        val DEFAULT_CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
+        val SALE_DAO_FOR_REPORTS = SaleDao(0L, "B", 0L, 0L, 0L, INVOICE_ID, 0.0, "VENTA LOCAL")
+        val SALE_FOR_REPORTS = Sale(0L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0, "VENTA LOCAL")
+        val ANOTHER_SALE_DAO_FOR_REPORTS = SaleDao(0L, "B", 0L, 0L, 0L, INVOICE_ID, 0.0, "VENTA LOCAL")
+        val ANOTHER_SALE_FOR_REPORTS = Sale(0L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 0.0, "VENTA LOCAL")
     }
 }

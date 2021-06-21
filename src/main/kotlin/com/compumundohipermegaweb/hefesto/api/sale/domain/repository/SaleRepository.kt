@@ -6,4 +6,5 @@ import com.compumundohipermegaweb.hefesto.api.sale.infra.representation.SaleDao
 interface SaleRepository {
     fun save(sale: Sale, invoiceId: Long): Sale
     fun findById(saleId: Long): SaleDao?
+    fun findAll(): List<Sale>
 }
