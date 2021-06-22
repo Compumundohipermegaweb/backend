@@ -84,9 +84,9 @@ class DefaultInvoiceServiceShould {
         val SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, "LOCAL")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "","",0, 0.0))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,0L,0L,"","",0.0))
-        val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL)
+        val SALE_DETAILS = SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL, null)
         val SALE = Sale(0L, SALE_REQUEST.invoiceType, CLIENT, SALE_REQUEST.salesmanId, SALE_REQUEST.branchId, SALE_DETAILS, 0.0, "LOCAL")
-        val INVOICE = Invoice(0L, 0L, "", DATE, "A", CLIENT, 0L, "Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL), 0.0, 0.0, 0.0)
+        val INVOICE = Invoice(0L, 0L, "", DATE, "A", CLIENT, 0L, "Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021", SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL, null), 0.0, 0.0, 0.0)
         val CASH_START_END = CashStartEnd(0L, 0L, DATE, 0.0, 0L, null, 0.0, 0.0, DATE)
         val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "VENTA", 0L, 0L, 0L, 0.0, "VENTA LOCAL")
     }

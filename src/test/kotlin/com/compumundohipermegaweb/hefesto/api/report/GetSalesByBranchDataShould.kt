@@ -64,7 +64,7 @@ class GetSalesByBranchDataShould {
         val BRANCH_UNO = Branch(1L,"SUC01","address","CP1111","xxxxx@xxx.com","9999999","9 a 18hs")
         val BRANCH_DOS = Branch(2L,"SUC02","address","CP1111","xxxxx@xxx.com","9999999","9 a 18hs")
         val DEFAULT_CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
-        val SALE_FOR_REPORTS_BRANCH_UNO = Sale(1L, "B", DEFAULT_CLIENT, 0L, 1L, SaleDetails(ArrayList(), ArrayList()), 150.0, "LOCAL")
+        val SALE_FOR_REPORTS_BRANCH_UNO = Sale(1L, "B", DEFAULT_CLIENT, 0L, 1L, SaleDetails(ArrayList(), ArrayList(), null), 150.0, "LOCAL")
         val ANOTHER_SALE_FOR_REPORTS_BRANCH_UNO = Sale(2L, "B", DEFAULT_CLIENT, 0L, 1L, SaleDetails(ArrayList(), ArrayList()), 150.0, "LOCAL")
         val SALE_FOR_REPORTS_BRANCH_DOS = Sale(3L, "B", DEFAULT_CLIENT, 0L, 2L, SaleDetails(ArrayList(), ArrayList()), 250.0, "LOCAL")
         val ANOTHER_SALE_FOR_REPORTS_BRANCH_DOS = Sale(4L, "B", DEFAULT_CLIENT, 0L, 2L, SaleDetails(ArrayList(), ArrayList()), 250.0, "LOCAL")

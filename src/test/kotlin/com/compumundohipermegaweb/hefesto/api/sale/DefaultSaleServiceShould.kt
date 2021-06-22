@@ -117,6 +117,6 @@ class DefaultSaleServiceShould {
         val CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "", "", 0, 0.0))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,0L,0L,"","",0.0))
-        val SALE = Sale(SALE_ID, "B", CLIENT, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL),  0.0, "")
+        val SALE = Sale(SALE_ID, "B", CLIENT, 0L, 0L, SaleDetails(SALE_ITEM_DETAIL, SALE_PAYMENT_DETAIL, null),  0.0, "")
     }
 }

@@ -191,10 +191,10 @@ class ProcessOnlineSaleShould {
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,5L,0L,"","",1040.0))
 
         val INVOICE_UNO = Invoice(1L, 1L, "", Date(), "A", CLIENT, 1L,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021",
-            SaleDetails(listOf(SALE_ITEM_DETAIL_UNO, SALE_ITEM_DETAIL_DOS), SALE_PAYMENT_DETAIL), 1040.0, 0.0, 1040.0)
+            SaleDetails(listOf(SALE_ITEM_DETAIL_UNO, SALE_ITEM_DETAIL_DOS), SALE_PAYMENT_DETAIL, null), 1040.0, 0.0, 1040.0)
 
         val INVOICE_DOS = Invoice(2L, 2L, "", Date(), "A", CLIENT, 1L,"Domicilio fiscal", "1134567892", "27-28033514-8", "01/01/2021",
-            SaleDetails(listOf(SALE_ITEM_DETAIL_UNO, SALE_ITEM_DETAIL_TO_REJECT_UNO), SALE_PAYMENT_DETAIL), 752.50, 0.0, 752.50)
+            SaleDetails(listOf(SALE_ITEM_DETAIL_UNO, SALE_ITEM_DETAIL_TO_REJECT_UNO), SALE_PAYMENT_DETAIL, null), 752.50, 0.0, 752.50)
 
         val REJECTED_ITEM_DETAIL_UNO = RejectedItemDetail(0L, 3L, "3", "2", 5, 287.50, "No stock available")
         val REJECTED_ITEM_DETAIL_DOS = RejectedItemDetail(0L, 4L, "4", "", 5, 150.50, "No stock available")

@@ -30,12 +30,12 @@ class JpaSaleRepository(private val springDataSaleClient: SpringDataSaleClient):
     }
 
     private fun SaleDao.toSale(sale: Sale): Sale {
-        return Sale(id, type, sale.client, salesmanId, branchId,  SaleDetails(ArrayList(), ArrayList()), total, category)
+        return Sale(id, type, sale.client, salesmanId, branchId,  SaleDetails(ArrayList(), ArrayList(), null), total, category)
     }
 
     private fun SaleDao.toSaleForReports(): Sale {
         val client = Client(0L, "", "", "", "", 0.0, "", "", "")
-        return Sale(id, type, client, salesmanId, branchId, SaleDetails(emptyList(), emptyList()), total, category)
+        return Sale(id, type, client, salesmanId, branchId, SaleDetails(emptyList(), emptyList(), null), total, category)
     }
 }
 

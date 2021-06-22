@@ -50,10 +50,10 @@ class GetOnlineSalesVsLocalSalesDataShould {
 
     private companion object {
         val DEFAULT_CLIENT = Client(0L, "", "", "", "", 0.0, "", "", "")
-        val LOCAL_SALE_FOR_REPORTS = Sale(1L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 150.0, "LOCAL")
-        val ANOTHER_LOCAL_SALE_FOR_REPORTS = Sale(2L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 150.0, "LOCAL")
-        val ONLINE_SALE_FOR_REPORTS = Sale(3L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 250.0, "VENTA_ONLINE")
-        val ANOTHER_ONLINE_SALE_FOR_REPORTS = Sale(4L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList()), 250.0, "VENTA_ONLINE")
+        val LOCAL_SALE_FOR_REPORTS = Sale(1L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList(), null), 150.0, "LOCAL")
+        val ANOTHER_LOCAL_SALE_FOR_REPORTS = Sale(2L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList(), null), 150.0, "LOCAL")
+        val ONLINE_SALE_FOR_REPORTS = Sale(3L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList(), null), 250.0, "VENTA_ONLINE")
+        val ANOTHER_ONLINE_SALE_FOR_REPORTS = Sale(4L, "B", DEFAULT_CLIENT, 0L, 0L, SaleDetails(ArrayList(), ArrayList(), null), 250.0, "VENTA_ONLINE")
         val EXPECTED_REPORT_DATA = OnlineSaleVsLocalSaleData(listOf("VENTA LOCAL", "VENTA ONLINE"), listOf(2, 2), listOf(300.0, 500.0))
     }
 }
