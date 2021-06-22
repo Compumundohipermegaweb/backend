@@ -14,6 +14,7 @@ import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetail
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SaleDetails
 import com.compumundohipermegaweb.hefesto.api.sale.domain.model.SalePayment
 import com.compumundohipermegaweb.hefesto.api.sale.domain.service.SaleService
+import com.compumundohipermegaweb.hefesto.api.sale.rest.request.DiscountRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleDetailsRequest
 import com.compumundohipermegaweb.hefesto.api.sale.rest.request.SaleRequest
 import com.compumundohipermegaweb.hefesto.api.stock.domain.service.StockService
@@ -70,7 +71,12 @@ class InvoiceSale(private val saleService: SaleService,
     private fun SaleRequest.toSale(): Sale {
         val saleDetails = saleDetailsRequest.toSaleDetails()
         var total = saleDetails.details.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
-        total = Math.round(total * 100) / 100.0
+        total = (Math.round(total * 100) / 100.0)
+
+        if (saleDetails.discount != null) {
+            total -= saleDetails.discount.amount
+        }
+
         return Sale(id = 0L,
             type = invoiceType,
             client = clientRequest.toClient(),
@@ -82,8 +88,10 @@ class InvoiceSale(private val saleService: SaleService,
     }
 
     private fun SaleDetailsRequest.toSaleDetails(): SaleDetails {
-        val saleDetails = SaleDetails(detailsRequest.map { SaleDetail(it.id, "", it.description, it.quantity, it.unitPrice) },
-                                                            paymentsRequest.map { SalePayment(0L,0L,it.method.id,it.cardId,it.lastDigits,it.email,it.sub_total) })
+        val saleDetails = SaleDetails(
+                details = detailsRequest.map { SaleDetail(it.id, "", it.description, it.quantity, it.unitPrice) },
+                payments = paymentsRequest.map { SalePayment(0L,0L,it.method.id,it.cardId,it.lastDigits,it.email,it.sub_total) },
+                discount = discount?.toDiscount())
         saleDetails.details.forEach {
             val item = itemService.findItemById(it.id)
             if(item != null) {
@@ -97,7 +105,7 @@ class InvoiceSale(private val saleService: SaleService,
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 
-
+    private fun DiscountRequest.toDiscount() = Discount(0L, percentage, amount, 0L)
 }
 
 
