@@ -4,6 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.cash.domain.repository.CashMovemen
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.repository.CheckingAccountRepository
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
+import com.compumundohipermegaweb.hefesto.api.discount.domain.repositorty.DiscountRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
 import com.compumundohipermegaweb.hefesto.api.payment.method.domain.service.PaymentMethodService
@@ -29,8 +30,9 @@ class SaleConfig {
                     stockService: StockService,
                     itemService: ItemService,
                     checkingAccountService: CheckingAccountService,
-                    paymentMethodService: PaymentMethodService): InvoiceSale {
-        return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService,paymentMethodService)
+                    paymentMethodService: PaymentMethodService,
+                    discountRepository: DiscountRepository): InvoiceSale {//TODO: bean para discountRepository
+        return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService,paymentMethodService, discountRepository)
     }
 
     @Bean

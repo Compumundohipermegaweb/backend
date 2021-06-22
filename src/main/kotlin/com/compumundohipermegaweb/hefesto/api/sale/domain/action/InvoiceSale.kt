@@ -3,6 +3,8 @@ package com.compumundohipermegaweb.hefesto.api.sale.domain.action
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
+import com.compumundohipermegaweb.hefesto.api.discount.domain.model.Discount
+import com.compumundohipermegaweb.hefesto.api.discount.domain.repositorty.DiscountRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.service.ItemService
@@ -24,27 +26,45 @@ class InvoiceSale(private val saleService: SaleService,
                   private val stockService: StockService,
                   private val itemService: ItemService,
                   private val checkingAccountService: CheckingAccountService,
-                  private val paymentMethodService: PaymentMethodService
+                  private val paymentMethodService: PaymentMethodService,
+                  private val discountRepository: DiscountRepository
 ) {
     operator fun invoke(saleRequest: SaleRequest): Invoice {
         val sale = saleRequest.toSale()
 
-        sale.saleDetails.details.forEach {
-            stockService.reduceStock(it.id, sale.branchId, it.quantity)
-        }
-
-        sale.saleDetails.payments.forEach {
-            val method=paymentMethodService.findById(it.paymentMethodId)
-            if( method?.type == "CUENTA_CORRIENTE") {
-                checkingAccountService.discount(sale.client.id, it.subTotal)
-            }
-        }
+        reduceStock(sale)
+        discountCheckingAccount(sale)
 
         val savedSale = saleService.save(sale, 0L)
         val invoice = invoiceService.invoiceSale(savedSale, saleRequest)
         saleService.save(savedSale, invoice.id)
 
+        saveDiscount(saleRequest, savedSale)
+
         return invoice
+    }
+
+    private fun discountCheckingAccount(sale: Sale) {
+        sale.saleDetails.payments.forEach {
+            val method = paymentMethodService.findById(it.paymentMethodId)
+            if (method?.type == "CUENTA_CORRIENTE") {
+                checkingAccountService.discount(sale.client.id, it.subTotal)
+            }
+        }
+    }
+
+    private fun reduceStock(sale: Sale) {
+        sale.saleDetails.details.forEach {
+            stockService.reduceStock(it.id, sale.branchId, it.quantity)
+        }
+    }
+
+    private fun saveDiscount(saleRequest: SaleRequest, savedSale: Sale) {
+        if (saleRequest.saleDetailsRequest.discount != null) {
+            val discountRequest = saleRequest.saleDetailsRequest.discount
+            val discount = Discount(0L, discountRequest.percentage, discountRequest.amount, savedSale.id)
+            discountRepository.save(discount)
+        }
     }
 
     private fun SaleRequest.toSale(): Sale {

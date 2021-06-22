@@ -3,6 +3,8 @@ package com.compumundohipermegaweb.hefesto.api.sale
 import com.compumundohipermegaweb.hefesto.api.checking.account.domain.service.CheckingAccountService
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.rest.request.ClientRequest
+import com.compumundohipermegaweb.hefesto.api.discount.domain.model.Discount
+import com.compumundohipermegaweb.hefesto.api.discount.domain.repositorty.DiscountRepository
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.model.Invoice
 import com.compumundohipermegaweb.hefesto.api.invoice.domain.service.InvoiceService
 import com.compumundohipermegaweb.hefesto.api.item.domain.model.Item
@@ -34,6 +36,7 @@ class InvoiceSaleShould {
     private lateinit var itemService: ItemService
     private lateinit var checkingAccountService: CheckingAccountService
     private lateinit var paymentMethodService: PaymentMethodService
+    private lateinit var discountRepository: DiscountRepository
 
     private lateinit var generatedInvoice: Invoice
 
@@ -47,6 +50,7 @@ class InvoiceSaleShould {
         givenItemService()
         givenCheckingAccountService()
         givenPaymentMethodService()
+        givenDiscountRepository()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
@@ -62,6 +66,7 @@ class InvoiceSaleShould {
         givenItemService()
         givenCheckingAccountService()
         givenPaymentMethodService()
+        givenDiscountRepository()
         givenInvoiceSale()
 
         whenInvoiceSale(TYPE_A_SALE_REQUEST)
@@ -77,15 +82,30 @@ class InvoiceSaleShould {
         givenItemService()
         givenCheckingAccountService()
         givenPaymentMethodService()
+        givenDiscountRepository()
         givenInvoiceSale()
 
         whenInvoiceSale(SALE_WITH_CHECKING_ACCOUNT_PAYMENT)
-//
-//        verify(checkingAccountService)
-//                .discount(
-//                        SALE_WITH_CHECKING_ACCOUNT_PAYMENT.clientRequest.id,
-//                        SALE_WITH_CHECKING_ACCOUNT_PAYMENT.saleDetailsRequest.paymentsRequest[0].sub_total
-//                )
+    }
+
+    @Test
+    fun `save the discount`() {
+        givenSaleService()
+        givenInvoiceService()
+        givenStockService()
+        givenItemService()
+        givenCheckingAccountService()
+        givenPaymentMethodService()
+        givenDiscountRepository()
+        givenInvoiceSale()
+
+        whenInvoiceSale(SALE_WITH_DISCOUNT)
+
+        thenDiscountIsSaved()
+    }
+
+    private fun givenDiscountRepository() {
+        discountRepository = mock()
     }
 
     private fun givenSaleService() {
@@ -119,7 +139,7 @@ class InvoiceSaleShould {
     }
 
     private fun givenInvoiceSale() {
-        invoiceSale = InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService, paymentMethodService)
+        invoiceSale = InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService, paymentMethodService, discountRepository)
     }
 
     private fun whenInvoiceSale(saleRequest: SaleRequest) {
@@ -130,6 +150,9 @@ class InvoiceSaleShould {
         then(generatedInvoice).isNotNull
     }
 
+    private fun thenDiscountIsSaved() {
+        verify(discountRepository).save(Discount(0L, 10, 100.0, 0L))
+    }
 
     private companion object {
         val DEFAULT_CLIENT = Client(0L, "99999999", "Consumidor", "Final", "", 0.0, "", "", "")
@@ -139,7 +162,7 @@ class InvoiceSaleShould {
         val SALE_ITEM_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, "",1, 200.50))
         val PAYMENT_METHOD_REQUEST = PaymentMethodRequest(5L,"CUENTA_CORRIENTE","CUENTA CORRIENTE")
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentRequest(PAYMENT_METHOD_REQUEST,200.50,null,null,null))
-        val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)
+        val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST, null)
         val TYPE_A_SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, "")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "","",1, 200.50))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,0L,0L,"","",200.50))
@@ -173,9 +196,19 @@ class InvoiceSaleShould {
                         paymentsRequest = listOf(
                             PaymentRequest(PaymentMethodRequest(5L,"CUENTA_CORRIENTE","CUENTA CORRIENTE"),
                                 sub_total = 150.50,null,null,null)
-                        )
-                ),
+                        ),
+                discount = null),
                 category = ""
+        )
+
+        val SALE_DETAILS_WITH_DISCOUNT = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST, DiscountRequest(10, 100.0))
+        val SALE_WITH_DISCOUNT = SaleRequest(
+                invoiceType = "B",
+                clientRequest = CLIENT_REQUEST,
+                salesmanId = 1L,
+                branchId = 1L,
+                saleDetailsRequest = SALE_DETAILS_WITH_DISCOUNT,
+                category = null
         )
     }
 }

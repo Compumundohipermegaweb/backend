@@ -225,8 +225,8 @@ class ProcessOnlineSaleShould {
                     PaymentRequest(
                         PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
                         sub_total = 150.50,null,null,null)
-                )
-            ),
+                ),
+            discount = null),
             category = ""
         )
 
@@ -251,8 +251,8 @@ class ProcessOnlineSaleShould {
                 paymentsRequest = listOf(
                     PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
                         sub_total = 150.50,null,null,null)
-                )
-            ),
+                ),
+            discount = null),
             category = ""
         )
 
@@ -276,8 +276,8 @@ class ProcessOnlineSaleShould {
                 paymentsRequest = listOf(
                     PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
                         sub_total = 150.50,null,null,null)
-                )
-            ),
+                ),
+            discount = null),
             category = ""
         )
 
@@ -302,8 +302,8 @@ class ProcessOnlineSaleShould {
                 paymentsRequest = listOf(
                     PaymentRequest(PaymentMethodRequest(0L,"MERCADO PAGO","Mercado Pago"),
                         sub_total = 150.50,null,null,null)
-                )
-            ),
+                ),
+            discount = null),
             category = ""
         )
     }

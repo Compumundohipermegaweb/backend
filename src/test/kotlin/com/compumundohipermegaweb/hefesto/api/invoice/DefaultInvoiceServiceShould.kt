@@ -80,7 +80,7 @@ class DefaultInvoiceServiceShould {
         val SALE_ITEM_DETAIL_REQUEST = listOf(SaleDetailRequest(0L, "",1, 0.0))
         val PAYMENT_METHOD = PaymentMethodRequest(0L,"EFECTIVO","Efectivo")
         val SALE_PAYMENT_DETAIL_REQUEST = listOf(PaymentRequest(PAYMENT_METHOD,0.0,0L,"", ""))
-        val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST)
+        val SALE_DETAILS_REQUEST = SaleDetailsRequest(SALE_ITEM_DETAIL_REQUEST, SALE_PAYMENT_DETAIL_REQUEST, null)
         val SALE_REQUEST = SaleRequest("A", CLIENT_REQUEST, 0L, 0L, SALE_DETAILS_REQUEST, "LOCAL")
         val SALE_ITEM_DETAIL = listOf(SaleDetail(0L, "","",0, 0.0))
         val SALE_PAYMENT_DETAIL = listOf(SalePayment(0L,0L,0L,0L,"","",0.0))
