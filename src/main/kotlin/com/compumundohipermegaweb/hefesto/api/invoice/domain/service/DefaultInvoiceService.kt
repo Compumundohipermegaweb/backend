@@ -15,10 +15,10 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository,
 
     override fun invoiceSale(sale: Sale, saleRequest: SaleRequest) : Invoice {
         val iva = calculateIva(sale)
-        val subTotal = calculateSubTotal(sale, iva)
+        val subTotal = Math.round(calculateSubTotal(sale, iva) * 100) / 100.0
         val invoice = createInvoice(sale, subTotal, iva)
 
-        registerCashMovement(saleRequest, sale)
+        registerCashMovement(saleRequest, sale, invoice)
 
         return invoiceRepository.save(invoice)
     }
@@ -27,27 +27,28 @@ class DefaultInvoiceService(private val invoiceRepository: InvoiceRepository,
         return invoiceRepository.save(invoice)
     }
 
-    private fun calculateIva(savedSale: Sale): Double {
-        return when(savedSale.type){
-            "A" -> (21 * savedSale.total) / 100
+    private fun calculateIva(sale: Sale): Double {
+        val total = sale.saleDetails.details.map { it.quantity * it.unitPrice }.reduce { acc, d -> acc + d }
+        return when (sale.type) {
+            "A" -> (21 * total) / 100
             else -> 0.0
         }
     }
 
-    private fun calculateSubTotal(savedSale: Sale, iva: Double): Double {
-        return when(savedSale.type){
-            "A" -> savedSale.total - iva
-            else -> savedSale.total
+    private fun calculateSubTotal(sale: Sale, iva: Double): Double {
+        return when(sale.type) {
+            "A" -> sale.total - iva
+            else -> sale.total
         }
     }
 
-    private fun registerCashMovement(saleRequest: SaleRequest, sale: Sale) {
+    private fun registerCashMovement(saleRequest: SaleRequest, sale: Sale, invoice: Invoice) {
         val cashStartEnd = cashStartEndRepository.findByCashIdAndEndDate(saleRequest.branchId)
 
         if(saleRequest.category.equals("LOCAL")) {
-            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 2L, "VENTA", 0L, sale.id, saleRequest.salesmanId, sale.total, "VENTA LOCAL"), cashStartEnd.id)
+            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 2L, "VENTA", 0L, sale.id, saleRequest.salesmanId, invoice.subTotal, "VENTA LOCAL"), cashStartEnd.id)
         } else {
-            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 1L, "VENTA", 0L, sale.id, saleRequest.salesmanId, sale.total, "VENTA ONLINE"), cashStartEnd.id)
+            cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 1L, "VENTA", 0L, sale.id, saleRequest.salesmanId, invoice.subTotal, "VENTA ONLINE"), cashStartEnd.id)
         }
     }
 

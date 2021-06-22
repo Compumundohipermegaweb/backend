@@ -38,11 +38,16 @@ class InvoiceSale(private val saleService: SaleService,
 
         val savedSale = saleService.save(sale, 0L)
         val invoice = invoiceService.invoiceSale(savedSale, saleRequest)
-        saleService.save(savedSale, invoice.id)
 
+        attachInvoice(invoice, savedSale)
         saveDiscount(saleRequest, savedSale)
 
         return invoice
+    }
+
+    private fun attachInvoice(invoice: Invoice, savedSale: Sale) {
+        savedSale.total = invoice.subTotal
+        saleService.save(savedSale, invoice.id)
     }
 
     private fun discountCheckingAccount(sale: Sale) {
