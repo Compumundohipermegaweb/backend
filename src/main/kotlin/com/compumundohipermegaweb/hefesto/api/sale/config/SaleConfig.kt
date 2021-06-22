@@ -31,7 +31,7 @@ class SaleConfig {
                     itemService: ItemService,
                     checkingAccountService: CheckingAccountService,
                     paymentMethodService: PaymentMethodService,
-                    discountRepository: DiscountRepository): InvoiceSale {//TODO: bean para discountRepository
+                    discountRepository: DiscountRepository): InvoiceSale {
         return InvoiceSale(saleService, invoiceService, stockService, itemService, checkingAccountService,paymentMethodService, discountRepository)
     }
 
