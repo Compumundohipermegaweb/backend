@@ -121,6 +121,6 @@ class OpenCashShould {
         private val OPENED_CASH =  Cash(0L, 0L, 0L, "OPEN")
         private val ALREADY_OPENED_CASH =  Cash(1L, 1L, 1L, "OPEN")
         private val CASH_START_END = CashStartEnd(0L, 0L, DATE, 0.0, 0L, null, 0.0, 0.0, DATE)
-        private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "APERTURA", 0L, 0L, 0L, 0.0, "APERTURA DE CAJA")
+        private val CASH_MOVEMENT = CashMovement(0L, 0L, "INGRESO", DATE, 0L, "Mov. de Caja", 0L, 0L, 0L, 0.0, "Apertura de Caja")
     }
 }

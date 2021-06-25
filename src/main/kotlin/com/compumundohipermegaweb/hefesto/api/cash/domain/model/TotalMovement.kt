@@ -10,8 +10,11 @@ class TotalMovement (
     val movementType: String,
     val source: String,
     val paymentMethod: String,
-    val card: String,
+    val card: String?,
+    val digits: String?,
+    val detail: String?,
     val total: Double,
+    val level: Long
 )
 
 

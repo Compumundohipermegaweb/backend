@@ -12,7 +12,7 @@ import javax.persistence.Id
 
 @Transactional(readOnly = true)
 @Entity
-@Subselect("SELECT * FROM VW_TOTAL_MOVEMENT")
+@Subselect("SELECT * FROM VW_MOVEMENTS_DETAIL")
 data class TotalMovementRepresentation (
         @Id @Column(name ="ID")
         val id: Long,
@@ -32,5 +32,12 @@ data class TotalMovementRepresentation (
         val paymentMethod: String,
         @Column(name = "CARD")
         val card: String,
+        @Column(name = "DIGITS")
+        val digits: String,
+        @Column(name = "DETAIL")
+        val detail: String,
         @Column(name = "TOTAL")
-        val total: Double)
+        val total: Double,
+        @Column(name = "LEVEL")
+        val level: Long
+        )

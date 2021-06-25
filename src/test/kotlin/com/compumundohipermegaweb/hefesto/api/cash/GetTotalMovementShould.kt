@@ -42,7 +42,7 @@ class GetTotalMovementShould {
     }
 
     companion object{
-        private val TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"INGRESO","Venta OnLine","Efectivo","No Aplica",100.00)
-        private val ANOTHER_TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"EGRESO","Venta Local","Efectivo","No Aplica",100.00)
+        private val TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"INGRESO","Venta OnLine","Efectivo","No Aplica","","",100.00,1L)
+        private val ANOTHER_TOTAL_MOVEMENT= TotalMovement(0L,0L,0L, Date(),"EGRESO","Venta Local","Efectivo","No Aplica","","",100.00,1L)
     }
 }

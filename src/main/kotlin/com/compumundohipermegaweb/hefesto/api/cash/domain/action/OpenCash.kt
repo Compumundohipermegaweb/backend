@@ -23,7 +23,7 @@ class OpenCash(private val cashRepository: CashRepository,
                 cash.status = "OPEN"
                 cashRepository.save(cash)
                 val cashStartEnd = cashStartEndRepository.save(CashStartEnd(0L, cash.id, Date(), openRequest.openingBalance, openRequest.userId,null, 0.0, 0.0, Date()))
-                cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 3L, "APERTURA", 0L, 0L, openRequest.userId, openRequest.openingBalance, "APERTURA DE CAJA"), cashStartEnd.id)
+                cashMovementRepository.save(CashMovement(0L, cashStartEnd.id, "INGRESO", Date(), 3L, "Mov. de Caja", 0L, 0L, openRequest.userId, openRequest.openingBalance, "Apertura de Caja"), cashStartEnd.id)
             }
         }
         return cash

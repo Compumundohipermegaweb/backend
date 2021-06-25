@@ -139,7 +139,7 @@ class CashController(private val openCash: OpenCash,
     }
 
     private fun TotalMovement.toTotalMovementResponse(): TotalMovementResponse {
-        return TotalMovementResponse(branchId, cashId, cashStartEndId, dateTime.toString(), movementType,source, paymentMethod,card, total)
+        return TotalMovementResponse(branchId, cashId, cashStartEndId, dateTime.toString(), movementType,source, paymentMethod,card, digits,detail,total,level)
     }
 
     private fun CashMovement.toCashMovementResponse(): CashMovementResponse{

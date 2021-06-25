@@ -13,6 +13,6 @@ class JpaTotalMovementRepository(private val springTotalMovementDao: SpringTotal
     }
 
     private fun TotalMovementRepresentation.toTotalMovement(): TotalMovement {
-        return TotalMovement(branchId,cashId,cashStartEndId,dateTime, movementType,source, paymentMethod,card, total)
+        return TotalMovement(branchId,cashId,cashStartEndId,dateTime,movementType,source,paymentMethod,card,digits,detail,total,level)
     }
 }

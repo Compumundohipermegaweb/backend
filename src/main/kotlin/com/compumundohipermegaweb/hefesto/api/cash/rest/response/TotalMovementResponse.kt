@@ -13,8 +13,11 @@ data class TotalMovementResponse (
     @JsonProperty("movement_type") val movementType: String,
     @JsonProperty("source") val source: String,
     @JsonProperty("payment_method") val paymentMethod: String,
-    @JsonProperty("card") val card: String,
-    @JsonProperty("total") val total: Double
+    @JsonProperty("card") val card: String?,
+    @JsonProperty("digits") val digits: String?,
+    @JsonProperty("detail") val detail: String?,
+    @JsonProperty("total") val total: Double,
+    @JsonProperty("level") val level: Long
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TotalsMovementResponse(@JsonProperty("totals") val totals: List<TotalMovementResponse>)
