@@ -12,12 +12,12 @@ class UpdateClient (private val clientService: ClientService){
         val clientFromDB = clientService.findById(clientRequest.id)
 
         return if (clientFromDB != null) {
-            val client = clientRequest.toClientDao()
+            val client = clientRequest.toClientDao(clientFromDB)
             clientService.save(client.toClient())
         }else{
             null
         }
     }
-    private fun ClientRequest.toClientDao() = ClientDao(id,documentNumber,firstName,lastName,state,creditLimit,email,contactNumber, address)
+    private fun ClientRequest.toClientDao(clientFromDB: Client) = ClientDao(id,documentNumber,firstName,lastName,state,creditLimit,email,contactNumber, address?:clientFromDB.address)
     private fun ClientDao.toClient() = Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
 }
