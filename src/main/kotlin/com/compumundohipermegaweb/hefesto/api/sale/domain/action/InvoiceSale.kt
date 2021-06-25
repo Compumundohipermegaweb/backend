@@ -46,7 +46,6 @@ class InvoiceSale(private val saleService: SaleService,
     }
 
     private fun attachInvoice(invoice: Invoice, savedSale: Sale) {
-        savedSale.total = invoice.subTotal
         saleService.save(savedSale, invoice.id)
     }
 
