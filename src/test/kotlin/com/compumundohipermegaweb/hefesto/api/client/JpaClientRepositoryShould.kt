@@ -4,7 +4,7 @@ import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.infra.repository.JpaClientRepository
 import com.compumundohipermegaweb.hefesto.api.client.infra.repository.SpringDataClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientDao
+import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientRepresentation
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -171,7 +171,7 @@ class JpaClientRepositoryShould {
         const val RANDOM_DOCUMENT_NUMBER = "40060441"
         const val RANDOM_FIRST_NAME = "Random"
         const val RANDOM_LAST_NAME = "Name"
-        val CLIENT_DAO = ClientDao(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
+        val CLIENT_DAO = ClientRepresentation(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
         val CLIENT = Client(0L, "00000000", "First", "Last", "", 0.0, "", "", "")
     }
 }

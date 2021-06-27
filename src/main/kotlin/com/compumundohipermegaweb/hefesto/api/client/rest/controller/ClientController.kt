@@ -25,8 +25,9 @@ class ClientController(private val registerClient: RegisterClient,
 
     @GetMapping
     fun getClient(@RequestParam("document") document: String?,
-                  @RequestParam("name") name: String?): ResponseEntity<List<ClientResponse>> {
-        val actionData = ActionData(name, document)
+                  @RequestParam("name") name: String?,
+                  @RequestParam("last_name") lastName: String?): ResponseEntity<List<ClientResponse>> {
+        val actionData = ActionData(name, document, lastName)
         val clients = findClients(actionData)
         return if (clients.isEmpty()) {
             ResponseEntity.noContent().build()

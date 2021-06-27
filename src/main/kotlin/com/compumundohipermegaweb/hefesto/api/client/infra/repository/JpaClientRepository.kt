@@ -2,7 +2,7 @@ package com.compumundohipermegaweb.hefesto.api.client.infra.repository
 
 import com.compumundohipermegaweb.hefesto.api.client.domain.model.Client
 import com.compumundohipermegaweb.hefesto.api.client.domain.repository.ClientRepository
-import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientDao
+import com.compumundohipermegaweb.hefesto.api.client.infra.representation.ClientRepresentation
 
 class JpaClientRepository(private val repository: SpringDataClientRepository): ClientRepository {
 
@@ -30,15 +30,15 @@ class JpaClientRepository(private val repository: SpringDataClientRepository): C
         return repository.findAll().map { it.toClient() }
     }
 
-            private fun ClientDao.toClient(): Client {
+    private fun ClientRepresentation.toClient(): Client {
         return Client(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address)
     }
 
-    private fun Client.toDao(): ClientDao {
+    private fun Client.toDao(): ClientRepresentation {
         if(address == null) {
             address = ""
         }
-        return ClientDao(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address!!)
+        return ClientRepresentation(id, documentNumber, firstName, lastName, state, creditLimit, email, contactNumber, address!!)
     }
 
 

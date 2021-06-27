@@ -22,19 +22,9 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = null))
+        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, lastName = "", document = null))
 
         thenClientsWhereFound(CLIENT_1, CLIENT_2)
-    }
-
-    @Test
-    fun `find clients by full name`() {
-        givenClientRepository()
-        givenGetClient()
-
-        whenGettingClient(with = ActionData(name = "${CLIENT_3.firstName} ${CLIENT_3.lastName}", document = null))
-
-        thenClientsWhereFound(CLIENT_2, CLIENT_3)
     }
 
     @Test
@@ -42,7 +32,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(document = CLIENT_1.documentNumber, name = null))
+        whenGettingClient(with = ActionData(document = CLIENT_1.documentNumber, lastName = "", name = null))
 
         thenOnlyFoundClient(CLIENT_1)
     }
@@ -52,7 +42,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = CLIENT_1.documentNumber ))
+        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, lastName = "", document = CLIENT_1.documentNumber ))
 
         thenOnlyFoundClient(CLIENT_1)
     }
@@ -62,7 +52,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = CLIENT_3.documentNumber))
+        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, lastName = "", document = CLIENT_3.documentNumber))
 
         thenNoClientsWhereFound()
     }
@@ -72,7 +62,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = null, document = UNKNOWN_DOCUMENT))
+        whenGettingClient(with = ActionData(name = null, lastName = "", document = UNKNOWN_DOCUMENT))
 
         thenNoClientsWhereFound()
     }
@@ -82,7 +72,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = UNKNOWN_NAME, document = null))
+        whenGettingClient(with = ActionData(name = UNKNOWN_NAME, lastName = "", document = null))
 
         thenNoClientsWhereFound()
     }
@@ -92,7 +82,7 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = "  ", document = CLIENT_1.documentNumber))
+        whenGettingClient(with = ActionData(name = "  ", lastName = "", document = CLIENT_1.documentNumber))
 
         thenClientsWhereFound(CLIENT_1)
     }
@@ -102,21 +92,46 @@ class FindClientsShould {
         givenClientRepository()
         givenGetClient()
 
-        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, document = "    "))
+        whenGettingClient(with = ActionData(name = CLIENT_1.firstName, lastName = "", document = "    "))
 
         thenClientsWhereFound(CLIENT_1)
     }
 
+    @Test
+    fun `ignore case in name`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = "namE", lastName = "", document = "    "))
+
+        thenClientsWhereFound(CLIENT_1)
+    }
+
+
+    @Test
+    fun `ignore case in last name`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = "", lastName = "sAr", document = ""))
+
+        thenClientsWhereFound(CLIENT_1)
+    }
+
+    @Test
+    fun `find client by last name`() {
+        givenClientRepository()
+        givenGetClient()
+
+        whenGettingClient(with = ActionData(name = "", lastName = CLIENT_1.lastName, document = ""))
+
+        thenClientsWhereFound(CLIENT_1)
+
+    }
+
     private fun givenClientRepository() {
         clientRepository = mock()
-        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_1.firstName))).thenReturn(listOf(CLIENT_1, CLIENT_2))
-        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(CLIENT_3.firstName, CLIENT_3.lastName))).thenReturn(listOf(
-            CLIENT_2, CLIENT_3
-        ))
-        `when`(clientRepository.findByDocument(CLIENT_1.documentNumber)).thenReturn(CLIENT_1)
-        `when`(clientRepository.findByDocument(CLIENT_3.documentNumber)).thenReturn(CLIENT_3)
-        `when`(clientRepository.findByDocument(UNKNOWN_DOCUMENT)).thenReturn(null)
-        `when`(clientRepository.findByFirstNameOrLastNameIn(listOf(UNKNOWN_NAME))).thenReturn(emptyList())
+        `when`(clientRepository.findAllClients()).thenReturn(listOf(CLIENT_1, CLIENT_2, CLIENT_3))
     }
 
     private fun givenGetClient() {
